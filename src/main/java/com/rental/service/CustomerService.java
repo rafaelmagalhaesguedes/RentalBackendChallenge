@@ -27,10 +27,15 @@ public class CustomerService {
         .orElseThrow(CustomerNotFoundException::new);
   }
 
-  public Customer createCustomer(Customer customer) throws CustomerNotFoundException, CustomerExistingException {
-    Customer customerExist = getCustomerById(customer.getId());
+  public List<Customer> getAllCustomers(int pageNumber, int pageSize) {
+    Pageable pageable = PageRequest.of(pageNumber, pageSize);
+    Page<Customer> page = customerRepository.findAll(pageable);
 
-    if (customerExist != null) {
+    return page.toList();
+  }
+
+  public Customer createCustomer(Customer customer) throws CustomerExistingException {
+    if (customerRepository.existsByEmail(customer.getEmail())) {
       throw new CustomerExistingException();
     }
 
@@ -40,32 +45,16 @@ public class CustomerService {
   public Customer updateCustomer(UUID customerId, Customer customer) throws CustomerNotFoundException {
     Customer customerFromDb = getCustomerById(customerId);
 
-    if (customerFromDb == null) {
-      throw new CustomerNotFoundException();
-    }
-
     customerFromDb.setName(customer.getName());
     customerFromDb.setEmail(customer.getEmail());
 
     return customerRepository.save(customerFromDb);
   }
 
-  public Boolean deleteCustomer(UUID id) throws CustomerNotFoundException {
+  public Customer deleteCustomer(UUID id) throws CustomerNotFoundException {
     Customer customer = getCustomerById(id);
 
-    if (customer == null) {
-      throw new CustomerNotFoundException();
-    }
-
     customerRepository.delete(customer);
-
-    return true;
-  }
-
-  public List<Customer> getAllCustomers(int pageNumber, int pageSize) {
-    Pageable pageable = PageRequest.of(pageNumber, pageSize);
-    Page<Customer> page = customerRepository.findAll(pageable);
-
-    return page.toList();
+    return customer;
   }
 }
