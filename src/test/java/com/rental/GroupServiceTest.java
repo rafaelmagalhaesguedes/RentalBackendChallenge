@@ -1,12 +1,13 @@
 package com.rental;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
 
-import com.rental.entity.Customer;
 import com.rental.entity.Group;
 import com.rental.repository.GroupRepository;
 import com.rental.service.GroupService;
+import com.rental.service.exception.CustomerExistingException;
 import com.rental.service.exception.GroupNotFoundException;
 import java.util.Arrays;
 import java.util.List;
@@ -98,5 +99,113 @@ public class GroupServiceTest {
     assertEquals(group2.getName(), groups.get(1).getName());
     assertEquals(group2.getVehicles(), groups.get(1).getVehicles());
     assertEquals(group2.getDailyRate(), groups.get(1).getDailyRate());
+  }
+
+  @Test
+  public void testCreateGroup() throws CustomerExistingException {
+
+    // Arrange
+    Group group = new Group();
+    group.setId(UUID.randomUUID());
+    group.setName("Group D");
+    group.setVehicles("Creta, Renegade, Tracker, Compass");
+    group.setDailyRate(250.00);
+
+    // Act
+    Mockito.when(repository.save(group)).thenReturn(group);
+
+    Group newGroup = service.createGroup(group);
+
+    Mockito.verify(repository).save(group);
+
+    // Assert
+    assertEquals(newGroup.getId(), group.getId());
+    assertEquals(newGroup.getName(), group.getName());
+    assertEquals(newGroup.getVehicles(), group.getVehicles());
+    assertEquals(newGroup.getDailyRate(), group.getDailyRate());
+  }
+
+  @Test
+  public void testUpdateGroup() throws GroupNotFoundException {
+
+    // Arrange
+    UUID id = UUID.randomUUID();
+
+    Group existingGroup = new Group();
+    existingGroup.setName("Group A");
+    existingGroup.setVehicles("Uno, Mobi, Onix");
+    existingGroup.setDailyRate(150.00);
+
+    Group updatedGroup= new Group();
+    updatedGroup.setName("Group A+");
+    updatedGroup.setVehicles("Uno, Mobi, Onix e Kwid");
+    updatedGroup.setDailyRate(180.00);
+
+    Mockito.when(repository.findById(id)).thenReturn(Optional.of(existingGroup));
+    Mockito.when(repository.save(existingGroup)).thenReturn(existingGroup);
+
+    // Act
+    Group result = service.updateGroup(updatedGroup, id);
+
+    // Assert
+    assertEquals(updatedGroup.getId(), result.getId());
+    assertEquals(updatedGroup.getName(), result.getName());
+    assertEquals(updatedGroup.getVehicles(), result.getVehicles());
+    assertEquals(updatedGroup.getDailyRate(), result.getDailyRate());
+  }
+
+  @Test
+  public void testUpdateGroupNotFoundException() {
+
+    // Arrange
+    UUID id = UUID.randomUUID();
+
+    Group updatedGroup = new Group();
+    updatedGroup.setName("Group A");
+    updatedGroup.setVehicles("Uno, Mobi, Onix");
+    updatedGroup.setDailyRate(150.00);
+
+    Mockito.when(repository.findById(id))
+        .thenReturn(Optional.empty());
+
+    // Act & Assert
+    assertThrows(GroupNotFoundException.class,
+        () -> service.updateGroup(updatedGroup, id));
+  }
+
+  @Test
+  public void testDeleteGroup() throws GroupNotFoundException {
+
+    // Arrange
+    UUID id = UUID.randomUUID();
+    Group existingGroup = new Group();
+    existingGroup.setId(id);
+    existingGroup.setName("Group B+");
+    existingGroup.setVehicles("Gol, Argo, Onix");
+    existingGroup.setDailyRate(200.00);
+
+    Mockito.when(repository.findById(id))
+        .thenReturn(Optional.of(existingGroup));
+
+    // Act
+    Group result = service.deleteGroup(id);
+
+    // Assert
+    assertEquals(existingGroup, result);
+    Mockito.verify(repository).delete(existingGroup);
+  }
+
+  @Test
+  public void testDeleteGroupNotFoundException() {
+
+    // Arrange
+    UUID id = UUID.randomUUID();
+
+    Mockito.when(repository.findById(id))
+        .thenReturn(Optional.empty());
+
+    // Act & Assert
+    assertThrows(GroupNotFoundException.class,
+        () -> service.deleteGroup(id));
   }
 }

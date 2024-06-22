@@ -33,4 +33,26 @@ public class GroupService {
 
     return page.toList();
   }
+
+  public Group createGroup(Group group) {
+    return groupRepository.save(group);
+  }
+
+  public Group updateGroup(Group group, UUID id) throws GroupNotFoundException {
+    Group groupFromDb = getGroupById(id);
+
+    groupFromDb.setName(group.getName());
+    groupFromDb.setVehicles(group.getVehicles());
+    groupFromDb.setDailyRate(group.getDailyRate());
+
+    return groupRepository.save(groupFromDb);
+  }
+
+  public Group deleteGroup(UUID id) throws GroupNotFoundException {
+    Group group = getGroupById(id);
+
+    groupRepository.delete(group);
+
+    return group;
+  }
 }
