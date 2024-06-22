@@ -8,7 +8,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import com.rental.entity.Customer;
 import com.rental.repository.CustomerRepository;
 import com.rental.service.CustomerService;
-import com.rental.service.exception.AccessoryNotFoundException;
 import com.rental.service.exception.CustomerExistingException;
 import com.rental.service.exception.CustomerNotFoundException;
 import java.util.Arrays;
