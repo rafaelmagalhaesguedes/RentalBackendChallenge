@@ -1,11 +1,11 @@
 package com.rental.repository;
 
-import com.rental.entity.VehicleGroup;
+import com.rental.entity.Group;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface VehicleGroupRepository extends JpaRepository<VehicleGroup, UUID> {
+public interface GroupRepository extends JpaRepository<Group, UUID> {
 
 }
