@@ -24,6 +24,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * The type Customer controller.
+ */
 @RestController
 @RequestMapping("/customer")
 @Validated
@@ -31,11 +34,23 @@ public class CustomerController {
 
   private final CustomerService customerService;
 
+  /**
+   * Instantiates a new Customer controller.
+   *
+   * @param customerService the customer service
+   */
   @Autowired
   public CustomerController(CustomerService customerService) {
     this.customerService = customerService;
   }
 
+  /**
+   * Gets customer by id.
+   *
+   * @param id the id
+   * @return the customer by id
+   * @throws CustomerNotFoundException the customer not found exception
+   */
   @GetMapping("/{id}")
   public CustomerDto getCustomerById(@PathVariable UUID id) throws CustomerNotFoundException {
     return CustomerDto.fromEntity(
@@ -43,6 +58,13 @@ public class CustomerController {
     );
   }
 
+  /**
+   * Gets all customers.
+   *
+   * @param pageNumber the page number
+   * @param pageSize   the page size
+   * @return the all customers
+   */
   @GetMapping
   public List<CustomerDto> getAllCustomers(
       @RequestParam(required = false, defaultValue = "0") int pageNumber,
@@ -54,6 +76,14 @@ public class CustomerController {
         .toList();
   }
 
+  /**
+   * Customer create customer dto.
+   *
+   * @param customerCreationDto the customer creation dto
+   * @return the customer dto
+   * @throws CustomerNotFoundException the customer not found exception
+   * @throws CustomerExistingException the customer existing exception
+   */
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public CustomerDto customerCreate(@RequestBody @Valid CustomerCreationDto customerCreationDto)
@@ -63,6 +93,14 @@ public class CustomerController {
     );
   }
 
+  /**
+   * Customer update customer dto.
+   *
+   * @param id                the id
+   * @param customerUpdateDto the customer update dto
+   * @return the customer dto
+   * @throws CustomerNotFoundException the customer not found exception
+   */
   @PutMapping("/{id}")
   public CustomerDto customerUpdate(
       @PathVariable UUID id,
@@ -73,6 +111,13 @@ public class CustomerController {
     );
   }
 
+  /**
+   * Customer delete customer dto.
+   *
+   * @param id the id
+   * @return the customer dto
+   * @throws CustomerNotFoundException the customer not found exception
+   */
   @DeleteMapping("/{id}")
   public CustomerDto customerDelete(@PathVariable UUID id) throws CustomerNotFoundException {
     return CustomerDto.fromEntity(
