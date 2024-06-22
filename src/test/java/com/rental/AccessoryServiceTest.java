@@ -1,4 +1,4 @@
-package com.rental.accessory;
+package com.rental;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
