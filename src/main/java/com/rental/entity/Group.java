@@ -9,16 +9,20 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "vehicle_groups")
-public class VehicleGroup {
+public class Group {
 
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
   private String name;
-  private Boolean dailyRate;
+  private String vehicles;
+  private Double dailyRate;
 
-  public VehicleGroup(String name, Boolean dailyRate) {
+  public Group() { }
+
+  public Group(String name, String vehicles, Double dailyRate) {
     this.name = name;
+    this.vehicles = vehicles;
     this.dailyRate = dailyRate;
   }
 
@@ -38,11 +42,19 @@ public class VehicleGroup {
     this.name = name;
   }
 
-  public Boolean getDailyRate() {
+  public Double getDailyRate() {
     return dailyRate;
   }
 
-  public void setDailyRate(Boolean dailyRate) {
+  public void setDailyRate(Double dailyRate) {
     this.dailyRate = dailyRate;
+  }
+
+  public String getVehicles() {
+    return vehicles;
+  }
+
+  public void setVehicles(String vehicles) {
+    this.vehicles = vehicles;
   }
 }
