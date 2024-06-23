@@ -1,5 +1,6 @@
 package com.rental.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,6 +30,10 @@ public class Accessory {
 
   public Accessory() { }
 
+  public Accessory(String id) {
+    this.id = UUID.fromString(id);
+  }
+
   public Accessory(String name, Double dailyRate) {
     this.name = name;
     this.dailyRate = dailyRate;
@@ -39,7 +44,7 @@ public class Accessory {
   }
 
   public void setId(UUID id) {
-    this.id = id;
+    this.id = UUID.fromString(String.valueOf(id));
   }
 
   public String getName() {

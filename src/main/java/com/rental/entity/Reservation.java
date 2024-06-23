@@ -1,6 +1,5 @@
 package com.rental.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -21,22 +20,21 @@ public class Reservation {
 
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
-  @Column(columnDefinition = "BINARY(16)")
   private UUID id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "customer_id", nullable = false, columnDefinition = "BINARY(16)")
+  @JoinColumn(name = "customer_id", nullable = false)
   private Customer customer;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "group_id", nullable = false, columnDefinition = "BINARY(16)")
+  @JoinColumn(name = "group_id", nullable = false)
   private Group group;
 
   @ManyToMany
   @JoinTable(
       name = "reservation_accessories",
-      joinColumns = @JoinColumn(name = "reservation_id", columnDefinition = "BINARY(16)"),
-      inverseJoinColumns = @JoinColumn(name = "accessory_id", columnDefinition = "BINARY(16)")
+      joinColumns = @JoinColumn(name = "reservation_id"),
+      inverseJoinColumns = @JoinColumn(name = "accessory_id")
   )
   private List<Accessory> accessories;
 
