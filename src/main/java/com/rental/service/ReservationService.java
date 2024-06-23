@@ -89,7 +89,7 @@ public class ReservationService {
     newReservation.setStatus(status);
     newReservation.setPaymentMethod(paymentMethod);
 
-    return newReservation;
+    return reservationRepository.save(newReservation);
   }
 }
 
