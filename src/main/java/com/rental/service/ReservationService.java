@@ -1,5 +1,6 @@
 package com.rental.service;
 
+import com.rental.controller.dto.reservation.ReservationDto;
 import com.rental.entity.Accessory;
 import com.rental.entity.Customer;
 import com.rental.entity.Reservation;
@@ -11,6 +12,8 @@ import com.rental.repository.ReservationRepository;
 import com.rental.service.exception.CustomerNotFoundException;
 import com.rental.service.exception.GroupNotFoundException;
 import com.rental.service.exception.ReservationNotFoundException;
+import com.stripe.exception.StripeException;
+import com.stripe.model.checkout.Session;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,15 +32,15 @@ public class ReservationService {
   private final CustomerRepository customerRepository;
   private final GroupRepository groupRepository;
   private final AccessoryRepository accessoryRepository;
+  private final PaymentService paymentService;
 
   @Autowired
-  public ReservationService(ReservationRepository reservationRepository,
-      CustomerRepository customerRepository, GroupRepository groupRepository,
-      AccessoryRepository accessoryRepository) {
+  public ReservationService(ReservationRepository reservationRepository, CustomerRepository customerRepository, GroupRepository groupRepository, AccessoryRepository accessoryRepository, PaymentService paymentService) {
     this.reservationRepository = reservationRepository;
     this.customerRepository = customerRepository;
     this.groupRepository = groupRepository;
     this.accessoryRepository = accessoryRepository;
+    this.paymentService = paymentService;
   }
 
   public Reservation getReservationById(UUID id) throws ReservationNotFoundException {
@@ -48,37 +51,41 @@ public class ReservationService {
   public List<Reservation> getAllReservations(int pageNumber, int pageSize) {
     Pageable pageable = PageRequest.of(pageNumber, pageSize);
     Page<Reservation> page = reservationRepository.findAll(pageable);
+
     return page.toList();
   }
 
   @Transactional
-  public Reservation createReservation(
-      UUID customerId, UUID groupId, List<UUID> accessoryIds,
-      LocalDateTime pickupDateTime, LocalDateTime returnDateTime,
-      Double totalAmount, String status, String paymentMethod
-  ) throws CustomerNotFoundException, GroupNotFoundException {
+  public ReservationDto createReservation(UUID customerId, UUID groupId, List<UUID> accessoryIds, LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, String status, String paymentMethod) throws CustomerNotFoundException, GroupNotFoundException, StripeException {
 
-    // Get Customer
-    Customer customer = customerRepository.findById(customerId)
-        .orElseThrow(CustomerNotFoundException::new);
+    Reservation reservation = getReservation(customerId, groupId, accessoryIds, pickupDateTime, returnDateTime, totalAmount, status, paymentMethod);
 
-    // Get Group
-    Group group = groupRepository.findById(groupId)
-        .orElseThrow(GroupNotFoundException::new);
-
-    // Get Accessory
-    List<Accessory> accessories = accessoryRepository.findAllById(accessoryIds);
-
-    //  Create and return new reservation
-    return createNewReservation(customer, group, accessories, pickupDateTime, returnDateTime,
-        totalAmount, status, paymentMethod);
+    return getReservationDto(totalAmount, paymentMethod, reservation);
   }
 
-  private Reservation createNewReservation(
-      Customer customer, Group group, List<Accessory> accessories,
-      LocalDateTime pickupDateTime, LocalDateTime returnDateTime,
-      Double totalAmount, String status, String paymentMethod
-  ) {
+  private ReservationDto getReservationDto(Double totalAmount, String paymentMethod, Reservation reservation) throws StripeException {
+    if ("online".equalsIgnoreCase(paymentMethod)) {
+      Session paymentSession = paymentService.createCheckoutSession(
+          totalAmount,
+          "http://localhost:8080/success",
+          "http://localhost:8080/cancel",
+          reservation
+      );
+      return ReservationDto.fromEntity(reservation, paymentSession.getUrl());
+    } else {
+      return ReservationDto.fromEntity(reservation, null);
+    }
+  }
+
+  private Reservation getReservation(UUID customerId, UUID groupId, List<UUID> accessoryIds, LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, String status, String paymentMethod) throws CustomerNotFoundException, GroupNotFoundException {
+    Customer customer = customerRepository.findById(customerId).orElseThrow(CustomerNotFoundException::new);
+    Group group = groupRepository.findById(groupId).orElseThrow(GroupNotFoundException::new);
+    List<Accessory> accessories = accessoryRepository.findAllById(accessoryIds);
+
+    return createNewReservation(customer, group, accessories, pickupDateTime, returnDateTime, totalAmount, status, paymentMethod);
+  }
+
+  private Reservation createNewReservation(Customer customer, Group group, List<Accessory> accessories, LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, String status, String paymentMethod) {
     Reservation newReservation = new Reservation();
     newReservation.setCustomer(customer);
     newReservation.setGroup(group);
@@ -92,4 +99,3 @@ public class ReservationService {
     return reservationRepository.save(newReservation);
   }
 }
-

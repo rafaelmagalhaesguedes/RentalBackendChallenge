@@ -1,30 +1,31 @@
 package com.rental.controller.dto.reservation;
 
 import com.rental.controller.dto.accessory.AccessoryDto;
+import com.rental.controller.dto.customer.CustomerDto;
+import com.rental.controller.dto.group.GroupDto;
+import com.rental.entity.Customer;
+import com.rental.entity.Group;
 import com.rental.entity.Reservation;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-import com.rental.entity.Customer;
-import com.rental.entity.Group;
 
-public record ReservationDto(
+public record ReservationReadDto(
     UUID id,
-    Customer customer,
-    Group group,
+    CustomerDto customer,
+    GroupDto group,
     List<AccessoryDto> accessories,
     LocalDateTime pickupDateTime,
     LocalDateTime returnDateTime,
     Double totalAmount,
     String status,
-    String paymentMethod,
-    String paymentUrl
+    String paymentMethod
 ) {
-  public static ReservationDto fromEntity(Reservation reservation, String paymentUrl) {
-    return new ReservationDto(
+  public static ReservationReadDto fromEntity(Reservation reservation) {
+    return new ReservationReadDto(
         reservation.getId(),
-        reservation.getCustomer(),
-        reservation.getGroup(),
+        CustomerDto.fromEntity(reservation.getCustomer()),
+        GroupDto.fromEntity(reservation.getGroup()),
         reservation.getAccessories()
             .stream()
             .map(AccessoryDto::fromEntity)
@@ -33,8 +34,7 @@ public record ReservationDto(
         reservation.getReturnDateTime(),
         reservation.getTotalAmount(),
         reservation.getStatus(),
-        reservation.getPaymentMethod(),
-        paymentUrl
+        reservation.getPaymentMethod()
     );
   }
 }
