@@ -1,27 +1,35 @@
 package com.rental.entity;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
+@Entity
+@Table(name = "payments")
 public class Payment {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
   @ManyToOne
   private Reservation reservation;
 
-  private double amount;
+  private Double amount;
   private String status; // "Pending", "Completed", "Failed"
   private LocalDateTime paymentDate;
   private String paymentMethod; // "Stripe", "Counter"
 
-  public Payment(Reservation reservation, double amount, String status, LocalDateTime paymentDate,
-      String paymentMethod) {
+  public Payment() { }
+
+  public Payment(UUID id, Reservation reservation, Double amount, String status,
+      LocalDateTime paymentDate, String paymentMethod) {
+    this.id = id;
     this.reservation = reservation;
     this.amount = amount;
     this.status = status;
@@ -29,11 +37,11 @@ public class Payment {
     this.paymentMethod = paymentMethod;
   }
 
-  public Long getId() {
+  public UUID getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(UUID id) {
     this.id = id;
   }
 
@@ -45,11 +53,11 @@ public class Payment {
     this.reservation = reservation;
   }
 
-  public double getAmount() {
+  public Double getAmount() {
     return amount;
   }
 
-  public void setAmount(double amount) {
+  public void setAmount(Double amount) {
     this.amount = amount;
   }
 
