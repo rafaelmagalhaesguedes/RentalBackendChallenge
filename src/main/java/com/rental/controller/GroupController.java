@@ -1,9 +1,7 @@
 package com.rental.controller;
 
-import com.rental.controller.dto.customer.CustomerDto;
 import com.rental.controller.dto.group.GroupCreationDto;
 import com.rental.controller.dto.group.GroupDto;
-import com.rental.entity.Customer;
 import com.rental.entity.Group;
 import com.rental.service.GroupService;
 import com.rental.service.exception.GroupNotFoundException;
@@ -12,6 +10,7 @@ import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +36,7 @@ public class GroupController {
   }
 
   @GetMapping("/{id}")
+  @PreAuthorize("hasAuthority('MANAGER')")
   public GroupDto getGroupById(@PathVariable UUID id) throws GroupNotFoundException {
     return GroupDto.fromEntity(
         groupService.getGroupById(id)
@@ -44,6 +44,7 @@ public class GroupController {
   }
 
   @GetMapping
+  @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
   public List<GroupDto> getAllGroups(
       @RequestParam(required = false, defaultValue = "0") int pageNumber,
       @RequestParam(required = false, defaultValue = "20") int pageSize
@@ -55,6 +56,7 @@ public class GroupController {
   }
 
   @PostMapping
+  @PreAuthorize("hasAuthority('MANAGER')")
   @ResponseStatus(HttpStatus.CREATED)
   public GroupDto createGroup(@RequestBody @Valid GroupCreationDto groupCreationDto) {
     return GroupDto.fromEntity(
@@ -63,6 +65,7 @@ public class GroupController {
   }
 
   @PutMapping("/{id}")
+  @PreAuthorize("hasAuthority('MANAGER')")
   public GroupDto updateGroup(@RequestBody @Valid GroupCreationDto groupCreationDto, @PathVariable UUID id) throws GroupNotFoundException {
     return GroupDto.fromEntity(
         groupService.updateGroup(groupCreationDto.toEntity(), id)
@@ -70,6 +73,7 @@ public class GroupController {
   }
 
   @DeleteMapping("/{id}")
+  @PreAuthorize("hasAuthority('MANAGER')")
   public GroupDto deleteGroup(@PathVariable UUID id) throws GroupNotFoundException {
     return GroupDto.fromEntity(
         groupService.deleteGroup(id)

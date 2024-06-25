@@ -2,11 +2,11 @@ package com.rental.service;
 
 import com.rental.controller.dto.reservation.ReservationDto;
 import com.rental.entity.Accessory;
-import com.rental.entity.Customer;
+import com.rental.entity.Person;
 import com.rental.entity.Reservation;
 import com.rental.entity.Group;
 import com.rental.repository.AccessoryRepository;
-import com.rental.repository.CustomerRepository;
+import com.rental.repository.PersonRepository;
 import com.rental.repository.GroupRepository;
 import com.rental.repository.ReservationRepository;
 import com.rental.service.exception.CustomerNotFoundException;
@@ -28,15 +28,15 @@ import org.springframework.stereotype.Service;
 public class ReservationService {
 
   private final ReservationRepository reservationRepository;
-  private final CustomerRepository customerRepository;
+  private final PersonRepository personRepository;
   private final GroupRepository groupRepository;
   private final AccessoryRepository accessoryRepository;
   private final PaymentService paymentService;
 
   @Autowired
-  public ReservationService(ReservationRepository reservationRepository, CustomerRepository customerRepository, GroupRepository groupRepository, AccessoryRepository accessoryRepository, PaymentService paymentService) {
+  public ReservationService(ReservationRepository reservationRepository, PersonRepository personRepository, GroupRepository groupRepository, AccessoryRepository accessoryRepository, PaymentService paymentService) {
     this.reservationRepository = reservationRepository;
-    this.customerRepository = customerRepository;
+    this.personRepository = personRepository;
     this.groupRepository = groupRepository;
     this.accessoryRepository = accessoryRepository;
     this.paymentService = paymentService;
@@ -77,16 +77,16 @@ public class ReservationService {
   }
 
   private Reservation getReservation(UUID customerId, UUID groupId, List<UUID> accessoryIds, LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, String status, String paymentMethod) throws CustomerNotFoundException, GroupNotFoundException {
-    Customer customer = customerRepository.findById(customerId).orElseThrow(CustomerNotFoundException::new);
+    Person person = personRepository.findById(customerId).orElseThrow(CustomerNotFoundException::new);
     Group group = groupRepository.findById(groupId).orElseThrow(GroupNotFoundException::new);
     List<Accessory> accessories = accessoryRepository.findAllById(accessoryIds);
 
-    return createNewReservation(customer, group, accessories, pickupDateTime, returnDateTime, totalAmount, status, paymentMethod);
+    return createNewReservation(person, group, accessories, pickupDateTime, returnDateTime, totalAmount, status, paymentMethod);
   }
 
-  private Reservation createNewReservation(Customer customer, Group group, List<Accessory> accessories, LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, String status, String paymentMethod) {
+  private Reservation createNewReservation(Person person, Group group, List<Accessory> accessories, LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, String status, String paymentMethod) {
     Reservation newReservation = new Reservation();
-    newReservation.setCustomer(customer);
+    newReservation.setCustomer(person);
     newReservation.setGroup(group);
     newReservation.setAccessories(accessories);
     newReservation.setPickupDateTime(pickupDateTime);

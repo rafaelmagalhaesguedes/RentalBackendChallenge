@@ -5,12 +5,12 @@ import com.rental.entity.Reservation;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-import com.rental.entity.Customer;
+import com.rental.entity.Person;
 import com.rental.entity.Group;
 
 public record ReservationDto(
     UUID id,
-    Customer customer,
+    Person person,
     Group group,
     List<AccessoryDto> accessories,
     LocalDateTime pickupDateTime,

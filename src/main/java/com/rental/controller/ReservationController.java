@@ -1,10 +1,8 @@
 package com.rental.controller;
 
-import com.rental.controller.dto.customer.CustomerDto;
 import com.rental.controller.dto.reservation.ReservationCreationDto;
 import com.rental.controller.dto.reservation.ReservationDto;
 import com.rental.controller.dto.reservation.ReservationReadDto;
-import com.rental.entity.Customer;
 import com.rental.entity.Reservation;
 import com.rental.service.ReservationService;
 import com.rental.service.exception.CustomerNotFoundException;
@@ -14,6 +12,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +29,7 @@ public class ReservationController {
   }
 
   @GetMapping
+  @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
   public List<ReservationReadDto> getAllReservations(
       @RequestParam(required = false, defaultValue = "0") int pageNumber,
       @RequestParam(required = false, defaultValue = "10") int pageSize
@@ -43,6 +43,7 @@ public class ReservationController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
+  @PreAuthorize("hasAuthority('USER')")
   public ReservationDto createReservation(@RequestBody @Valid ReservationCreationDto reservationCreationDto)
       throws GroupNotFoundException, CustomerNotFoundException, StripeException {
     return reservationService.createReservation(

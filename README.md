@@ -1,6 +1,6 @@
 # Rental Service Application
 
-This project is a Rental Service Application that manages customer reservations, payments, and inventory.
+This project is a Rental Service Application that manages person reservations, payments, and inventory.
 The application leverages Spring Boot for backend development, Hibernate for ORM, and Stripe for payment processing.
 
 ## Technologies Used

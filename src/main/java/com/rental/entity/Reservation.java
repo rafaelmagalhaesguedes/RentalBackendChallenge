@@ -24,7 +24,7 @@ public class Reservation {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "customer_id", nullable = false)
-  private Customer customer;
+  private Person person;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "group_id", nullable = false)
@@ -46,11 +46,11 @@ public class Reservation {
 
   public Reservation() { }
 
-  public Reservation(UUID id, Customer customer, Group group, List<Accessory> accessories,
+  public Reservation(UUID id, Person person, Group group, List<Accessory> accessories,
       LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, String status,
       String paymentMethod) {
     this.id = id;
-    this.customer = customer;
+    this.person = person;
     this.group = group;
     this.accessories = accessories;
     this.pickupDateTime = pickupDateTime;
@@ -68,12 +68,12 @@ public class Reservation {
     this.id = id;
   }
 
-  public Customer getCustomer() {
-    return customer;
+  public Person getCustomer() {
+    return person;
   }
 
-  public void setCustomer(Customer customer) {
-    this.customer = customer;
+  public void setCustomer(Person person) {
+    this.person = person;
   }
 
   public Group getGroup() {

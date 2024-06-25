@@ -1,14 +1,13 @@
 package com.rental.repository;
 
-import com.rental.entity.Accessory;
-import com.rental.entity.Customer;
-import java.util.List;
+import com.rental.entity.Person;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CustomerRepository extends JpaRepository <Customer, UUID> {
+public interface PersonRepository extends JpaRepository <Person, UUID> {
+  Optional<Person> findByEmail(String email);
   boolean existsByEmail(String email);
 }

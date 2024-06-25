@@ -1,6 +1,5 @@
 package com.rental.service;
 
-import com.rental.entity.Customer;
 import com.rental.entity.Group;
 import com.rental.repository.GroupRepository;
 import com.rental.service.exception.GroupNotFoundException;
