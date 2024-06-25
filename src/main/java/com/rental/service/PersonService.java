@@ -1,6 +1,7 @@
 package com.rental.service;
 
 import com.rental.entity.Person;
+import com.rental.producer.PersonProducer;
 import com.rental.repository.PersonRepository;
 import com.rental.security.Role;
 import com.rental.service.exception.PersonExistingException;
@@ -21,10 +22,12 @@ import org.springframework.stereotype.Service;
 public class PersonService implements UserDetailsService {
 
   private final PersonRepository personRepository;
+  private final PersonProducer personProducer;
 
   @Autowired
-  public PersonService(PersonRepository personRepository) {
+  public PersonService(PersonRepository personRepository, PersonProducer personProducer) {
     this.personRepository = personRepository;
+    this.personProducer = personProducer;
   }
 
   public Person getPersonById(UUID id) throws PersonNotFoundException {
@@ -44,12 +47,12 @@ public class PersonService implements UserDetailsService {
       throw new PersonExistingException();
     }
 
-    String hashPassword = new BCryptPasswordEncoder()
-        .encode(person.getPassword());
+    String hashPassword = new BCryptPasswordEncoder().encode(person.getPassword());
 
     person.setPassword(hashPassword);
     person.setRole(Role.USER);
 
+    personProducer.publishMessageEmail(person);
     return personRepository.save(person);
   }
 

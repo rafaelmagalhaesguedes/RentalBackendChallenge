@@ -7,7 +7,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import com.rental.entity.Group;
 import com.rental.repository.GroupRepository;
 import com.rental.service.GroupService;
-import com.rental.service.exception.CustomerExistingException;
+import com.rental.service.exception.PersonExistingException;
 import com.rental.service.exception.GroupNotFoundException;
 import java.util.Arrays;
 import java.util.List;
@@ -102,7 +102,7 @@ public class GroupServiceTest {
   }
 
   @Test
-  public void testCreateGroup() throws CustomerExistingException {
+  public void testCreateGroup() throws PersonExistingException {
 
     // Arrange
     Group group = new Group();

@@ -44,7 +44,6 @@ public class GroupController {
   }
 
   @GetMapping
-  @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
   public List<GroupDto> getAllGroups(
       @RequestParam(required = false, defaultValue = "0") int pageNumber,
       @RequestParam(required = false, defaultValue = "20") int pageSize
@@ -56,7 +55,6 @@ public class GroupController {
   }
 
   @PostMapping
-  @PreAuthorize("hasAuthority('MANAGER')")
   @ResponseStatus(HttpStatus.CREATED)
   public GroupDto createGroup(@RequestBody @Valid GroupCreationDto groupCreationDto) {
     return GroupDto.fromEntity(
@@ -65,7 +63,6 @@ public class GroupController {
   }
 
   @PutMapping("/{id}")
-  @PreAuthorize("hasAuthority('MANAGER')")
   public GroupDto updateGroup(@RequestBody @Valid GroupCreationDto groupCreationDto, @PathVariable UUID id) throws GroupNotFoundException {
     return GroupDto.fromEntity(
         groupService.updateGroup(groupCreationDto.toEntity(), id)
@@ -73,7 +70,6 @@ public class GroupController {
   }
 
   @DeleteMapping("/{id}")
-  @PreAuthorize("hasAuthority('MANAGER')")
   public GroupDto deleteGroup(@PathVariable UUID id) throws GroupNotFoundException {
     return GroupDto.fromEntity(
         groupService.deleteGroup(id)
