@@ -1,37 +1,54 @@
+
 # Rental Service Application
 
-## Overview
+Sistema para gerenciar clientes, reservas, aluguéis de acessórios e grupos de carros em uma locadora de veículos.
+O sistema também inclui um microserviço para o envio de e-mails utilizando filas.
 
-This project is a Rental Service Application designed to manage person reservations, payments, and inventory efficiently. The application leverages modern technologies and frameworks to provide a robust and scalable solution for rental services.
+## Funcionalidades Principais
 
-## Technologies Used
+- Autenticação e Autorização: Autenticação de usuários e autorização baseada em papéis (ADMIN, MANAGER).
 
-- **Java:** The primary programming language used for backend development.
+- Gerenciamento de Reservas: Registre e gerencie reservas de acessórios para pessoas ou grupos de veículos.
 
-- **Spring Boot:** A framework used for building the backend REST API, enabling rapid development and easy configuration.
+- Gerenciamento de Pessoas: Cadastre, liste, atualize e exclua informações de pessoas, incluindo clientes e funcionários.
 
-- **Hibernate:** An ORM (Object-Relational Mapping) tool used for managing database operations seamlessly.
+- Gerenciamento de Acessórios: Cadastre, liste, atualize e exclua acessórios disponíveis para aluguel.
 
-- **Stripe:** A payment processing service integrated to handle online payments securely and efficiently.
+- Gerenciamento de Grupos de veículos: Crie, liste, atualize e exclua grupos de veículos.
 
-- **Thymeleaf:** A template engine used for rendering dynamic web pages and enhancing the user interface.
+## Microserviço de Envio de E-mails
 
-- **H2 Database:** An in-memory database utilized for development and testing, ensuring fast setup and execution.
+O sistema inclui um microserviço para envio de e-mails, utilizando filas para processamento assíncrono
+e garantir a entrega dos e-mails. O microserviço é responsável por:
 
-- **Maven:** A build automation tool used for managing project dependencies and simplifying the build process.
+- Envio de E-mails Assíncrono: Envio assíncrono de e-mails para evitar bloqueios durante a execução de outras tarefas.
 
-- **RabbitMQ:** A messaging broker used for handling asynchronous communication, such as sending emails and notifications.
+- Tratamento de Falhas: Lidar com falhas de envio de e-mails de forma robusta e eficiente.
 
-- **Spring Security and JWT:** Spring Security provides comprehensive security services for Java applications, and JWT (JSON Web Tokens) is used for secure user authentication and authorization.
+- Configuração com RabbitMQ: Utilização do RabbitMQ para gerenciamento de filas e garantia de entrega dos e-mails.
 
-## Features
+## Tecnologias Utilizadas
 
-- **User Management:** Register and manage user accounts with secure authentication and authorization.
+- Spring Boot: Framework para desenvolvimento de aplicativos Java.
 
-- **Reservations:** Make, view, and manage reservations for rental items.
+- Spring Security: Gerenciamento de autenticação e autorização.
 
-- **Payments:** Process payments seamlessly using Stripe.
+- Spring Data JPA: Acesso a dados utilizando o padrão JPA.
 
-- **Inventory Management:** Track and manage the availability of rental items.
+- Spring AMQP (RabbitMQ): Integração com RabbitMQ para envio de e-mails assíncronos.
 
-- **Email Notifications:** Send email notifications for various actions such as registration and reservation confirmations using RabbitMQ.
+- Hibernate Validator: Validação de entrada de dados.
+
+- JavaMail Sender: Envio de e-mails utilizando o protocolo SMTP.
+
+- Jakarta Validation: Validação de dados no lado do servidor.
+
+## Configuração do Microserviço de E-mails
+
+### Para configurar o microserviço de envio de e-mails, siga os passos abaixo:
+
+- Configuração do RabbitMQ: Certifique-se de ter o RabbitMQ instalado e configurado corretamente.
+
+- Configuração do Spring Boot: Edite o arquivo application.properties para configurar as propriedades do RabbitMQ, incluindo o host, porta, nome da fila, etc.
+
+- Execução do Microserviço: Execute o aplicativo Spring Boot que contém o microserviço de envio de e-mails. Certifique-se de que o aplicativo esteja conectado ao RabbitMQ e pronto para processar as mensagens na fila.
