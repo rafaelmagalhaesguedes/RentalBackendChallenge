@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="47ab20ae-5a0a-4d90-82b8-0428f1b3e7db" name="Changes" comment="feat: ms-email and ms-frontend microservices created" />
+    <list default="true" id="47ab20ae-5a0a-4d90-82b8-0428f1b3e7db" name="Changes" comment="fix: ms-email and ms-frontend microservices up" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -61,7 +61,31 @@
       <option name="project" value="LOCAL" />
       <updated>1719349431278</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="feat: ms-email and ms-frontend microservices created">
+      <option name="closed" value="true" />
+      <created>1719349586497</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1719349586497</updated>
+    </task>
+    <task id="LOCAL-00003" summary="feat: ms-email and ms-frontend microservices created">
+      <option name="closed" value="true" />
+      <created>1719349721219</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1719349721219</updated>
+    </task>
+    <task id="LOCAL-00004" summary="fix: ms-email and ms-frontend microservices up">
+      <option name="closed" value="true" />
+      <created>1719349742634</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1719349742634</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -69,6 +93,7 @@
       <path value="$PROJECT_DIR$/ms-backend" />
     </ignored-roots>
     <MESSAGE value="feat: ms-email and ms-frontend microservices created" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: ms-email and ms-frontend microservices created" />
+    <MESSAGE value="fix: ms-email and ms-frontend microservices up" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: ms-email and ms-frontend microservices up" />
   </component>
 </project>
