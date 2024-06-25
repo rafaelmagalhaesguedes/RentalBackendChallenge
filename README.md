@@ -16,6 +16,8 @@ O sistema também inclui um microserviço para o envio de e-mails utilizando fil
 
 - Gerenciamento de Grupos de veículos: Crie, liste, atualize e exclua grupos de veículos.
 
+- Integração com o Stripe: Permita que os usuários façam o pagamento das reservas utilizando cartão de crédito/débito através do Stripe.
+
 ## Microserviço de Envio de E-mails
 
 O sistema inclui um microserviço para envio de e-mails, utilizando filas para processamento assíncrono
@@ -43,6 +45,8 @@ e garantir a entrega dos e-mails. O microserviço é responsável por:
 
 - Jakarta Validation: Validação de dados no lado do servidor.
 
+- Stripe API: Integração com a API do Stripe para processamento de pagamentos.
+
 ## Configuração do Microserviço de E-mails
 
 ### Para configurar o microserviço de envio de e-mails, siga os passos abaixo:
@@ -52,3 +56,127 @@ e garantir a entrega dos e-mails. O microserviço é responsável por:
 - Configuração do Spring Boot: Edite o arquivo application.properties para configurar as propriedades do RabbitMQ, incluindo o host, porta, nome da fila, etc.
 
 - Execução do Microserviço: Execute o aplicativo Spring Boot que contém o microserviço de envio de e-mails. Certifique-se de que o aplicativo esteja conectado ao RabbitMQ e pronto para processar as mensagens na fila.
+
+## Integração com o Stripe
+
+O sistema utiliza a tecnologia de integração de pagamentos Stripe para permitir que os usuários façam o pagamento das reservas de forma segura e conveniente. A integração com o Stripe inclui:
+
+- Configuração da API do Stripe: Configuração das chaves de API do Stripe no sistema para autenticação e comunicação com o serviço.
+
+- Implementação dos Endpoints de Pagamento: Desenvolvimento de endpoints no sistema para iniciar e processar transações de pagamento utilizando a API do Stripe.
+
+- Segurança e Criptografia: Utilização de protocolos de segurança e criptografia para garantir a segurança das transações de pagamento e dos dados do usuário.
+
+- Tratamento de Eventos: Implementação de mecanismos para lidar com eventos e notificações do Stripe, como confirmações de pagamento e atualizações de status.
+
+## Endpoints
+
+### Autenticação
+
+- POST /auth/login: Autentica um usuário e gera um token de acesso.
+    - Corpo da solicitação: { "username": "example", "password": "example" }
+    - Resposta bem-sucedida: Retorna um token de acesso válido.
+    - Resposta de erro: Retorna uma mensagem de erro se as credenciais forem inválidas.
+
+### Gerenciamento de Acessórios
+
+- GET /accessory/{id}: Obtém detalhes de um acessório específico.
+    - Parâmetros de URL: id - ID único do acessório.
+    - Autorização: Requer autorização de ADMIN ou MANAGER.
+
+
+- GET /accessory: Obtém todos os acessórios com paginação.
+    - Parâmetros de consulta: pageNumber, pageSize.
+    - POST /accessory: Cria um novo acessório.
+    - Corpo da solicitação: Objeto JSON com os detalhes do acessório.
+
+
+- PUT /accessory/{id}: Atualiza os detalhes de um acessório existente.
+    - Parâmetros de URL: id - ID único do acessório.
+    - Corpo da solicitação: Objeto JSON com os novos detalhes do acessório.
+
+
+- DELETE /accessory/{id}: Exclui um acessório existente.
+    - Parâmetros de URL: id - ID único do acessório.
+
+### Gerenciamento de Grupos
+
+- GET /group/{id}: Obtém detalhes de um grupo específico.
+    - Parâmetros de URL: id - ID único do grupo.
+    - Autorização: Requer autorização de MANAGER.
+
+
+- GET /group: Obtém todos os grupos com paginação.
+    - Parâmetros de consulta: pageNumber, pageSize. 
+
+
+- POST /group: Cria um novo grupo.
+    - Corpo da solicitação: Objeto JSON com os detalhes do grupo.
+  
+
+- PUT /group/{id}: Atualiza os detalhes de um grupo existente.
+    - Parâmetros de URL: id - ID único do grupo.
+    - Corpo da solicitação: Objeto JSON com os novos detalhes do grupo.
+
+
+- DELETE /group/{id}: Exclui um grupo existente.
+    - Parâmetros de URL: id - ID único do grupo.
+
+### Gerenciamento de Pessoas
+
+- GET /persons/{id}: Obtém detalhes de uma pessoa específica.
+    - Parâmetros de URL: id - ID único da pessoa.
+    - Autorização: Requer autorização de ADMIN ou MANAGER.
+
+
+- GET /persons: Obtém todas as pessoas com paginação.
+    - Parâmetros de consulta: pageNumber, pageSize.
+
+
+- POST /persons: Cria uma nova pessoa.
+    - Corpo da solicitação: Objeto JSON com os detalhes da pessoa.
+
+
+- PUT /persons/{id}: Atualiza os detalhes de uma pessoa existente.
+    - Parâmetros de URL: id - ID único da pessoa.
+    - Corpo da solicitação: Objeto JSON com os novos detalhes da pessoa.
+
+
+- DELETE /persons/{id}: Exclui uma pessoa existente.
+    - Parâmetros de URL: id - ID único da pessoa.
+
+### Gerenciamento de Reservas
+
+- GET /reservations/{id}: Obtém detalhes de uma reserva específica.
+    - Parâmetros de URL: id - ID único da reserva.
+    - Autorização: Requer autorização de ADMIN ou MANAGER.
+
+
+- GET /reservations: Obtém todas as reservas com paginação.
+    - Parâmetros de consulta: pageNumber, pageSize.
+
+
+- POST /reservations: Cria uma nova reserva.
+    - Corpo da solicitação: Objeto JSON com os detalhes da reserva.
+
+
+- PUT /reservations/{id}: Atualiza os detalhes de uma reserva existente.
+    - Parâmetros de URL: id - ID único da reserva.
+    - Corpo da solicitação: Objeto JSON com os novos detalhes da reserva.
+
+
+- DELETE /reservations/{id}: Exclui uma reserva existente.
+    - Parâmetros de URL: id - ID único da reserva.
+
+### Integração com o Stripe
+
+- POST /payment: Inicia uma transação de pagamento para uma reserva específica.
+
+
+- GET /payment/{id}: Retorna o status atual da transação de pagamento com o ID especificado.
+
+
+- POST /success: Confirma e finaliza a transação de pagamento após a aprovação do usuário.
+
+
+- POST /cancel: Cancela uma transação de pagamento em andamento.
