@@ -92,7 +92,7 @@ public class ReservationService {
     newReservation.setPickupDateTime(pickupDateTime);
     newReservation.setReturnDateTime(returnDateTime);
     newReservation.setTotalAmount(totalAmount);
-    newReservation.setStatus(status);
+    newReservation.setStatus("Pending");
     newReservation.setPaymentMethod(paymentMethod);
 
     return reservationRepository.save(newReservation);
