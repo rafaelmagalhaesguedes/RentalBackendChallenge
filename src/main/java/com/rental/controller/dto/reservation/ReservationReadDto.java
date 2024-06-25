@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public record ReservationReadDto(
     UUID id,
-    PersonDto customer,
+    PersonDto person,
     GroupDto group,
     List<AccessoryDto> accessories,
     LocalDateTime pickupDateTime,
@@ -22,7 +22,7 @@ public record ReservationReadDto(
   public static ReservationReadDto fromEntity(Reservation reservation) {
     return new ReservationReadDto(
         reservation.getId(),
-        PersonDto.fromEntity(reservation.getCustomer()),
+        PersonDto.fromEntity(reservation.getPerson()),
         GroupDto.fromEntity(reservation.getGroup()),
         reservation.getAccessories()
             .stream()

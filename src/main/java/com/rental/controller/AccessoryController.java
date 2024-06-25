@@ -61,7 +61,6 @@ public class AccessoryController {
    * @return a list of accessory DTOs
    */
   @GetMapping
-  @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
   public List<AccessoryDto> getAllAccessories(
       @RequestParam(required = false, defaultValue = "0") int pageNumber,
       @RequestParam(required = false, defaultValue = "10") int pageSize) {
@@ -79,7 +78,6 @@ public class AccessoryController {
    * @return the created accessory DTO
    */
   @PostMapping
-  @PreAuthorize("hasAuthority('MANAGER')")
   @ResponseStatus(HttpStatus.CREATED)
   public AccessoryDto createAccessory(@RequestBody @Valid AccessoryCreationDto accessoryCreationDto) {
     return AccessoryDto.fromEntity(
@@ -96,7 +94,6 @@ public class AccessoryController {
    * @throws AccessoryNotFoundException if the accessory with the given ID is not found
    */
   @PutMapping("/{id}")
-  @PreAuthorize("hasAuthority('MANAGER')")
   public AccessoryDto updateAccessory(@Valid @RequestBody AccessoryCreationDto accessoryCreationDto, @PathVariable UUID id) throws AccessoryNotFoundException {
     return AccessoryDto.fromEntity(
         accessoryService.updateAccessory(accessoryCreationDto.toEntity(), id)
@@ -111,7 +108,6 @@ public class AccessoryController {
    * @throws AccessoryNotFoundException if no accessory with the given ID is found.
    */
   @DeleteMapping("/{id}")
-  @PreAuthorize("hasAuthority('MANAGER')")
   public AccessoryDto deleteAccessory(@PathVariable UUID id) throws AccessoryNotFoundException {
     return AccessoryDto.fromEntity(
         accessoryService.deleteAccessory(id)

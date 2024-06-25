@@ -5,8 +5,8 @@ import com.rental.controller.dto.person.PersonDto;
 import com.rental.controller.dto.person.PersonUpdateDto;
 import com.rental.entity.Person;
 import com.rental.service.PersonService;
-import com.rental.service.exception.CustomerExistingException;
-import com.rental.service.exception.CustomerNotFoundException;
+import com.rental.service.exception.PersonExistingException;
+import com.rental.service.exception.PersonNotFoundException;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
@@ -26,19 +26,19 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * The type Customer controller.
+ * The type Persons controller.
  */
 @RestController
-@RequestMapping("/customer")
+@RequestMapping("/persons")
 @Validated
 public class PersonController {
 
   private final PersonService personService;
 
   /**
-   * Instantiates a new Customer controller.
+   * Instantiates a new Person controller.
    *
-   * @param personService the customer service
+   * @param personService the person service
    */
   @Autowired
   public PersonController(PersonService personService) {
@@ -46,29 +46,29 @@ public class PersonController {
   }
 
   /**
-   * Gets customer by id.
+   * Gets person by id.
    *
    * @param id the id
-   * @return the customer by id
-   * @throws CustomerNotFoundException the customer not found exception
+   * @return the person by id
+   * @throws PersonNotFoundException the person not found exception
    */
   @GetMapping("/{id}")
-  public PersonDto getCustomerById(@PathVariable UUID id) throws CustomerNotFoundException {
+  public PersonDto getPersonById(@PathVariable UUID id) throws PersonNotFoundException {
     return PersonDto.fromEntity(
         personService.getPersonById(id)
     );
   }
 
   /**
-   * Gets all customers.
+   * Gets all persons.
    *
    * @param pageNumber the page number
    * @param pageSize   the page size
-   * @return the all customers
+   * @return the all persons
    */
   @GetMapping
   @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
-  public List<PersonDto> getAllCustomers(
+  public List<PersonDto> getAllPersons(
       @RequestParam(required = false, defaultValue = "0") int pageNumber,
       @RequestParam(required = false, defaultValue = "10") int pageSize
   ) {
@@ -79,49 +79,48 @@ public class PersonController {
   }
 
   /**
-   * Customer create customer dto.
+   * Customer create person dto.
    *
    * @param personCreationDto the customer creation dto
-   * @return the customer dto
-   * @throws CustomerNotFoundException the customer not found exception
-   * @throws CustomerExistingException the customer existing exception
+   * @return the person dto
+   * @throws PersonExistingException the person existing exception
    */
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public PersonDto customerCreate(@RequestBody @Valid PersonCreationDto personCreationDto)
-      throws CustomerNotFoundException, CustomerExistingException {
+  public PersonDto personCreate(@RequestBody @Valid PersonCreationDto personCreationDto)
+      throws PersonExistingException {
     return PersonDto.fromEntity(
         personService.createPerson(personCreationDto.toEntity())
     );
   }
 
   /**
-   * Customer update customer dto.
+   * Customer update person dto.
    *
    * @param id                the id
-   * @param personUpdateDto the customer update dto
-   * @return the customer dto
-   * @throws CustomerNotFoundException the customer not found exception
+   * @param personUpdateDto the person update dto
+   * @return the person dto
+   * @throws PersonNotFoundException the person not found exception
    */
   @PutMapping("/{id}")
-  public PersonDto customerUpdate(
+  public PersonDto personUpdate(
       @PathVariable UUID id,
       @RequestBody @Valid PersonUpdateDto personUpdateDto
-  ) throws CustomerNotFoundException {
+  ) throws PersonNotFoundException {
     return PersonDto.fromEntity(
         personService.updateCustomer(id, personUpdateDto.toEntity())
     );
   }
 
   /**
-   * Customer delete customer dto.
+   * Customer delete person dto.
    *
    * @param id the id
-   * @return the customer dto
-   * @throws CustomerNotFoundException the customer not found exception
+   * @return the person dto
+   * @throws PersonNotFoundException the person not found exception
    */
   @DeleteMapping("/{id}")
-  public PersonDto customerDelete(@PathVariable UUID id) throws CustomerNotFoundException {
+  public PersonDto personDelete(@PathVariable UUID id) throws PersonNotFoundException {
     return PersonDto.fromEntity(
         personService.deleteCustomer(id)
     );

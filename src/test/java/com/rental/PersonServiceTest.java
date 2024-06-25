@@ -8,8 +8,8 @@ import static org.mockito.ArgumentMatchers.eq;
 import com.rental.entity.Person;
 import com.rental.repository.PersonRepository;
 import com.rental.service.PersonService;
-import com.rental.service.exception.CustomerExistingException;
-import com.rental.service.exception.CustomerNotFoundException;
+import com.rental.service.exception.PersonExistingException;
+import com.rental.service.exception.PersonNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +34,7 @@ public class PersonServiceTest {
   PersonRepository personRepository;
 
   @Test
-  public void testPersonRetrievalById() throws CustomerNotFoundException {
+  public void testPersonRetrievalById() throws PersonNotFoundException {
     UUID id = UUID.randomUUID();
     Person person = new Person();
     person.setId(id);
@@ -94,7 +94,7 @@ public class PersonServiceTest {
   }
 
   @Test
-  public void testCreatePerson() throws CustomerExistingException {
+  public void testCreatePerson() throws PersonExistingException {
 
     // Arrange
     Person person = new Person();
@@ -116,7 +116,7 @@ public class PersonServiceTest {
   }
 
   @Test
-  public void testUpdatePerson() throws CustomerNotFoundException {
+  public void testUpdatePerson() throws PersonNotFoundException {
 
     // Arrange
     UUID id = UUID.randomUUID();
@@ -155,12 +155,12 @@ public class PersonServiceTest {
         .thenReturn(Optional.empty());
 
     // Act & Assert
-    assertThrows(CustomerNotFoundException.class,
+    assertThrows(PersonNotFoundException.class,
         () -> personService.updateCustomer(id, updatedPerson));
   }
 
   @Test
-  public void testDeletePerson() throws CustomerNotFoundException {
+  public void testDeletePerson() throws PersonNotFoundException {
 
     // Arrange
     UUID id = UUID.randomUUID();
@@ -190,7 +190,7 @@ public class PersonServiceTest {
         .thenReturn(Optional.empty());
 
     // Act & Assert
-    assertThrows(CustomerNotFoundException.class,
+    assertThrows(PersonNotFoundException.class,
         () -> personService.deleteCustomer(id));
   }
 }

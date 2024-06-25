@@ -1,6 +1,7 @@
 package com.rental.controller.dto.reservation;
 
 import com.rental.controller.dto.accessory.AccessoryDto;
+import com.rental.controller.dto.person.PersonDto;
 import com.rental.entity.Reservation;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,7 +11,7 @@ import com.rental.entity.Group;
 
 public record ReservationDto(
     UUID id,
-    Person person,
+    PersonDto person,
     Group group,
     List<AccessoryDto> accessories,
     LocalDateTime pickupDateTime,
@@ -23,7 +24,7 @@ public record ReservationDto(
   public static ReservationDto fromEntity(Reservation reservation, String paymentUrl) {
     return new ReservationDto(
         reservation.getId(),
-        reservation.getCustomer(),
+        PersonDto.fromEntity(reservation.getPerson()),
         reservation.getGroup(),
         reservation.getAccessories()
             .stream()

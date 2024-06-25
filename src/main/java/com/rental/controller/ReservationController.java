@@ -5,7 +5,7 @@ import com.rental.controller.dto.reservation.ReservationDto;
 import com.rental.controller.dto.reservation.ReservationReadDto;
 import com.rental.entity.Reservation;
 import com.rental.service.ReservationService;
-import com.rental.service.exception.CustomerNotFoundException;
+import com.rental.service.exception.PersonNotFoundException;
 import com.rental.service.exception.GroupNotFoundException;
 import com.stripe.exception.StripeException;
 import jakarta.validation.Valid;
@@ -29,7 +29,6 @@ public class ReservationController {
   }
 
   @GetMapping
-  @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
   public List<ReservationReadDto> getAllReservations(
       @RequestParam(required = false, defaultValue = "0") int pageNumber,
       @RequestParam(required = false, defaultValue = "10") int pageSize
@@ -43,11 +42,10 @@ public class ReservationController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  @PreAuthorize("hasAuthority('USER')")
   public ReservationDto createReservation(@RequestBody @Valid ReservationCreationDto reservationCreationDto)
-      throws GroupNotFoundException, CustomerNotFoundException, StripeException {
+      throws GroupNotFoundException, PersonNotFoundException, StripeException {
     return reservationService.createReservation(
-        reservationCreationDto.customerId(), reservationCreationDto.groupId(),
+        reservationCreationDto.personId(), reservationCreationDto.groupId(),
         reservationCreationDto.accessoryIds(), reservationCreationDto.pickupDateTime(),
         reservationCreationDto.returnDateTime(), reservationCreationDto.totalAmount(),
         reservationCreationDto.status(), reservationCreationDto.paymentMethod()

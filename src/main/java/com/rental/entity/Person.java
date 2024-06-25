@@ -22,7 +22,7 @@ public class Person implements UserDetails {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  private String fullName;
+  private String username;
   @Column(unique = true)
   private String email;
   private String password;
@@ -30,15 +30,21 @@ public class Person implements UserDetails {
 
   public Person() { }
 
-  public Person(String fullName, String email, String password, Role role) {
-    this.fullName = fullName;
+  public Person(String username, String email, String password, Role role) {
+    this.username = username;
     this.email = email;
     this.password = password;
     this.role = role;
   }
 
-  public Person(String fullName, String email) {
-    this.fullName = fullName;
+  public Person(String username, String email, String password) {
+    this.username = username;
+    this.email = email;
+    this.password = password;
+  }
+
+  public Person(String username, String email) {
+    this.username = username;
     this.email = email;
   }
 
@@ -51,11 +57,11 @@ public class Person implements UserDetails {
   }
 
   public String getName() {
-    return fullName;
+    return username;
   }
 
   public void setName(String fullName) {
-    this.fullName = fullName;
+    this.username = fullName;
   }
 
   public String getEmail() {
@@ -67,11 +73,11 @@ public class Person implements UserDetails {
   }
 
   public String getFullName() {
-    return fullName;
+    return username;
   }
 
   public void setFullName(String fullName) {
-    this.fullName = fullName;
+    this.username = fullName;
   }
 
   public void setPassword(String password) {
@@ -96,13 +102,13 @@ public class Person implements UserDetails {
     return this.password;
   }
 
-  public void setUsername(String fullName) {
-    this.fullName = fullName;
+  public void setUsername(String username) {
+    this.username = username;
   }
 
   @Override
   public String getUsername() {
-    return this.fullName;
+    return this.username;
   }
 
   @Override

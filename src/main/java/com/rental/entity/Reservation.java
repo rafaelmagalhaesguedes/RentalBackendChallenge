@@ -23,7 +23,7 @@ public class Reservation {
   private UUID id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "customer_id", nullable = false)
+  @JoinColumn(name = "person_id", nullable = false)
   private Person person;
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -33,7 +33,7 @@ public class Reservation {
   @ManyToMany
   @JoinTable(
       name = "reservation_accessories",
-      joinColumns = @JoinColumn(name = "reservation_id"),
+      joinColumns = @JoinColumn(name = "person_id)"),
       inverseJoinColumns = @JoinColumn(name = "accessory_id")
   )
   private List<Accessory> accessories;
@@ -68,11 +68,11 @@ public class Reservation {
     this.id = id;
   }
 
-  public Person getCustomer() {
+  public Person getPerson() {
     return person;
   }
 
-  public void setCustomer(Person person) {
+  public void setPerson(Person person) {
     this.person = person;
   }
 

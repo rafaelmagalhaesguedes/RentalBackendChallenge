@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 public record ReservationCreationDto(
-    UUID customerId,
+    UUID personId,
     UUID groupId,
     List<UUID> accessoryIds,
     LocalDateTime pickupDateTime,

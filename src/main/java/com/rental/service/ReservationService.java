@@ -9,7 +9,7 @@ import com.rental.repository.AccessoryRepository;
 import com.rental.repository.PersonRepository;
 import com.rental.repository.GroupRepository;
 import com.rental.repository.ReservationRepository;
-import com.rental.service.exception.CustomerNotFoundException;
+import com.rental.service.exception.PersonNotFoundException;
 import com.rental.service.exception.GroupNotFoundException;
 import com.rental.service.exception.ReservationNotFoundException;
 import com.stripe.exception.StripeException;
@@ -55,9 +55,9 @@ public class ReservationService {
   }
 
   @Transactional
-  public ReservationDto createReservation(UUID customerId, UUID groupId, List<UUID> accessoryIds, LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, String status, String paymentMethod) throws CustomerNotFoundException, GroupNotFoundException, StripeException {
+  public ReservationDto createReservation(UUID personId, UUID groupId, List<UUID> accessoryIds, LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, String status, String paymentMethod) throws PersonNotFoundException, GroupNotFoundException, StripeException {
 
-    Reservation reservation = getReservation(customerId, groupId, accessoryIds, pickupDateTime, returnDateTime, totalAmount, status, paymentMethod);
+    Reservation reservation = getReservation(personId, groupId, accessoryIds, pickupDateTime, returnDateTime, totalAmount, status, paymentMethod);
 
     return getReservationDto(totalAmount, paymentMethod, reservation);
   }
@@ -76,8 +76,8 @@ public class ReservationService {
     }
   }
 
-  private Reservation getReservation(UUID customerId, UUID groupId, List<UUID> accessoryIds, LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, String status, String paymentMethod) throws CustomerNotFoundException, GroupNotFoundException {
-    Person person = personRepository.findById(customerId).orElseThrow(CustomerNotFoundException::new);
+  private Reservation getReservation(UUID personId, UUID groupId, List<UUID> accessoryIds, LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, String status, String paymentMethod) throws PersonNotFoundException, GroupNotFoundException {
+    Person person = personRepository.findById(personId).orElseThrow(PersonNotFoundException::new);
     Group group = groupRepository.findById(groupId).orElseThrow(GroupNotFoundException::new);
     List<Accessory> accessories = accessoryRepository.findAllById(accessoryIds);
 
@@ -86,7 +86,7 @@ public class ReservationService {
 
   private Reservation createNewReservation(Person person, Group group, List<Accessory> accessories, LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, String status, String paymentMethod) {
     Reservation newReservation = new Reservation();
-    newReservation.setCustomer(person);
+    newReservation.setPerson(person);
     newReservation.setGroup(group);
     newReservation.setAccessories(accessories);
     newReservation.setPickupDateTime(pickupDateTime);
