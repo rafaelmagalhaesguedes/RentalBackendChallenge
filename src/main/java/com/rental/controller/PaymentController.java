@@ -4,11 +4,12 @@ import com.rental.entity.Payment;
 import com.rental.repository.PaymentRepository;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
 
-@RestController
+@Controller
 public class PaymentController {
 
   private final PaymentRepository paymentRepository;
@@ -19,20 +20,30 @@ public class PaymentController {
   }
 
   @GetMapping("/success/{paymentId}")
-  public String paymentSuccess(@PathVariable UUID paymentId)  {
-    System.out.println("Payment ID: " + paymentId);
-    Payment payment = paymentRepository.findById(paymentId).orElseThrow(() -> new RuntimeException("Payment not found"));
+  public String paymentSuccess(@PathVariable UUID paymentId, Model model) {
+    Payment payment = paymentRepository.findById(paymentId)
+        .orElseThrow(() -> new RuntimeException("Payment not found"));
     payment.setStatus("Completed");
     paymentRepository.save(payment);
-    return "Payment successful!";
+
+    // Add payment details to the model
+    model.addAttribute("payment", payment);
+    // Assuming you have a Reservation object associated with Payment
+    model.addAttribute("reservation", payment.getReservation());
+
+    return "payment-success";
   }
 
   @GetMapping("/cancel/{paymentId}")
-  public String paymentFailed(@PathVariable UUID paymentId) {
-    System.out.println("Payment ID: " + paymentId);
-    Payment payment = paymentRepository.findById(paymentId).orElseThrow(() -> new RuntimeException("Payment not found"));
+  public String paymentFailed(@PathVariable UUID paymentId, Model model) {
+    Payment payment = paymentRepository.findById(paymentId)
+        .orElseThrow(() -> new RuntimeException("Payment not found"));
     payment.setStatus("Failed");
     paymentRepository.save(payment);
-    return "Payment failed. Please try again.";
+
+    // Add payment details to the model
+    model.addAttribute("payment", payment);
+    return "payment-failed";
   }
 }
+
