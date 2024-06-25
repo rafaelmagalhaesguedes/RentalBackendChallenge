@@ -1,32 +1,37 @@
 # Rental Service Application
 
-This project is a Rental Service Application that manages person reservations, payments, and inventory.
-The application leverages Spring Boot for backend development, Hibernate for ORM, and Stripe for payment processing.
+## Overview
+
+This project is a Rental Service Application designed to manage person reservations, payments, and inventory efficiently. The application leverages modern technologies and frameworks to provide a robust and scalable solution for rental services.
 
 ## Technologies Used
 
-- **Java**: Programming language used for the backend development.
-- **Spring Boot**: Framework used for building the backend REST API.
-- **Hibernate**: ORM tool for managing database operations.
-- **Stripe**: Payment processing service for handling online payments.
-- **Thymeleaf**: Template engine for rendering web pages.
-- **H2 Database**: In-memory database used for development and testing.
-- **Maven**: Build automation tool for managing project dependencies.
+- **Java:** The primary programming language used for backend development.
 
-## Project Structure
+- **Spring Boot:** A framework used for building the backend REST API, enabling rapid development and easy configuration.
 
-- **Controller**: Handles incoming HTTP requests and routes them to the appropriate service methods.
-- **Service**: Contains the business logic of the application.
-- **Repository**: Interfaces for database operations.
-- **Entity**: Java classes representing the database entities.
-- **DTO**: Data Transfer Objects for transferring data between layers.
+- **Hibernate:** An ORM (Object-Relational Mapping) tool used for managing database operations seamlessly.
+
+- **Stripe:** A payment processing service integrated to handle online payments securely and efficiently.
+
+- **Thymeleaf:** A template engine used for rendering dynamic web pages and enhancing the user interface.
+
+- **H2 Database:** An in-memory database utilized for development and testing, ensuring fast setup and execution.
+
+- **Maven:** A build automation tool used for managing project dependencies and simplifying the build process.
+
+- **RabbitMQ:** A messaging broker used for handling asynchronous communication, such as sending emails and notifications.
+
+- **Spring Security and JWT:** Spring Security provides comprehensive security services for Java applications, and JWT (JSON Web Tokens) is used for secure user authentication and authorization.
 
 ## Features
 
-- Customer management
-- Group management
-- Accessory management
-- Reservation creation and retrieval
-- Payment processing with Stripe
-- Web pages for payment success and failure notifications
+- **User Management:** Register and manage user accounts with secure authentication and authorization.
 
+- **Reservations:** Make, view, and manage reservations for rental items.
+
+- **Payments:** Process payments seamlessly using Stripe.
+
+- **Inventory Management:** Track and manage the availability of rental items.
+
+- **Email Notifications:** Send email notifications for various actions such as registration and reservation confirmations using RabbitMQ.
