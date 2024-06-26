@@ -180,3 +180,21 @@ O sistema utiliza a tecnologia de integração de pagamentos Stripe para permiti
 
 
 - POST /cancel: Cancela uma transação de pagamento em andamento.
+
+## Screenshots
+
+### Cria uma reserva com pagamento online
+
+![Alt text](screenshots/createReservationOnlinePayment.png)
+
+### Tela de pagamento Stripe
+
+![Alt text](screenshots/stripePaymentPanel.png)
+
+### Tela de succeso após o pagamento
+
+![Alt text](screenshots/paymentSucces.png)
+
+### Tela de falha caso o cliente cancele o pagamento
+
+![Alt text](screenshots/paymentCancel.png)
