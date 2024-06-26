@@ -35,29 +35,29 @@ public class PersonProducer {
     EmailDto emailDto = new EmailDto();
     emailDto.setUserId(person.getId());
     emailDto.setEmailTo(person.getEmail());
-    emailDto.setSubject("Registration Completed Successfully!");
+    emailDto.setSubject("Cadastro concluído com sucesso!");
 
     String emailText = String.format(
-        "Dear %s,\n\n" +
-            "We are thrilled to welcome you to [Your Car Rental Company]! Your registration has been successfully completed, and we're excited to have you as a valued member of our community.\n\n" +
-            "Here’s what to expect next:\n\n" +
-            "1. Account Activation:\n" +
-            "Your account is now active and ready to use. You can log in using your registered email and the password you created during the registration process.\n\n" +
-            "2. Personalize Your Experience:\n" +
-            "Take a moment to complete your profile by adding more details about your preferences and travel needs. This helps us tailor the experience to better serve you.\n\n" +
-            "3. Explore Our Services:\n" +
-            "As a member of [Your Car Rental Company], you have access to a wide range of services designed to enhance your car rental experience. Some of these include:\n" +
-            "- Flexible Booking Options: Choose from a variety of vehicles to suit your needs, from economy cars to luxury models.\n" +
-            "- Convenient Pickup and Drop-off: Multiple locations to make your rental experience seamless.\n" +
-            "- Special Offers: Enjoy exclusive discounts and deals available only to our registered members.\n\n" +
-            "4. Stay Updated:\n" +
-            "Keep an eye on your inbox for our newsletters and updates. We’ll share tips, news, and special offers to help you get the most out of our services.\n\n" +
-            "5. Get Support:\n" +
-            "If you have any questions or need assistance, our support team is here to help. You can reach out to us at [Support Email] or visit our Help Center [link to Help Center].\n\n" +
-            "Ready to hit the road?\n\n" +
-            "Log in now to start exploring our fleet and make your first booking. Thank you for choosing [Your Car Rental Company]. We look forward to serving you!\n\n" +
-            "Safe travels,\n\n" +
-            "The [Your Car Rental Company] Team",
+        "Querido %s,\n\n" +
+            "Estamos entusiasmados em recebê-lo na Rental Cars! Seu registro foi concluído com sucesso e estamos entusiasmados por tê-lo como um membro valioso de nossa comunidade.\n\n" +
+            "Aqui está o que esperar a seguir:\n\n" +
+            "1. Ativação da conta:\n" +
+            "Sua conta agora está ativa e pronta para uso. Você pode fazer login usando seu e-mail cadastrado e a senha que você criou durante o processo de registro.\n\n" +
+            "2. Personalize sua experiência:\n" +
+            "Reserve um momento para completar seu perfil adicionando mais detalhes sobre suas preferências e necessidades de viagem. Isso nos ajuda a personalizar a experiência para melhor atendê-lo.\n\n" +
+            "3. Explore nossos serviços:\n" +
+            "Como membro da Rental Cars, você tem acesso a uma ampla gama de serviços projetados para aprimorar sua experiência de aluguel de automóveis. Alguns deles incluem:\n" +
+            "- Opções de reserva flexíveis: escolha entre uma variedade de veículos que atendem às suas necessidades, desde carros econômicos até modelos de luxo.\n" +
+            "- Retirada e entrega convenientes: vários locais para tornar sua experiência de aluguel perfeita.\n" +
+            "- Ofertas Especiais: Aproveite descontos e ofertas exclusivas disponíveis apenas para nossos membros registrados.\n\n" +
+            "4. Fique atualizado:\n" +
+            "Fique de olho em sua caixa de entrada para receber nossos boletins informativos e atualizações. Compartilharemos dicas, novidades e ofertas especiais para ajudar você a aproveitar ao máximo nossos serviços.\n\n" +
+            "5. Obtenha suporte:\n" +
+            "Se você tiver alguma dúvida ou precisar de ajuda, nossa equipe de suporte está aqui para ajudar. Você pode entrar em contato conosco pelo email rentalcars@email.com ou visitar o link helper da nossa Central de Ajuda.\n\n" +
+            "Pronto para pegar a estrada?\n\n" +
+            "Faça login agora para começar a explorar nossa frota e fazer sua primeira reserva. Obrigado por escolher a [Sua locadora de veículos]. Estamos ansiosos para atendê-lo!\n\n" +
+            "Boa viagem,\n\n" +
+            "Equipe de Aluguel de Carros",
         person.getFullName()
     );
 
