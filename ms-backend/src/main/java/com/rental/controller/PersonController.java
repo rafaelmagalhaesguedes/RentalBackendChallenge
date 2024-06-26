@@ -67,10 +67,9 @@ public class PersonController {
    * @return the all persons
    */
   @GetMapping
-  @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
   public List<PersonDto> getAllPersons(
-      @RequestParam(required = false, defaultValue = "0") int pageNumber,
-      @RequestParam(required = false, defaultValue = "10") int pageSize
+      @RequestParam(name = "pageNumber", required = false, defaultValue = "0") int pageNumber,
+      @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize
   ) {
     List<Person> paginatedPeople = personService.getAllPersons(pageNumber, pageSize);
     return paginatedPeople.stream()

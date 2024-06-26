@@ -56,8 +56,8 @@ public class PersonService implements UserDetailsService {
     return personRepository.save(person);
   }
 
-  public Person updateCustomer(UUID customerId, Person person) throws PersonNotFoundException {
-    Person personFromDb = getPersonById(customerId);
+  public Person updateCustomer(UUID id, Person person) throws PersonNotFoundException {
+    Person personFromDb = getPersonById(id);
 
     personFromDb.setName(person.getName());
     personFromDb.setEmail(person.getEmail());
