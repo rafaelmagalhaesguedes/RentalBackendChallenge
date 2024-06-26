@@ -1,5 +1,6 @@
 package com.rental.entity;
 
+import com.rental.enums.Status;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,15 +20,14 @@ public class Payment {
 
   @ManyToOne
   private Reservation reservation;
-
   private Double amount;
-  private String status; // "Pending", "Completed", "Failed"
+  private Status status; // "Pending", "Completed", "Failed"
   private LocalDateTime paymentDate;
-  private String paymentMethod; // "Stripe", "Counter"
+  private String paymentMethod; // "Online", "Counter"
 
   public Payment() { }
 
-  public Payment(UUID id, Reservation reservation, Double amount, String status,
+  public Payment(UUID id, Reservation reservation, Double amount, Status status,
       LocalDateTime paymentDate, String paymentMethod) {
     this.id = id;
     this.reservation = reservation;
@@ -61,11 +61,11 @@ public class Payment {
     this.amount = amount;
   }
 
-  public String getStatus() {
+  public Status getStatus() {
     return status;
   }
 
-  public void setStatus(String status) {
+  public void setStatus(Status status) {
     this.status = status;
   }
 

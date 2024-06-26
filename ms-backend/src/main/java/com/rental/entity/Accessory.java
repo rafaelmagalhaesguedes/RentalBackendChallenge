@@ -20,12 +20,8 @@ public class Accessory {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  @NotBlank(message = "Name cannot be blank")
-  @Size(max = 255, message = "Name must be less than or equal to 255 characters")
   private String name;
 
-  @NotNull(message = "Daily rate cannot be null")
-  @Positive(message = "Daily rate must be greater than zero")
   private Double dailyRate;
 
   public Accessory() { }

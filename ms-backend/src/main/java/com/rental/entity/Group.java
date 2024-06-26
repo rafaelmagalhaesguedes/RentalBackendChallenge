@@ -6,6 +6,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import java.util.UUID;
 
 @Entity
@@ -15,8 +18,11 @@ public class Group {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
+
   private String name;
+
   private String vehicles;
+
   private Double dailyRate;
 
   public Group() { }

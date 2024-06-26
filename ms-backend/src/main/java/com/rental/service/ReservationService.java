@@ -5,6 +5,7 @@ import com.rental.entity.Accessory;
 import com.rental.entity.Person;
 import com.rental.entity.Reservation;
 import com.rental.entity.Group;
+import com.rental.enums.Status;
 import com.rental.repository.AccessoryRepository;
 import com.rental.repository.PersonRepository;
 import com.rental.repository.GroupRepository;
@@ -55,9 +56,9 @@ public class ReservationService {
   }
 
   @Transactional
-  public ReservationDto createReservation(UUID personId, UUID groupId, List<UUID> accessoryIds, LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, String status, String paymentMethod) throws PersonNotFoundException, GroupNotFoundException, StripeException {
+  public ReservationDto createReservation(UUID personId, UUID groupId, List<UUID> accessoryIds, LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, String paymentMethod) throws PersonNotFoundException, GroupNotFoundException, StripeException {
 
-    Reservation reservation = getReservation(personId, groupId, accessoryIds, pickupDateTime, returnDateTime, totalAmount, status, paymentMethod);
+    Reservation reservation = getReservation(personId, groupId, accessoryIds, pickupDateTime, returnDateTime, totalAmount, paymentMethod);
 
     return getReservationDto(totalAmount, paymentMethod, reservation);
   }
@@ -66,8 +67,8 @@ public class ReservationService {
     if ("online".equalsIgnoreCase(paymentMethod)) {
       Session paymentSession = paymentService.createCheckoutSession(
           totalAmount,
-          "http://localhost:8080/success",
-          "http://localhost:8080/cancel",
+          "http://localhost:8080/payment/success",
+          "http://localhost:8080/payment/cancel",
           reservation
       );
       return ReservationDto.fromEntity(reservation, paymentSession.getUrl());
@@ -76,15 +77,15 @@ public class ReservationService {
     }
   }
 
-  private Reservation getReservation(UUID personId, UUID groupId, List<UUID> accessoryIds, LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, String status, String paymentMethod) throws PersonNotFoundException, GroupNotFoundException {
+  private Reservation getReservation(UUID personId, UUID groupId, List<UUID> accessoryIds, LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, String paymentMethod) throws PersonNotFoundException, GroupNotFoundException {
     Person person = personRepository.findById(personId).orElseThrow(PersonNotFoundException::new);
     Group group = groupRepository.findById(groupId).orElseThrow(GroupNotFoundException::new);
     List<Accessory> accessories = accessoryRepository.findAllById(accessoryIds);
 
-    return createNewReservation(person, group, accessories, pickupDateTime, returnDateTime, totalAmount, status, paymentMethod);
+    return createNewReservation(person, group, accessories, pickupDateTime, returnDateTime, totalAmount, paymentMethod);
   }
 
-  private Reservation createNewReservation(Person person, Group group, List<Accessory> accessories, LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, String status, String paymentMethod) {
+  private Reservation createNewReservation(Person person, Group group, List<Accessory> accessories, LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, String paymentMethod) {
     Reservation newReservation = new Reservation();
     newReservation.setPerson(person);
     newReservation.setGroup(group);
@@ -92,7 +93,7 @@ public class ReservationService {
     newReservation.setPickupDateTime(pickupDateTime);
     newReservation.setReturnDateTime(returnDateTime);
     newReservation.setTotalAmount(totalAmount);
-    newReservation.setStatus("Pending");
+    newReservation.setStatus(Status.PENDING);
     newReservation.setPaymentMethod(paymentMethod);
 
     return reservationRepository.save(newReservation);

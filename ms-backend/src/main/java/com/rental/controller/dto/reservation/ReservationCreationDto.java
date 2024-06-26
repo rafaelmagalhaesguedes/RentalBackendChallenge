@@ -1,5 +1,6 @@
 package com.rental.controller.dto.reservation;
 
+import com.rental.entity.Reservation;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -11,7 +12,6 @@ public record ReservationCreationDto(
     LocalDateTime pickupDateTime,
     LocalDateTime returnDateTime,
     Double totalAmount,
-    String status,
     String paymentMethod
 ) { }
 

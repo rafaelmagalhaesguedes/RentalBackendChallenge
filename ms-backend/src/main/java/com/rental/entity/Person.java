@@ -7,6 +7,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -23,9 +26,12 @@ public class Person implements UserDetails {
   private UUID id;
 
   private String username;
+
   @Column(unique = true)
   private String email;
+
   private String password;
+
   private Role role;
 
   public Person() { }

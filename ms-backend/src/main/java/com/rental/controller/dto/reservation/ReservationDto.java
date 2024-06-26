@@ -3,6 +3,7 @@ package com.rental.controller.dto.reservation;
 import com.rental.controller.dto.accessory.AccessoryDto;
 import com.rental.controller.dto.person.PersonDto;
 import com.rental.entity.Reservation;
+import com.rental.enums.Status;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -17,7 +18,7 @@ public record ReservationDto(
     LocalDateTime pickupDateTime,
     LocalDateTime returnDateTime,
     Double totalAmount,
-    String status,
+    Status status,
     String paymentMethod,
     String paymentUrl
 ) {

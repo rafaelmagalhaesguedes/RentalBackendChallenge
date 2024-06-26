@@ -27,7 +27,12 @@ public class PaymentService {
 
   @Transactional
   public Session createCheckoutSession(Double amount, String successUrl, String cancelUrl, Reservation reservation) throws StripeException {
-    Payment payment = getPayment(amount, reservation);
+    Payment payment = new Payment();
+    payment.setReservation(reservation);
+    payment.setAmount(amount);
+    payment.setPaymentDate(LocalDateTime.now());
+
+    paymentRepository.save(payment);
 
     return getSession(amount, successUrl, cancelUrl, payment);
   }
@@ -54,16 +59,5 @@ public class PaymentService {
         .build();
 
     return Session.create(params);
-  }
-
-  private Payment getPayment(Double amount, Reservation reservation) {
-    Payment payment = new Payment();
-    payment.setReservation(reservation);
-    payment.setAmount(amount);
-    payment.setStatus("Pending");
-    payment.setPaymentDate(LocalDateTime.now());
-    payment.setPaymentMethod("Stripe");
-    paymentRepository.save(payment);
-    return payment;
   }
 }

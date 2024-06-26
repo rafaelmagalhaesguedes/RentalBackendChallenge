@@ -48,7 +48,7 @@ public class ReservationController {
         reservationCreationDto.personId(), reservationCreationDto.groupId(),
         reservationCreationDto.accessoryIds(), reservationCreationDto.pickupDateTime(),
         reservationCreationDto.returnDateTime(), reservationCreationDto.totalAmount(),
-        reservationCreationDto.status(), reservationCreationDto.paymentMethod()
+        reservationCreationDto.paymentMethod()
     );
   }
 }

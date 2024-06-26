@@ -1,6 +1,9 @@
 package com.rental.entity;
 
+import com.rental.enums.Status;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,6 +13,8 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -33,21 +38,25 @@ public class Reservation {
   @ManyToMany
   @JoinTable(
       name = "reservation_accessories",
-      joinColumns = @JoinColumn(name = "person_id)"),
+      joinColumns = @JoinColumn(name = "reservation_id"),
       inverseJoinColumns = @JoinColumn(name = "accessory_id")
   )
   private List<Accessory> accessories;
 
   private LocalDateTime pickupDateTime;
+
   private LocalDateTime returnDateTime;
+
   private Double totalAmount;
-  private String status; // "Pending", "Confirmed", "Cancelled"
-  private String paymentMethod; // "Pay at Counter", "Online Payment"
+
+  @Enumerated(EnumType.STRING)
+  private Status status; // "Pending", "Confirmed", "Cancelled"
+  private String paymentMethod; // "Online", "Counter"
 
   public Reservation() { }
 
   public Reservation(UUID id, Person person, Group group, List<Accessory> accessories,
-      LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, String status,
+      LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, Status status,
       String paymentMethod) {
     this.id = id;
     this.person = person;
@@ -116,11 +125,11 @@ public class Reservation {
     this.totalAmount = totalAmount;
   }
 
-  public String getStatus() {
+  public Status getStatus() {
     return status;
   }
 
-  public void setStatus(String status) {
+  public void setStatus(Status status) {
     this.status = status;
   }
 
