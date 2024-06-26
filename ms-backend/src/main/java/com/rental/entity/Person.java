@@ -25,9 +25,11 @@ public class Person implements UserDetails {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
+  private String fullName;
+
   private String username;
 
-  @Column(unique = true)
+  // @Column(unique = true)
   private String email;
 
   private String password;
@@ -36,20 +38,23 @@ public class Person implements UserDetails {
 
   public Person() { }
 
-  public Person(String username, String email, String password, Role role) {
+  public Person(String fullName, String username, String email, String password, Role role) {
+    this.fullName = fullName;
     this.username = username;
     this.email = email;
     this.password = password;
     this.role = role;
   }
 
-  public Person(String username, String email, String password) {
+  public Person(String fullName, String username, String email, String password) {
+    this.fullName = fullName;
     this.username = username;
     this.email = email;
     this.password = password;
   }
 
-  public Person(String username, String email) {
+  public Person(String fullName, String username, String email) {
+    this.fullName = fullName;
     this.username = username;
     this.email = email;
   }
@@ -79,11 +84,11 @@ public class Person implements UserDetails {
   }
 
   public String getFullName() {
-    return username;
+    return fullName;
   }
 
   public void setFullName(String fullName) {
-    this.username = fullName;
+    this.fullName = fullName;
   }
 
   public void setPassword(String password) {

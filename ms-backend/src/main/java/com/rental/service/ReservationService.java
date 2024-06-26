@@ -58,9 +58,23 @@ public class ReservationService {
   @Transactional
   public ReservationDto createReservation(UUID personId, UUID groupId, List<UUID> accessoryIds, LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, String paymentMethod) throws PersonNotFoundException, GroupNotFoundException, StripeException {
 
-    Reservation reservation = getReservation(personId, groupId, accessoryIds, pickupDateTime, returnDateTime, totalAmount, paymentMethod);
+    Person person = personRepository.findById(personId).orElseThrow(PersonNotFoundException::new);
+    Group group = groupRepository.findById(groupId).orElseThrow(GroupNotFoundException::new);
+    List<Accessory> accessories = accessoryRepository.findAllById(accessoryIds);
 
-    return getReservationDto(totalAmount, paymentMethod, reservation);
+    Reservation newReservation = new Reservation();
+    newReservation.setPerson(person);
+    newReservation.setGroup(group);
+    newReservation.setAccessories(accessories);
+    newReservation.setPickupDateTime(pickupDateTime);
+    newReservation.setReturnDateTime(returnDateTime);
+    newReservation.setTotalAmount(totalAmount);
+    newReservation.setStatus(Status.PENDING);
+    newReservation.setPaymentMethod(paymentMethod);
+
+    reservationRepository.save(newReservation);
+
+    return getReservationDto(totalAmount, paymentMethod, newReservation);
   }
 
   private ReservationDto getReservationDto(Double totalAmount, String paymentMethod, Reservation reservation) throws StripeException {
@@ -75,27 +89,5 @@ public class ReservationService {
     } else {
       return ReservationDto.fromEntity(reservation, null);
     }
-  }
-
-  private Reservation getReservation(UUID personId, UUID groupId, List<UUID> accessoryIds, LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, String paymentMethod) throws PersonNotFoundException, GroupNotFoundException {
-    Person person = personRepository.findById(personId).orElseThrow(PersonNotFoundException::new);
-    Group group = groupRepository.findById(groupId).orElseThrow(GroupNotFoundException::new);
-    List<Accessory> accessories = accessoryRepository.findAllById(accessoryIds);
-
-    return createNewReservation(person, group, accessories, pickupDateTime, returnDateTime, totalAmount, paymentMethod);
-  }
-
-  private Reservation createNewReservation(Person person, Group group, List<Accessory> accessories, LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, String paymentMethod) {
-    Reservation newReservation = new Reservation();
-    newReservation.setPerson(person);
-    newReservation.setGroup(group);
-    newReservation.setAccessories(accessories);
-    newReservation.setPickupDateTime(pickupDateTime);
-    newReservation.setReturnDateTime(returnDateTime);
-    newReservation.setTotalAmount(totalAmount);
-    newReservation.setStatus(Status.PENDING);
-    newReservation.setPaymentMethod(paymentMethod);
-
-    return reservationRepository.save(newReservation);
   }
 }

@@ -53,6 +53,7 @@ public class PersonService implements UserDetailsService {
     person.setRole(Role.USER);
 
     personProducer.publishMessageEmail(person);
+
     return personRepository.save(person);
   }
 
