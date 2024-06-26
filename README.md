@@ -69,117 +69,125 @@ O sistema utiliza a tecnologia de integração de pagamentos Stripe para permiti
 
 - Tratamento de Eventos: Implementação de mecanismos para lidar com eventos e notificações do Stripe, como confirmações de pagamento e atualizações de status.
 
-## Endpoints
+### Endpoints Principais
 
-### Autenticação
+#### Autenticação
 
-- POST /auth/login: Autentica um usuário e gera um token de acesso.
-    - Corpo da solicitação: { "username": "example", "password": "example" }
-    - Resposta bem-sucedida: Retorna um token de acesso válido.
-    - Resposta de erro: Retorna uma mensagem de erro se as credenciais forem inválidas.
+- **Login:**
+  - **POST /auth/login**
+  - Request Body:
+    ```json
+    {
+      "username": "user123",
+      "password": "password123"
+    }
+    ```
+  - Response:
+    ```json
+    {
+      "token": "jwt-token"
+    }
+    ```
 
-### Gerenciamento de Acessórios
+#### Usuários
 
-- GET /accessory/{id}: Obtém detalhes de um acessório específico.
-    - Parâmetros de URL: id - ID único do acessório.
-    - Autorização: Requer autorização de ADMIN ou MANAGER.
+- **Criar Usuário:**
+  - **POST /persons**
+  - Request Body:
+    ```json
+    {
+      "username" : "user123",
+      "email": "user@example.com",
+      "password": "password123",
+      "role": "USER"
+    }
+    ```
+  - Response:
+    ```json
+    {
+      "id": "uuid",
+      "email": "user@example.com",
+      "role": "USER"
+    }
+    ```
 
+#### Reservas
 
-- GET /accessory: Obtém todos os acessórios com paginação.
-    - Parâmetros de consulta: pageNumber, pageSize.
-    - POST /accessory: Cria um novo acessório.
-    - Corpo da solicitação: Objeto JSON com os detalhes do acessório.
+- **Listar Reservas:**
+  - **GET /reservations**
+  - Query Parameters:
+    - `pageNumber`: Número da página (padrão: 0)
+    - `pageSize`: Tamanho da página (padrão: 10)
+  - Response:
+    ```json
+    [
+      {
+        "id": "uuid",
+        "person": {
+          "id": "uuid",
+          "email": "user@example.com"
+        },
+        "group": {
+          "id": "uuid",
+          "name": "Group Name"
+        },
+        "accessories": [
+          {
+            "id": "uuid",
+            "name": "Accessory Name"
+          }
+        ],
+        "pickupDateTime": "2023-06-01T10:00:00",
+        "returnDateTime": "2023-06-10T10:00:00",
+        "totalAmount": 100.0,
+        "status": "CONFIRMED",
+        "paymentMethod": "online",
+        "paymentUrl": "http://payment.url"
+      }
+    ]
+    ```
 
-
-- PUT /accessory/{id}: Atualiza os detalhes de um acessório existente.
-    - Parâmetros de URL: id - ID único do acessório.
-    - Corpo da solicitação: Objeto JSON com os novos detalhes do acessório.
-
-
-- DELETE /accessory/{id}: Exclui um acessório existente.
-    - Parâmetros de URL: id - ID único do acessório.
-
-### Gerenciamento de Grupos
-
-- GET /group/{id}: Obtém detalhes de um grupo específico.
-    - Parâmetros de URL: id - ID único do grupo.
-    - Autorização: Requer autorização de MANAGER.
-
-
-- GET /group: Obtém todos os grupos com paginação.
-    - Parâmetros de consulta: pageNumber, pageSize. 
-
-
-- POST /group: Cria um novo grupo.
-    - Corpo da solicitação: Objeto JSON com os detalhes do grupo.
-  
-
-- PUT /group/{id}: Atualiza os detalhes de um grupo existente.
-    - Parâmetros de URL: id - ID único do grupo.
-    - Corpo da solicitação: Objeto JSON com os novos detalhes do grupo.
-
-
-- DELETE /group/{id}: Exclui um grupo existente.
-    - Parâmetros de URL: id - ID único do grupo.
-
-### Gerenciamento de Pessoas
-
-- GET /persons/{id}: Obtém detalhes de uma pessoa específica.
-    - Parâmetros de URL: id - ID único da pessoa.
-    - Autorização: Requer autorização de ADMIN ou MANAGER.
-
-
-- GET /persons: Obtém todas as pessoas com paginação.
-    - Parâmetros de consulta: pageNumber, pageSize.
-
-
-- POST /persons: Cria uma nova pessoa.
-    - Corpo da solicitação: Objeto JSON com os detalhes da pessoa.
-
-
-- PUT /persons/{id}: Atualiza os detalhes de uma pessoa existente.
-    - Parâmetros de URL: id - ID único da pessoa.
-    - Corpo da solicitação: Objeto JSON com os novos detalhes da pessoa.
-
-
-- DELETE /persons/{id}: Exclui uma pessoa existente.
-    - Parâmetros de URL: id - ID único da pessoa.
-
-### Gerenciamento de Reservas
-
-- GET /reservations/{id}: Obtém detalhes de uma reserva específica.
-    - Parâmetros de URL: id - ID único da reserva.
-    - Autorização: Requer autorização de ADMIN ou MANAGER.
-
-
-- GET /reservations: Obtém todas as reservas com paginação.
-    - Parâmetros de consulta: pageNumber, pageSize.
-
-
-- POST /reservations: Cria uma nova reserva.
-    - Corpo da solicitação: Objeto JSON com os detalhes da reserva.
-
-
-- PUT /reservations/{id}: Atualiza os detalhes de uma reserva existente.
-    - Parâmetros de URL: id - ID único da reserva.
-    - Corpo da solicitação: Objeto JSON com os novos detalhes da reserva.
-
-
-- DELETE /reservations/{id}: Exclui uma reserva existente.
-    - Parâmetros de URL: id - ID único da reserva.
-
-### Integração com o Stripe
-
-- POST /payment: Inicia uma transação de pagamento para uma reserva específica.
-
-
-- GET /payment/{id}: Retorna o status atual da transação de pagamento com o ID especificado.
-
-
-- POST /success: Confirma e finaliza a transação de pagamento após a aprovação do usuário.
-
-
-- POST /cancel: Cancela uma transação de pagamento em andamento.
+- **Criar Reserva:**
+  - **POST /reservations**
+  - Request Body:
+    ```json
+    {
+      "personId": "uuid",
+      "groupId": "uuid",
+      "accessoryIds": ["uuid"],
+      "pickupDateTime": "2023-06-01T10:00:00",
+      "returnDateTime": "2023-06-10T10:00:00",
+      "totalAmount": 100.0,
+      "status": "PENDING",
+      "paymentMethod": "online"
+    }
+    ```
+  - Response:
+    ```json
+    {
+      "id": "uuid",
+      "person": {
+        "id": "uuid",
+        "email": "user@example.com"
+      },
+      "group": {
+        "id": "uuid",
+        "name": "Group Name"
+      },
+      "accessories": [
+        {
+          "id": "uuid",
+          "name": "Accessory Name"
+        }
+      ],
+      "pickupDateTime": "2023-06-01T10:00:00",
+      "returnDateTime": "2023-06-10T10:00:00",
+      "totalAmount": 100.0,
+      "status": "PENDING",
+      "paymentMethod": "online",
+      "paymentUrl": "http://payment.url"
+    }
+    ```
 
 ## Screenshots
 
