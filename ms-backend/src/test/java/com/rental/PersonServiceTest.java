@@ -7,6 +7,7 @@ import static org.mockito.ArgumentMatchers.eq;
 
 import com.rental.entity.Person;
 import com.rental.repository.PersonRepository;
+import com.rental.security.Role;
 import com.rental.service.PersonService;
 import com.rental.service.exception.PersonExistingException;
 import com.rental.service.exception.PersonNotFoundException;
@@ -99,8 +100,10 @@ public class PersonServiceTest {
     // Arrange
     Person person = new Person();
     person.setId(UUID.randomUUID());
-    person.setName("Rafa Guedes");
+    person.setUsername("rafalguedes");
     person.setEmail("rafa@email.com");
+    person.setPassword("password");
+    person.setRole(Role.USER);
 
     // Act
     Mockito.when(personRepository.save(person)).thenReturn(person);
