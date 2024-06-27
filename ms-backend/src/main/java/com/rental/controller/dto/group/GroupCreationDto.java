@@ -17,7 +17,7 @@ public record GroupCreationDto(
 
     @NotBlank(message = "Vehicle cannot be blank")
     @Size(max = 255, message = "Vehicle must be less than or equal to 255 characters")
-    List<Vehicle> vehicles,
+    String vehicles,
 
     @Positive(message = "Daily rate is a positive number")
     Double dailyRate

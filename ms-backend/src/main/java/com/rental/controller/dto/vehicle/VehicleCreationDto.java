@@ -1,11 +1,11 @@
 package com.rental.controller.dto.vehicle;
 
+import com.rental.entity.Group;
 import com.rental.entity.Vehicle;
-import java.util.Date;
 import java.util.UUID;
 
 /**
- * The type Group dto.
+ * The type VehicleCreationDto.
  */
 public record VehicleCreationDto(
     String model,
@@ -15,11 +15,6 @@ public record VehicleCreationDto(
     String yearOfManufacture
 ) {
 
-  /**
-   * To entity group dto.
-   *
-   * @return the group dto
-   */
   public Vehicle toEntity() {
     return new Vehicle(model, licensePlate, brand, color, yearOfManufacture);
   }

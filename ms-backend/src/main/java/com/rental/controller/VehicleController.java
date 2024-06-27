@@ -4,6 +4,7 @@ import com.rental.controller.dto.vehicle.VehicleCreationDto;
 import com.rental.controller.dto.vehicle.VehicleDto;
 import com.rental.entity.Vehicle;
 import com.rental.service.VehicleService;
+import com.rental.service.exception.GroupNotFoundException;
 import com.rental.service.exception.VehicleNotFoundException;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -12,16 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * The type Vehicle controller.
@@ -53,9 +45,7 @@ public class VehicleController {
   @GetMapping("/{id}")
   @PreAuthorize("hasAuthority('MANAGER')")
   public VehicleDto getVehicleById(@PathVariable UUID id) throws VehicleNotFoundException {
-    return VehicleDto.fromEntity(
-        vehicleService.getVehicleById(id)
-    );
+    return VehicleDto.fromEntity(vehicleService.getVehicleById(id));
   }
 
   /**
@@ -69,47 +59,42 @@ public class VehicleController {
   @PreAuthorize("hasAuthority('MANAGER')")
   public List<VehicleDto> getAllVehicles(
       @RequestParam(required = false, defaultValue = "0") int pageNumber,
-      @RequestParam(required = false, defaultValue = "20") int pageSize
-  ) {
+      @RequestParam(required = false, defaultValue = "20") int pageSize) {
     List<Vehicle> paginatedVehicles = vehicleService.getAllVehicles(pageNumber, pageSize);
-    return paginatedVehicles.stream()
-        .map(VehicleDto::fromEntity)
-        .toList();
+    return paginatedVehicles.stream().map(VehicleDto::fromEntity).toList();
   }
 
   /**
-   * Create vehicle dto.
+   * Create vehicle.
    *
    * @param vehicleCreationDto the vehicle creation dto
    * @return the vehicle dto
+   * @throws GroupNotFoundException the group not found exception
    */
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   @PreAuthorize("hasAuthority('MANAGER')")
-  public VehicleDto createVehicle(@RequestBody @Valid VehicleCreationDto vehicleCreationDto) {
-    return VehicleDto.fromEntity(
-        vehicleService.createVehicle(vehicleCreationDto.toEntity())
-    );
+  public VehicleDto createVehicle(@RequestBody @Valid VehicleCreationDto vehicleCreationDto) throws GroupNotFoundException {
+    return vehicleService.createVehicle(vehicleCreationDto);
   }
 
   /**
-   * Update vehicle dto.
+   * Update vehicle.
    *
    * @param vehicleCreationDto the vehicle creation dto
-   * @param id the id
+   * @param id                 the id
    * @return the vehicle dto
    * @throws VehicleNotFoundException the vehicle not found exception
+   * @throws GroupNotFoundException   the group not found exception
    */
   @PutMapping("/{id}")
   @PreAuthorize("hasAuthority('MANAGER')")
-  public VehicleDto updateVehicle(@RequestBody @Valid VehicleCreationDto vehicleCreationDto, @PathVariable UUID id) throws VehicleNotFoundException {
-    return VehicleDto.fromEntity(
-        vehicleService.updateVehicle(vehicleCreationDto.toEntity(), id)
-    );
+  public VehicleDto updateVehicle(@RequestBody @Valid VehicleCreationDto vehicleCreationDto, @PathVariable UUID id) throws VehicleNotFoundException, GroupNotFoundException {
+    return vehicleService.updateVehicle(vehicleCreationDto, id);
   }
 
   /**
-   * Delete vehicle dto.
+   * Delete vehicle.
    *
    * @param id the id
    * @return the vehicle dto
@@ -118,8 +103,6 @@ public class VehicleController {
   @DeleteMapping("/{id}")
   @PreAuthorize("hasAuthority('MANAGER')")
   public VehicleDto deleteVehicle(@PathVariable UUID id) throws VehicleNotFoundException {
-    return VehicleDto.fromEntity(
-        vehicleService.deleteVehicle(id)
-    );
+    return VehicleDto.fromEntity(vehicleService.deleteVehicle(id));
   }
 }

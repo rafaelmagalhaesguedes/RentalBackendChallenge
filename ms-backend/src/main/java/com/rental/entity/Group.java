@@ -6,8 +6,11 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,8 +27,7 @@ public class Group {
 
   private String name;
 
-  @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private List<Vehicle> vehicles;
+  private String vehicles;
 
   private Double dailyRate;
 
@@ -41,7 +43,7 @@ public class Group {
    * @param vehicles  the vehicles
    * @param dailyRate the daily rate
    */
-  public Group(String name, List<Vehicle> vehicles, Double dailyRate) {
+  public Group(String name, String vehicles, Double dailyRate) {
     this.name = name;
     this.vehicles = vehicles;
     this.dailyRate = dailyRate;
@@ -106,7 +108,7 @@ public class Group {
    *
    * @return the vehicles
    */
-  public List<Vehicle> getVehicles() {
+  public String getVehicles() {
     return vehicles;
   }
 
@@ -115,7 +117,7 @@ public class Group {
    *
    * @param vehicles the vehicles
    */
-  public void setVehicles(List<Vehicle> vehicles) {
+  public void setVehicles(String vehicles) {
     this.vehicles = vehicles;
   }
 }

@@ -1,13 +1,9 @@
 package com.rental.entity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -30,10 +26,6 @@ public class Vehicle {
 
   private String yearOfManufacture;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "group_id", nullable = false)
-  private Group group;
-
   /**
    * Instantiates a new Vehicle.
    */
@@ -48,17 +40,15 @@ public class Vehicle {
    * @param brand             the brand
    * @param color             the color
    * @param yearOfManufacture the year of manufacture
-   * @param group             the group
    */
   public Vehicle(UUID id, String model, String licensePlate, String brand, String color,
-      String yearOfManufacture, Group group) {
+      String yearOfManufacture) {
     this.id = id;
     this.model = model;
     this.licensePlate = licensePlate;
     this.brand = brand;
     this.color = color;
     this.yearOfManufacture = yearOfManufacture;
-    this.group = group;
   }
 
   /**
@@ -185,23 +175,5 @@ public class Vehicle {
    */
   public void setYearOfManufacture(String yearOfManufacture) {
     this.yearOfManufacture = yearOfManufacture;
-  }
-
-  /**
-   * Gets group.
-   *
-   * @return the group
-   */
-  public Group getGroup() {
-    return group;
-  }
-
-  /**
-   * Sets group.
-   *
-   * @param group the group
-   */
-  public void setGroup(Group group) {
-    this.group = group;
   }
 }

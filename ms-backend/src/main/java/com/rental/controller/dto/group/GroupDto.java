@@ -11,7 +11,7 @@ import java.util.UUID;
 public record GroupDto(
     UUID id,
     String name,
-    List<Vehicle> vehicles,
+    String vehicles,
     Double dailyRate
 ) {
 
