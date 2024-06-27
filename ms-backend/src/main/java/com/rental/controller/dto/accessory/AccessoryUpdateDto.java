@@ -11,11 +11,19 @@ public record AccessoryUpdateDto(
     @Size(max = 255, message = "Name must be less than or equal to 255 characters")
     String name,
 
+    @NotBlank(message = "Description cannot be blank")
+    @Size(max = 255, message = "Description must be less than or equal to 255 characters")
+    String description,
+
+    @NotNull(message = "Quantity cannot be null")
+    @Positive(message = "Quantity must be greater than zero")
+    Integer quantity,
+
     @NotNull(message = "Daily rate cannot be null")
     @Positive(message = "Daily rate must be greater than zero")
     Double dailyRate
 ) {
   public Accessory toEntity() {
-    return new Accessory(name, dailyRate);
+    return new Accessory(name, description, quantity, dailyRate);
   }
 }

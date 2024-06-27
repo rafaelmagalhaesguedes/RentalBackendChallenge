@@ -22,6 +22,10 @@ public class Accessory {
 
   private String name;
 
+  private String description;
+
+  private Integer quantity;
+
   private Double dailyRate;
 
   public Accessory() { }
@@ -30,8 +34,10 @@ public class Accessory {
     this.id = UUID.fromString(id);
   }
 
-  public Accessory(String name, Double dailyRate) {
+  public Accessory(String name, String description, Integer quantity, Double dailyRate) {
     this.name = name;
+    this.description = description;
+    this.quantity = quantity;
     this.dailyRate = dailyRate;
   }
 
@@ -49,6 +55,22 @@ public class Accessory {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public Integer getQuantity() {
+    return quantity;
+  }
+
+  public void setQuantity(Integer quantity) {
+    this.quantity = quantity;
   }
 
   public Double getDailyRate() {
