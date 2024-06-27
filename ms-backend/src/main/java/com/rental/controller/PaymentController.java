@@ -2,6 +2,7 @@ package com.rental.controller;
 
 import com.rental.entity.Payment;
 import com.rental.enums.Status;
+import com.rental.producer.ReservationProducer;
 import com.rental.repository.PaymentRepository;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PaymentController {
 
   private final PaymentRepository paymentRepository;
+  private final ReservationProducer reservationProducer;
 
   /**
    * Instantiates a new Payment controller.
@@ -27,8 +29,10 @@ public class PaymentController {
    * @param paymentRepository the payment repository
    */
   @Autowired
-  public PaymentController(PaymentRepository paymentRepository) {
+  public PaymentController(PaymentRepository paymentRepository,
+      ReservationProducer reservationProducer) {
     this.paymentRepository = paymentRepository;
+    this.reservationProducer = reservationProducer;
   }
 
   /**

@@ -6,6 +6,7 @@ import com.rental.entity.Person;
 import com.rental.entity.Reservation;
 import com.rental.entity.Group;
 import com.rental.enums.Status;
+import com.rental.producer.ReservationProducer;
 import com.rental.repository.AccessoryRepository;
 import com.rental.repository.PersonRepository;
 import com.rental.repository.GroupRepository;
@@ -36,6 +37,7 @@ public class ReservationService {
   private final GroupRepository groupRepository;
   private final AccessoryRepository accessoryRepository;
   private final PaymentService paymentService;
+  private final ReservationProducer reservationProducer;
 
   /**
    * Instantiates a new Reservation service.
@@ -47,12 +49,14 @@ public class ReservationService {
    * @param paymentService        the payment service
    */
   @Autowired
-  public ReservationService(ReservationRepository reservationRepository, PersonRepository personRepository, GroupRepository groupRepository, AccessoryRepository accessoryRepository, PaymentService paymentService) {
+  public ReservationService(ReservationRepository reservationRepository, PersonRepository personRepository, GroupRepository groupRepository, AccessoryRepository accessoryRepository, PaymentService paymentService,
+      ReservationProducer reservationProducer) {
     this.reservationRepository = reservationRepository;
     this.personRepository = personRepository;
     this.groupRepository = groupRepository;
     this.accessoryRepository = accessoryRepository;
     this.paymentService = paymentService;
+    this.reservationProducer = reservationProducer;
   }
 
   /**
@@ -115,10 +119,10 @@ public class ReservationService {
 
     reservationRepository.save(newReservation);
 
-    return getReservationDto(totalAmount, paymentMethod, newReservation);
+    return getReservationDto(person, totalAmount, paymentMethod, newReservation);
   }
 
-  private ReservationDto getReservationDto(Double totalAmount, String paymentMethod, Reservation reservation) throws StripeException {
+  private ReservationDto getReservationDto(Person person, Double totalAmount, String paymentMethod, Reservation reservation) throws StripeException {
     if ("online".equalsIgnoreCase(paymentMethod)) {
       Session paymentSession = paymentService.createCheckoutSession(
           totalAmount,
@@ -126,8 +130,14 @@ public class ReservationService {
           "http://localhost:8080/payment/cancel",
           reservation
       );
+
+      if (paymentSession.getUrl().contains("success")) {
+        reservationProducer.publishMessageEmail(person, reservation);
+      }
+
       return ReservationDto.fromEntity(reservation, paymentSession.getUrl());
     } else {
+      reservationProducer.publishMessageEmail(person, reservation);
       return ReservationDto.fromEntity(reservation, null);
     }
   }

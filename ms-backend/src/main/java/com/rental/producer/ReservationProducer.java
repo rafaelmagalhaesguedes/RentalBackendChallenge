@@ -1,6 +1,8 @@
 package com.rental.producer;
 
 import com.rental.controller.dto.auth.EmailDto;
+import com.rental.entity.Person;
+import com.rental.entity.Reservation;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -25,12 +27,30 @@ public class ReservationProducer {
   @Value(value = "${broker.queue.email.name}")
   private String routingKey;
 
-  /**
-   * Publish message email.
-   *
-   * @param emailDto the email DTO
-   */
-  public void publishMessageEmail(EmailDto emailDto) {
+  public void publishMessageEmail(Person person, Reservation reservation) {
+    EmailDto emailDto = new EmailDto();
+    emailDto.setUserId(person.getId());
+    emailDto.setEmailTo(person.getEmail());
+    emailDto.setSubject("Reserva Confirmada");
+
+    String emailText = String.format(
+        "Olá %s,\n\n" +
+            "Sua reserva foi confirmada com sucesso!\n\n" +
+            "Detalhes da reserva:\n" +
+            "- Data de início: %s\n" +
+            "- Data de término: %s\n" +
+            "- Total: %s\n\n" +
+            "- Pagamento: %s\n\n" +
+            "Obrigado por escolher nossos serviços.",
+        person.getFullName(),
+        reservation.getPickupDateTime(),
+        reservation.getReturnDateTime(),
+        reservation.getTotalAmount(),
+        reservation.getPaymentMethod()
+    );
+
+    emailDto.setText(emailText);
+
     rabbitTemplate.convertAndSend("", routingKey, emailDto);
   }
 }
