@@ -32,7 +32,6 @@ public class PaymentController {
 
     // Add payment details to the model
     model.addAttribute("payment", payment);
-    // Assuming you have a Reservation object associated with Payment
     model.addAttribute("reservation", payment.getReservation());
 
     return "payment-success";
@@ -47,6 +46,7 @@ public class PaymentController {
 
     // Add payment details to the model
     model.addAttribute("payment", payment);
+    
     return "payment-failed";
   }
 }

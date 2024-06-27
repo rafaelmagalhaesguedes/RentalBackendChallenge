@@ -50,8 +50,8 @@ public class Reservation {
   private Double totalAmount;
 
   @Enumerated(EnumType.STRING)
-  private Status status; // "Pending", "Confirmed", "Cancelled"
-  private String paymentMethod; // "Online", "Counter"
+  private Status status;                  // "Pending", "Confirmed", "Cancelled"
+  private String paymentMethod;           // "Online", "Counter"
 
   public Reservation() { }
 
