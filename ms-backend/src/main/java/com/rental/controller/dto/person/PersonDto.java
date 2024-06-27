@@ -1,6 +1,7 @@
 package com.rental.controller.dto.person;
 
 import com.rental.entity.Person;
+import com.rental.security.Role;
 import java.util.UUID;
 
 /**
@@ -10,7 +11,8 @@ public record PersonDto(
     UUID id,
     String fullName,
     String username,
-    String email
+    String email,
+    Role role
 ) {
 
   /**
@@ -24,7 +26,8 @@ public record PersonDto(
         person.getId(),
         person.getFullName(),
         person.getUsername(),
-        person.getEmail()
+        person.getEmail(),
+        person.getRole()
     );
   }
 }

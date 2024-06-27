@@ -80,7 +80,6 @@ public class PersonService implements UserDetailsService {
     String hashPassword = new BCryptPasswordEncoder().encode(person.getPassword());
 
     person.setPassword(hashPassword);
-    person.setRole(Role.USER);
 
     personProducer.publishMessageEmail(person);
 
