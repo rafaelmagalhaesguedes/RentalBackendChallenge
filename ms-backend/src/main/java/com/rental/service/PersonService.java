@@ -18,23 +18,46 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+/**
+ * The type Person service.
+ */
 @Service
 public class PersonService implements UserDetailsService {
 
   private final PersonRepository personRepository;
   private final PersonProducer personProducer;
 
+  /**
+   * Instantiates a new Person service.
+   *
+   * @param personRepository the person repository
+   * @param personProducer   the person producer
+   */
   @Autowired
   public PersonService(PersonRepository personRepository, PersonProducer personProducer) {
     this.personRepository = personRepository;
     this.personProducer = personProducer;
   }
 
+  /**
+   * Gets person by id.
+   *
+   * @param id the id
+   * @return the person by id
+   * @throws PersonNotFoundException the person not found exception
+   */
   public Person getPersonById(UUID id) throws PersonNotFoundException {
     return personRepository.findById(id)
         .orElseThrow(PersonNotFoundException::new);
   }
 
+  /**
+   * Gets all persons.
+   *
+   * @param pageNumber the page number
+   * @param pageSize   the page size
+   * @return the all persons
+   */
   public List<Person> getAllPersons(int pageNumber, int pageSize) {
     Pageable pageable = PageRequest.of(pageNumber, pageSize);
     Page<Person> page = personRepository.findAll(pageable);
@@ -42,6 +65,13 @@ public class PersonService implements UserDetailsService {
     return page.toList();
   }
 
+  /**
+   * Create person.
+   *
+   * @param person the person
+   * @return the person
+   * @throws PersonExistingException the person existing exception
+   */
   public Person createPerson(Person person) throws PersonExistingException {
     if (personRepository.existsByEmail(person.getEmail())) {
       throw new PersonExistingException();
@@ -57,7 +87,15 @@ public class PersonService implements UserDetailsService {
     return personRepository.save(person);
   }
 
-  public Person updateCustomer(UUID id, Person person) throws PersonNotFoundException {
+  /**
+   * Update person.
+   *
+   * @param id     the id
+   * @param person the person
+   * @return the person
+   * @throws PersonNotFoundException the person not found exception
+   */
+  public Person updatePerson(UUID id, Person person) throws PersonNotFoundException {
     Person personFromDb = getPersonById(id);
 
     personFromDb.setName(person.getName());
@@ -66,7 +104,14 @@ public class PersonService implements UserDetailsService {
     return personRepository.save(personFromDb);
   }
 
-  public Person deleteCustomer(UUID id) throws PersonNotFoundException {
+  /**
+   * Delete person.
+   *
+   * @param id the id
+   * @return the person
+   * @throws PersonNotFoundException the person not found exception
+   */
+  public Person deleteperson(UUID id) throws PersonNotFoundException {
     Person person = getPersonById(id);
 
     personRepository.delete(person);

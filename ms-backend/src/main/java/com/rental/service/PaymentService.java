@@ -14,17 +14,36 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+/**
+ * The type Payment service.
+ */
 @Service
 public class PaymentService {
 
   private final PaymentRepository paymentRepository;
 
+  /**
+   * Instantiates a new Payment service.
+   *
+   * @param paymentRepository the payment repository
+   * @param stripeApiKey      the stripe api key
+   */
   @Autowired
   public PaymentService(PaymentRepository paymentRepository, @Value("${stripe.api.key}") String stripeApiKey) {
     this.paymentRepository = paymentRepository;
     Stripe.apiKey = stripeApiKey;
   }
 
+  /**
+   * Create checkout session.
+   *
+   * @param amount      the amount
+   * @param successUrl  the success url
+   * @param cancelUrl   the cancel url
+   * @param reservation the reservation
+   * @return the session
+   * @throws StripeException the stripe exception
+   */
   @Transactional
   public Session createCheckoutSession(Double amount, String successUrl, String cancelUrl, Reservation reservation) throws StripeException {
     Payment payment = new Payment();

@@ -5,6 +5,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+/**
+ * The type Person update dto.
+ */
 public record PersonUpdateDto(
     @NotBlank(message = "Name cannot be blank")
     @Size(max = 255, message = "Name must be less than or equal to 255 characters")
@@ -18,6 +21,12 @@ public record PersonUpdateDto(
     @NotBlank(message = "Email cannot be blank")
     String email
 ) {
+
+  /**
+   * To entity person.
+   *
+   * @return the person
+   */
   public Person toEntity() {
     return new Person(fullName, username, email);
   }

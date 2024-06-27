@@ -5,12 +5,22 @@ import com.rental.entity.Vehicle;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * The type Group dto.
+ */
 public record GroupDto(
     UUID id,
     String name,
     List<Vehicle> vehicles,
     Double dailyRate
 ) {
+
+  /**
+   * From entity group dto.
+   *
+   * @param group the group
+   * @return the group dto
+   */
   public static GroupDto fromEntity(Group group) {
     return new GroupDto(
         group.getId(),

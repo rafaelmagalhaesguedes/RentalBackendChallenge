@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
+/**
+ * The type Accessory update dto.
+ */
 public record AccessoryUpdateDto(
     @NotBlank(message = "Name cannot be blank")
     @Size(max = 255, message = "Name must be less than or equal to 255 characters")
@@ -23,6 +26,12 @@ public record AccessoryUpdateDto(
     @Positive(message = "Daily rate must be greater than zero")
     Double dailyRate
 ) {
+
+  /**
+   * To entity accessory.
+   *
+   * @return the accessory
+   */
   public Accessory toEntity() {
     return new Accessory(name, description, quantity, dailyRate);
   }

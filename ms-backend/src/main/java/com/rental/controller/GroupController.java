@@ -23,6 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * The type Group controller.
+ */
 @RestController
 @RequestMapping("/group")
 @Validated
@@ -30,11 +33,23 @@ public class GroupController {
 
   private final GroupService groupService;
 
+  /**
+   * Instantiates a new Group controller.
+   *
+   * @param groupService the group service
+   */
   @Autowired
   public GroupController(GroupService groupService) {
     this.groupService = groupService;
   }
 
+  /**
+   * Gets group by id.
+   *
+   * @param id the id
+   * @return the group by id
+   * @throws GroupNotFoundException the group not found exception
+   */
   @GetMapping("/{id}")
   @PreAuthorize("hasAuthority('MANAGER')")
   public GroupDto getGroupById(@PathVariable UUID id) throws GroupNotFoundException {
@@ -43,7 +58,15 @@ public class GroupController {
     );
   }
 
+  /**
+   * Gets all groups.
+   *
+   * @param pageNumber the page number
+   * @param pageSize   the page size
+   * @return the all groups
+   */
   @GetMapping
+  @PreAuthorize("hasAuthority('MANAGER')")
   public List<GroupDto> getAllGroups(
       @RequestParam(required = false, defaultValue = "0") int pageNumber,
       @RequestParam(required = false, defaultValue = "20") int pageSize
@@ -54,22 +77,46 @@ public class GroupController {
         .toList();
   }
 
+  /**
+   * Create group dto.
+   *
+   * @param groupCreationDto the group creation dto
+   * @return the group dto
+   */
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
+  @PreAuthorize("hasAuthority('MANAGER')")
   public GroupDto createGroup(@RequestBody @Valid GroupCreationDto groupCreationDto) {
     return GroupDto.fromEntity(
         groupService.createGroup(groupCreationDto.toEntity())
     );
   }
 
+  /**
+   * Update group group dto.
+   *
+   * @param groupCreationDto the group creation dto
+   * @param id               the id
+   * @return the group dto
+   * @throws GroupNotFoundException the group not found exception
+   */
   @PutMapping("/{id}")
+  @PreAuthorize("hasAuthority('MANAGER')")
   public GroupDto updateGroup(@RequestBody @Valid GroupCreationDto groupCreationDto, @PathVariable UUID id) throws GroupNotFoundException {
     return GroupDto.fromEntity(
         groupService.updateGroup(groupCreationDto.toEntity(), id)
     );
   }
 
+  /**
+   * Delete group group dto.
+   *
+   * @param id the id
+   * @return the group dto
+   * @throws GroupNotFoundException the group not found exception
+   */
   @DeleteMapping("/{id}")
+  @PreAuthorize("hasAuthority('MANAGER')")
   public GroupDto deleteGroup(@PathVariable UUID id) throws GroupNotFoundException {
     return GroupDto.fromEntity(
         groupService.deleteGroup(id)

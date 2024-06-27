@@ -1,8 +1,23 @@
 package com.rental.enums;
 
+/**
+ * The enum Status.
+ */
 public enum Status {
+
+  /**
+   * Pending status.
+   */
   PENDING("Pending"),
+
+  /**
+   * Confirmed status.
+   */
   CONFIRMED("Confirmed"),
+
+  /**
+   * Cancelled status.
+   */
   CANCELLED("Cancelled");
 
   private final String name;
@@ -11,6 +26,11 @@ public enum Status {
     this.name = name;
   }
 
+  /**
+   * Gets name.
+   *
+   * @return the name
+   */
   public String getName() {
     return name;
   }

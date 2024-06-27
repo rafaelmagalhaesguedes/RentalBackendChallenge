@@ -67,6 +67,7 @@ public class PersonController {
    * @return the all persons
    */
   @GetMapping
+  @PreAuthorize("hasAuthority('MANAGER')")
   public List<PersonDto> getAllPersons(
       @RequestParam(name = "pageNumber", required = false, defaultValue = "0") int pageNumber,
       @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize
@@ -107,7 +108,7 @@ public class PersonController {
       @RequestBody @Valid PersonUpdateDto personUpdateDto
   ) throws PersonNotFoundException {
     return PersonDto.fromEntity(
-        personService.updateCustomer(id, personUpdateDto.toEntity())
+        personService.updatePerson(id, personUpdateDto.toEntity())
     );
   }
 
@@ -121,7 +122,7 @@ public class PersonController {
   @DeleteMapping("/{id}")
   public PersonDto personDelete(@PathVariable UUID id) throws PersonNotFoundException {
     return PersonDto.fromEntity(
-        personService.deleteCustomer(id)
+        personService.deleteperson(id)
     );
   }
 }

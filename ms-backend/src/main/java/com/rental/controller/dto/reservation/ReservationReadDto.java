@@ -9,6 +9,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * The type Reservation read dto.
+ */
 public record ReservationReadDto(
     UUID id,
     PersonDto person,
@@ -20,6 +23,13 @@ public record ReservationReadDto(
     Status status,
     String paymentMethod
 ) {
+
+  /**
+   * From entity reservation read dto.
+   *
+   * @param reservation the reservation
+   * @return the reservation read dto
+   */
   public static ReservationReadDto fromEntity(Reservation reservation) {
     return new ReservationReadDto(
         reservation.getId(),

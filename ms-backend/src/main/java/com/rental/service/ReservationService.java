@@ -25,6 +25,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+/**
+ * The type Reservation service.
+ */
 @Service
 public class ReservationService {
 
@@ -34,6 +37,15 @@ public class ReservationService {
   private final AccessoryRepository accessoryRepository;
   private final PaymentService paymentService;
 
+  /**
+   * Instantiates a new Reservation service.
+   *
+   * @param reservationRepository the reservation repository
+   * @param personRepository      the person repository
+   * @param groupRepository       the group repository
+   * @param accessoryRepository   the accessory repository
+   * @param paymentService        the payment service
+   */
   @Autowired
   public ReservationService(ReservationRepository reservationRepository, PersonRepository personRepository, GroupRepository groupRepository, AccessoryRepository accessoryRepository, PaymentService paymentService) {
     this.reservationRepository = reservationRepository;
@@ -43,11 +55,25 @@ public class ReservationService {
     this.paymentService = paymentService;
   }
 
+  /**
+   * Gets reservation by id.
+   *
+   * @param id the id
+   * @return the reservation by id
+   * @throws ReservationNotFoundException the reservation not found exception
+   */
   public Reservation getReservationById(UUID id) throws ReservationNotFoundException {
     return reservationRepository.findById(id)
         .orElseThrow(ReservationNotFoundException::new);
   }
 
+  /**
+   * Gets all reservations.
+   *
+   * @param pageNumber the page number
+   * @param pageSize   the page size
+   * @return the all reservations
+   */
   public List<Reservation> getAllReservations(int pageNumber, int pageSize) {
     Pageable pageable = PageRequest.of(pageNumber, pageSize);
     Page<Reservation> page = reservationRepository.findAll(pageable);
@@ -55,6 +81,21 @@ public class ReservationService {
     return page.toList();
   }
 
+  /**
+   * Create reservation reservation dto.
+   *
+   * @param personId       the person id
+   * @param groupId        the group id
+   * @param accessoryIds   the accessory ids
+   * @param pickupDateTime the pickup date time
+   * @param returnDateTime the return date time
+   * @param totalAmount    the total amount
+   * @param paymentMethod  the payment method
+   * @return the reservation dto
+   * @throws PersonNotFoundException the person not found exception
+   * @throws GroupNotFoundException  the group not found exception
+   * @throws StripeException         the stripe exception
+   */
   @Transactional
   public ReservationDto createReservation(UUID personId, UUID groupId, List<UUID> accessoryIds, LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, String paymentMethod) throws PersonNotFoundException, GroupNotFoundException, StripeException {
 

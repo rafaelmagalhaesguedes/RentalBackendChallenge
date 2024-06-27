@@ -12,17 +12,32 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * The type Payment controller.
+ */
 @RestController
 @RequestMapping("/payment")
 public class PaymentController {
 
   private final PaymentRepository paymentRepository;
 
+  /**
+   * Instantiates a new Payment controller.
+   *
+   * @param paymentRepository the payment repository
+   */
   @Autowired
   public PaymentController(PaymentRepository paymentRepository) {
     this.paymentRepository = paymentRepository;
   }
 
+  /**
+   * Payment success string.
+   *
+   * @param paymentId the payment id
+   * @param model     the model
+   * @return the string
+   */
   @GetMapping("/success/{paymentId}")
   public String paymentSuccess(@PathVariable UUID paymentId, Model model) {
     Payment payment = paymentRepository.findById(paymentId)
@@ -37,6 +52,13 @@ public class PaymentController {
     return "payment-success";
   }
 
+  /**
+   * Payment failed string.
+   *
+   * @param paymentId the payment id
+   * @param model     the model
+   * @return the string
+   */
   @GetMapping("/cancel/{paymentId}")
   public String paymentFailed(@PathVariable UUID paymentId, Model model) {
     Payment payment = paymentRepository.findById(paymentId)
@@ -46,7 +68,7 @@ public class PaymentController {
 
     // Add payment details to the model
     model.addAttribute("payment", payment);
-    
+
     return "payment-failed";
   }
 }

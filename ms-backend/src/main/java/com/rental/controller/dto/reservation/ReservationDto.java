@@ -10,6 +10,9 @@ import java.util.UUID;
 import com.rental.entity.Person;
 import com.rental.entity.Group;
 
+/**
+ * The type Reservation dto.
+ */
 public record ReservationDto(
     UUID id,
     PersonDto person,
@@ -22,6 +25,14 @@ public record ReservationDto(
     String paymentMethod,
     String paymentUrl
 ) {
+
+  /**
+   * From entity reservation dto.
+   *
+   * @param reservation the reservation
+   * @param paymentUrl  the payment url
+   * @return the reservation dto
+   */
   public static ReservationDto fromEntity(Reservation reservation, String paymentUrl) {
     return new ReservationDto(
         reservation.getId(),

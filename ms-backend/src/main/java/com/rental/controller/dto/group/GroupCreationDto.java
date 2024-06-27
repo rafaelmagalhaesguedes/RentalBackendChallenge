@@ -7,6 +7,9 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import java.util.List;
 
+/**
+ * The type Group creation dto.
+ */
 public record GroupCreationDto(
     @NotBlank(message = "Name cannot be blank")
     @Size(max = 255, message = "Name must be less than or equal to 255 characters")
@@ -19,6 +22,12 @@ public record GroupCreationDto(
     @Positive(message = "Daily rate is a positive number")
     Double dailyRate
 ) {
+
+  /**
+   * To entity group.
+   *
+   * @return the group
+   */
   public Group toEntity() {
     return new Group(name, vehicles, dailyRate);
   }

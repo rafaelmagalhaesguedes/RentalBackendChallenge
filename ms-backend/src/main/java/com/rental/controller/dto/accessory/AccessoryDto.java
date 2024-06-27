@@ -4,6 +4,9 @@ import com.rental.entity.Accessory;
 import jakarta.persistence.criteria.CriteriaBuilder.In;
 import java.util.UUID;
 
+/**
+ * The type Accessory dto.
+ */
 public record AccessoryDto(
     UUID id,
     String name,
@@ -11,6 +14,13 @@ public record AccessoryDto(
     Integer quantity,
     Double dailyRate
 ) {
+
+  /**
+   * From entity accessory dto.
+   *
+   * @param accessory the accessory
+   * @return the accessory dto
+   */
   public static AccessoryDto fromEntity(Accessory accessory) {
     return new AccessoryDto(
         accessory.getId(),

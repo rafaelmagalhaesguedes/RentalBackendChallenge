@@ -5,6 +5,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * The type Reservation creation dto.
+ */
 public record ReservationCreationDto(
     UUID personId,
     UUID groupId,
