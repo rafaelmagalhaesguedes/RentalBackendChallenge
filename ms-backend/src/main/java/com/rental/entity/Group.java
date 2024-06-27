@@ -1,14 +1,14 @@
 package com.rental.entity;
 
-import jakarta.persistence.Column;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -21,13 +21,14 @@ public class Group {
 
   private String name;
 
-  private String vehicles;
+  @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private List<Vehicle> vehicles;
 
   private Double dailyRate;
 
   public Group() { }
 
-  public Group(String name, String vehicles, Double dailyRate) {
+  public Group(String name, List<Vehicle> vehicles, Double dailyRate) {
     this.name = name;
     this.vehicles = vehicles;
     this.dailyRate = dailyRate;
@@ -57,11 +58,11 @@ public class Group {
     this.dailyRate = dailyRate;
   }
 
-  public String getVehicles() {
+  public List<Vehicle> getVehicles() {
     return vehicles;
   }
 
-  public void setVehicles(String vehicles) {
+  public void setVehicles(List<Vehicle> vehicles) {
     this.vehicles = vehicles;
   }
 }
