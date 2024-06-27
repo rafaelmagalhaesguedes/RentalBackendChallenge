@@ -122,7 +122,7 @@ public class PersonController {
   @DeleteMapping("/{id}")
   public PersonDto personDelete(@PathVariable UUID id) throws PersonNotFoundException {
     return PersonDto.fromEntity(
-        personService.deleteperson(id)
+        personService.deletePerson(id)
     );
   }
 }

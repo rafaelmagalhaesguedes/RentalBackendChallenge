@@ -5,9 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
 
 import com.rental.entity.Group;
+import com.rental.entity.Vehicle;
 import com.rental.repository.GroupRepository;
 import com.rental.service.GroupService;
-import com.rental.service.exception.PersonExistingException;
 import com.rental.service.exception.GroupNotFoundException;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +32,13 @@ public class GroupServiceTest {
   @MockBean
   GroupRepository repository;
 
+  private Vehicle createVehicle(String model) {
+    Vehicle vehicle = new Vehicle();
+    vehicle.setId(UUID.randomUUID());
+    vehicle.setModel(model);
+    return vehicle;
+  }
+
   @Test
   public void testGroupRetrievalById() throws GroupNotFoundException {
 
@@ -41,7 +48,13 @@ public class GroupServiceTest {
     Group group = new Group();
     group.setId(id);
     group.setName("Group A");
-    group.setVehicles("Mercedez c180, BMW x6, Porche 911");
+    group.setVehicles(Arrays.asList(
+        createVehicle("Mercedez"),
+        createVehicle("c180"),
+        createVehicle("BMW"),
+        createVehicle("x6"),
+        createVehicle("Porche 911")
+    ));
     group.setDailyRate(200.50);
 
     // Act
@@ -55,7 +68,8 @@ public class GroupServiceTest {
     // Assert
     assertEquals(groupFromDb.getId(), group.getId());
     assertEquals(groupFromDb.getName(), group.getName());
-    assertEquals(groupFromDb.getVehicles(), group.getVehicles());
+    assertEquals(groupFromDb.getVehicles().size(), group.getVehicles().size());
+    assertEquals(groupFromDb.getVehicles().get(0).getModel(), group.getVehicles().get(0).getModel());
     assertEquals(groupFromDb.getDailyRate(), group.getDailyRate());
   }
 
@@ -69,12 +83,20 @@ public class GroupServiceTest {
     Group group1 = new Group();
     group1.setId(group1Id);
     group1.setName("Grupo C");
-    group1.setVehicles("Uno, Mobi, Kwid");
+    group1.setVehicles(Arrays.asList(
+        createVehicle("Uno"),
+        createVehicle("Mobi"),
+        createVehicle("Kwid")
+    ));
 
     Group group2 = new Group();
     group2.setId(group2Id);
     group2.setName("Grupo D");
-    group2.setVehicles("Onix, HB20, Gol");
+    group2.setVehicles(Arrays.asList(
+        createVehicle("Onix"),
+        createVehicle("HB20"),
+        createVehicle("Gol")
+    ));
 
     List<Group> groups = Arrays.asList(group1, group2);
 
@@ -92,23 +114,30 @@ public class GroupServiceTest {
     assertEquals(2, getAllGroups.size());
     assertEquals(group1.getId(), groups.get(0).getId());
     assertEquals(group1.getName(), groups.get(0).getName());
-    assertEquals(group1.getVehicles(), groups.get(0).getVehicles());
+    assertEquals(group1.getVehicles().size(), groups.get(0).getVehicles().size());
+    assertEquals(group1.getVehicles().get(0).getModel(), groups.get(0).getVehicles().get(0).getModel());
     assertEquals(group1.getDailyRate(), groups.get(0).getDailyRate());
 
     assertEquals(group2.getId(), groups.get(1).getId());
     assertEquals(group2.getName(), groups.get(1).getName());
-    assertEquals(group2.getVehicles(), groups.get(1).getVehicles());
+    assertEquals(group2.getVehicles().size(), groups.get(1).getVehicles().size());
+    assertEquals(group2.getVehicles().get(0).getModel(), groups.get(1).getVehicles().get(0).getModel());
     assertEquals(group2.getDailyRate(), groups.get(1).getDailyRate());
   }
 
   @Test
-  public void testCreateGroup() throws PersonExistingException {
+  public void testCreateGroup() {
 
     // Arrange
     Group group = new Group();
     group.setId(UUID.randomUUID());
     group.setName("Group D");
-    group.setVehicles("Creta, Renegade, Tracker, Compass");
+    group.setVehicles(Arrays.asList(
+        createVehicle("Creta"),
+        createVehicle("Renegade"),
+        createVehicle("Tracker"),
+        createVehicle("Compass")
+    ));
     group.setDailyRate(250.00);
 
     // Act
@@ -121,7 +150,8 @@ public class GroupServiceTest {
     // Assert
     assertEquals(newGroup.getId(), group.getId());
     assertEquals(newGroup.getName(), group.getName());
-    assertEquals(newGroup.getVehicles(), group.getVehicles());
+    assertEquals(newGroup.getVehicles().size(), group.getVehicles().size());
+    assertEquals(newGroup.getVehicles().get(0).getModel(), group.getVehicles().get(0).getModel());
     assertEquals(newGroup.getDailyRate(), group.getDailyRate());
   }
 
@@ -132,13 +162,24 @@ public class GroupServiceTest {
     UUID id = UUID.randomUUID();
 
     Group existingGroup = new Group();
+    existingGroup.setId(id);
     existingGroup.setName("Group A");
-    existingGroup.setVehicles("Uno, Mobi, Onix");
+    existingGroup.setVehicles(Arrays.asList(
+        createVehicle("Uno"),
+        createVehicle("Mobi"),
+        createVehicle("Onix")
+    ));
     existingGroup.setDailyRate(150.00);
 
-    Group updatedGroup= new Group();
+    Group updatedGroup = new Group();
+    updatedGroup.setId(id);
     updatedGroup.setName("Group A+");
-    updatedGroup.setVehicles("Uno, Mobi, Onix e Kwid");
+    updatedGroup.setVehicles(Arrays.asList(
+        createVehicle("Uno"),
+        createVehicle("Mobi"),
+        createVehicle("Onix"),
+        createVehicle("Kwid")
+    ));
     updatedGroup.setDailyRate(180.00);
 
     Mockito.when(repository.findById(id)).thenReturn(Optional.of(existingGroup));
@@ -150,7 +191,8 @@ public class GroupServiceTest {
     // Assert
     assertEquals(updatedGroup.getId(), result.getId());
     assertEquals(updatedGroup.getName(), result.getName());
-    assertEquals(updatedGroup.getVehicles(), result.getVehicles());
+    assertEquals(updatedGroup.getVehicles().size(), result.getVehicles().size());
+    assertEquals(updatedGroup.getVehicles().get(0).getModel(), result.getVehicles().get(0).getModel());
     assertEquals(updatedGroup.getDailyRate(), result.getDailyRate());
   }
 
@@ -161,8 +203,13 @@ public class GroupServiceTest {
     UUID id = UUID.randomUUID();
 
     Group updatedGroup = new Group();
+    updatedGroup.setId(id);
     updatedGroup.setName("Group A");
-    updatedGroup.setVehicles("Uno, Mobi, Onix");
+    updatedGroup.setVehicles(Arrays.asList(
+        createVehicle("Uno"),
+        createVehicle("Mobi"),
+        createVehicle("Onix")
+    ));
     updatedGroup.setDailyRate(150.00);
 
     Mockito.when(repository.findById(id))
@@ -181,7 +228,11 @@ public class GroupServiceTest {
     Group existingGroup = new Group();
     existingGroup.setId(id);
     existingGroup.setName("Group B+");
-    existingGroup.setVehicles("Gol, Argo, Onix");
+    existingGroup.setVehicles(Arrays.asList(
+        createVehicle("Gol"),
+        createVehicle("Argo"),
+        createVehicle("Onix")
+    ));
     existingGroup.setDailyRate(200.00);
 
     Mockito.when(repository.findById(id))

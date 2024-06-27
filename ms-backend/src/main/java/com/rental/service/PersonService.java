@@ -111,7 +111,7 @@ public class PersonService implements UserDetailsService {
    * @return the person
    * @throws PersonNotFoundException the person not found exception
    */
-  public Person deleteperson(UUID id) throws PersonNotFoundException {
+  public Person deletePerson(UUID id) throws PersonNotFoundException {
     Person person = getPersonById(id);
 
     personRepository.delete(person);

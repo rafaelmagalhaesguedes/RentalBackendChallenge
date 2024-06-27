@@ -137,7 +137,7 @@ public class PersonServiceTest {
     Mockito.when(personRepository.save(existingPerson)).thenReturn(existingPerson);
 
     // Act
-    Person result = personService.updateCustomer(id, updatedPerson);
+    Person result = personService.updatePerson(id, updatedPerson);
 
     // Assert
     assertEquals(updatedPerson.getName(), result.getName());
@@ -159,7 +159,7 @@ public class PersonServiceTest {
 
     // Act & Assert
     assertThrows(PersonNotFoundException.class,
-        () -> personService.updateCustomer(id, updatedPerson));
+        () -> personService.updatePerson(id, updatedPerson));
   }
 
   @Test
@@ -176,7 +176,7 @@ public class PersonServiceTest {
         .thenReturn(Optional.of(existingPerson));
 
     // Act
-    Person result = personService.deleteCustomer(id);
+    Person result = personService.deletePerson(id);
 
     // Assert
     assertEquals(existingPerson, result);
@@ -194,6 +194,6 @@ public class PersonServiceTest {
 
     // Act & Assert
     assertThrows(PersonNotFoundException.class,
-        () -> personService.deleteCustomer(id));
+        () -> personService.deletePerson(id));
   }
 }

@@ -28,7 +28,7 @@ public class Vehicle {
 
   private String color;
 
-  private Date yearOfManufacture;
+  private String yearOfManufacture;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "group_id", nullable = false)
@@ -51,7 +51,7 @@ public class Vehicle {
    * @param group             the group
    */
   public Vehicle(UUID id, String model, String licensePlate, String brand, String color,
-      Date yearOfManufacture, Group group) {
+      String yearOfManufacture, Group group) {
     this.id = id;
     this.model = model;
     this.licensePlate = licensePlate;
@@ -69,16 +69,14 @@ public class Vehicle {
    * @param brand             the brand
    * @param color             the color
    * @param yearOfManufacture the year of manufacture
-   * @param group             the group
    */
   public Vehicle(String model, String licensePlate, String brand, String color,
-      Date yearOfManufacture, Group group) {
+      String yearOfManufacture) {
     this.model = model;
     this.licensePlate = licensePlate;
     this.brand = brand;
     this.color = color;
     this.yearOfManufacture = yearOfManufacture;
-    this.group = group;
   }
 
   /**
@@ -176,7 +174,7 @@ public class Vehicle {
    *
    * @return the year of manufacture
    */
-  public Date getYearOfManufacture() {
+  public String getYearOfManufacture() {
     return yearOfManufacture;
   }
 
@@ -185,7 +183,7 @@ public class Vehicle {
    *
    * @param yearOfManufacture the year of manufacture
    */
-  public void setYearOfManufacture(Date yearOfManufacture) {
+  public void setYearOfManufacture(String yearOfManufacture) {
     this.yearOfManufacture = yearOfManufacture;
   }
 

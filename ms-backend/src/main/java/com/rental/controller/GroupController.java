@@ -93,7 +93,7 @@ public class GroupController {
   }
 
   /**
-   * Update group group dto.
+   * Update group dto.
    *
    * @param groupCreationDto the group creation dto
    * @param id               the id
@@ -109,7 +109,7 @@ public class GroupController {
   }
 
   /**
-   * Delete group group dto.
+   * Delete group dto.
    *
    * @param id the id
    * @return the group dto
