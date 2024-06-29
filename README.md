@@ -10,15 +10,15 @@ comunicação eficiente por e-mail, aproveitando filas de mensagens para maior c
 
 - Autenticação e Autorização: Autenticação de usuários e autorização baseada em papéis (ADMIN, MANAGER).
 
-- Gerenciamento de Reservas: Registre e gerencie reservas de acessórios para pessoas ou grupos de veículos.
+- Gerenciamento de Reservas: Registro e gerenciamento de reservas de acessórios para pessoas ou grupos de veículos.
 
-- Gerenciamento de Pessoas: Cadastre, liste, atualize e exclua informações de pessoas, incluindo clientes e funcionários.
+- Gerenciamento de Pessoas: Cadastro, listagem, atualização e exclusão de informações de pessoas, incluindo clientes e funcionários.
 
-- Gerenciamento de Acessórios: Cadastre, liste, atualize e exclua acessórios disponíveis para aluguel.
+- Gerenciamento de Acessórios: Cadastro, listagem, atualização e exclusão de acessórios disponíveis para aluguel.
 
-- Gerenciamento de Grupos de veículos: Crie, liste, atualize e exclua grupos de veículos.
+- Gerenciamento de Grupos de veículos: Criação, listagem, atualização e exclusão de grupos de veículos.
 
-- Integração com o Stripe: Permita que os usuários façam o pagamento das reservas utilizando cartão de crédito/débito através do Stripe.
+- Integração com o Stripe: Permite que os usuários façam o pagamento das reservas utilizando cartão de crédito/débito através do Stripe.
 
 ## Microserviço de Envio de E-mails
 
@@ -30,6 +30,8 @@ e garantir a entrega dos e-mails. O microserviço é responsável por:
 - Tratamento de Falhas: Lidar com falhas de envio de e-mails de forma robusta e eficiente.
 
 - Configuração com RabbitMQ: Utilização do RabbitMQ para gerenciamento de filas e garantia de entrega dos e-mails.
+
+- Utiliza a Cloud AMQP para fornecer uma infraestrutura de mensageria hospedada na nuvem, garantindo alta disponibilidade, escalabilidade e desempenho para o sistema de filas do RabbitMQ.
 
 ## Tecnologias Utilizadas
 
