@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -24,6 +25,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.CacheEvict;
+
 
 /**
  * REST controller for managing accessories.
@@ -52,6 +56,7 @@ public class AccessoryController {
   @Operation(summary = "Get accessory by ID", description = "Retrieve a specific accessory by its ID")
   @ApiResponse(responseCode = "200", description = "Accessory successfully retrieved")
   @ApiResponse(responseCode = "404", description = "Accessory not found")
+  @Cacheable(value = "accessoryCache", key = "#id")
   public AccessoryDto getAccessoryById(@PathVariable UUID id) throws AccessoryNotFoundException {
     return AccessoryDto.fromEntity(
         accessoryService.getAccessoryById(id)
@@ -69,6 +74,7 @@ public class AccessoryController {
   @PreAuthorize("hasAuthority('MANAGER')")
   @Operation(summary = "List all accessories", description = "List all accessories with pagination")
   @ApiResponse(responseCode = "200", description = "List of accessories successfully retrieved")
+  @Cacheable(value = "accessoriesCache")
   public List<AccessoryDto> getAllAccessories(
       @RequestParam(required = false, defaultValue = "0") int pageNumber,
       @RequestParam(required = false, defaultValue = "10") int pageSize) {
@@ -90,6 +96,7 @@ public class AccessoryController {
   @PreAuthorize("hasAuthority('MANAGER')")
   @Operation(summary = "Create accessory", description = "Create a new accessory")
   @ApiResponse(responseCode = "201", description = "Accessory successfully created")
+  @CacheEvict(value = "accessoriesCache", allEntries = true)
   public AccessoryDto createAccessory(@RequestBody @Valid AccessoryCreationDto accessoryCreationDto) {
     return AccessoryDto.fromEntity(
         accessoryService.createAccessory(accessoryCreationDto.toEntity())
@@ -109,6 +116,10 @@ public class AccessoryController {
   @Operation(summary = "Update accessory", description = "Update an existing accessory")
   @ApiResponse(responseCode = "200", description = "Accessory successfully updated")
   @ApiResponse(responseCode = "404", description = "Accessory not found")
+  @Caching(evict = {
+      @CacheEvict(value = "accessoryCache", key = "#id"),
+      @CacheEvict(value = "accessoriesCache", allEntries = true)
+  })
   public AccessoryDto updateAccessory(@Valid @RequestBody AccessoryCreationDto accessoryCreationDto, @PathVariable UUID id) throws AccessoryNotFoundException {
     return AccessoryDto.fromEntity(
         accessoryService.updateAccessory(accessoryCreationDto.toEntity(), id)
@@ -127,6 +138,10 @@ public class AccessoryController {
   @Operation(summary = "Delete accessory", description = "Delete an accessory by its ID")
   @ApiResponse(responseCode = "200", description = "Accessory successfully deleted")
   @ApiResponse(responseCode = "404", description = "Accessory not found")
+  @Caching(evict = {
+      @CacheEvict(value = "accessoryCache", key = "#id"),
+      @CacheEvict(value = "accessoriesCache", allEntries = true)
+  })
   public AccessoryDto deleteAccessory(@PathVariable UUID id) throws AccessoryNotFoundException {
     return AccessoryDto.fromEntity(
         accessoryService.deleteAccessory(id)

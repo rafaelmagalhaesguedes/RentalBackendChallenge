@@ -78,6 +78,8 @@ public class AccessoryService {
 
     accessoryFromDb.setName(accessory.getName());
     accessoryFromDb.setDailyRate(accessory.getDailyRate());
+    accessoryFromDb.setDescription(accessory.getDescription());
+    accessoryFromDb.setQuantity(accessory.getQuantity());
 
     return accessoryRepository.save(accessoryFromDb);
   }
