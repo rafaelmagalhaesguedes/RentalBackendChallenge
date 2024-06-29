@@ -41,6 +41,8 @@ public class AccessoryServiceTest {
     accessory.setId(accessoryId);
     accessory.setName("Baby Comfort");
     accessory.setDailyRate(50.00);
+    accessory.setDescription("Baby comfort plus top");
+    accessory.setQuantity(10);
 
     // Act
     Mockito.when(accessoryRepository.findById(eq(accessoryId)))
@@ -54,6 +56,8 @@ public class AccessoryServiceTest {
     assertEquals(getAccessory.getId(), accessory.getId());
     assertEquals(getAccessory.getName(), accessory.getName());
     assertEquals(getAccessory.getDailyRate(), accessory.getDailyRate());
+    assertEquals(getAccessory.getDescription(), accessory.getDescription());
+    assertEquals(getAccessory.getQuantity(), accessory.getQuantity());
   }
 
   @Test
@@ -67,11 +71,15 @@ public class AccessoryServiceTest {
     accessory1.setId(accessory1Id);
     accessory1.setName("Baby Comfort");
     accessory1.setDailyRate(50.00);
+    accessory1.setDescription("Baby comfort plus top");
+    accessory1.setQuantity(10);
 
     Accessory accessory2 = new Accessory();
     accessory2.setId(accessory2Id);
     accessory2.setName("GPS");
-    accessory2.setDailyRate(70.00);
+    accessory2.setDailyRate(100.00);
+    accessory2.setDescription("GPS top master noob");
+    accessory2.setQuantity(5);
 
     List<Accessory> accessories = Arrays.asList(accessory1, accessory2);
 
@@ -90,10 +98,14 @@ public class AccessoryServiceTest {
     assertEquals(accessory1.getId(), accessories.get(0).getId());
     assertEquals(accessory1.getName(), accessories.get(0).getName());
     assertEquals(accessory1.getDailyRate(), accessories.get(0).getDailyRate());
+    assertEquals(accessory1.getDescription(), accessories.get(0).getDescription());
+    assertEquals(accessory1.getQuantity(), accessories.get(0).getQuantity());
 
     assertEquals(accessory2.getId(), accessories.get(1).getId());
     assertEquals(accessory2.getName(), accessories.get(1).getName());
     assertEquals(accessory2.getDailyRate(), accessories.get(1).getDailyRate());
+    assertEquals(accessory2.getDescription(), accessories.get(1).getDescription());
+    assertEquals(accessory2.getQuantity(), accessories.get(1).getQuantity());
   }
 
   @Test
@@ -104,6 +116,8 @@ public class AccessoryServiceTest {
     accessory.setId(UUID.randomUUID());
     accessory.setName("Baby Comfort");
     accessory.setDailyRate(20.00);
+    accessory.setDescription("Baby comfort plus top");
+    accessory.setQuantity(5);
 
     // Act
     Mockito.when(accessoryRepository.save(accessory)).thenReturn(accessory);
@@ -116,6 +130,8 @@ public class AccessoryServiceTest {
     assertEquals(newAccessory.getId(), accessory.getId());
     assertEquals(newAccessory.getName(), accessory.getName());
     assertEquals(newAccessory.getDailyRate(), accessory.getDailyRate());
+    assertEquals(newAccessory.getDescription(), accessory.getDescription());
+    assertEquals(newAccessory.getQuantity(), accessory.getQuantity());
   }
 
   @Test
@@ -125,12 +141,16 @@ public class AccessoryServiceTest {
     UUID id = UUID.randomUUID();
     Accessory existingAccessory = new Accessory();
     existingAccessory.setId(id);
-    existingAccessory.setName("Old Name");
+    existingAccessory.setName("Baby");
     existingAccessory.setDailyRate(50.00);
+    existingAccessory.setDescription("Baby comfort");
+    existingAccessory.setQuantity(5);
 
     Accessory updatedAccessory = new Accessory();
-    updatedAccessory.setName("New Name");
+    updatedAccessory.setName("Baby comfort plus");
     updatedAccessory.setDailyRate(60.00);
+    existingAccessory.setDescription("Baby comfort plus pro");
+    existingAccessory.setQuantity(10);
 
     Mockito.when(accessoryRepository.findById(id)).thenReturn(Optional.of(existingAccessory));
     Mockito.when(accessoryRepository.save(existingAccessory)).thenReturn(existingAccessory);
@@ -141,6 +161,8 @@ public class AccessoryServiceTest {
     // Assert
     assertEquals(updatedAccessory.getName(), result.getName());
     assertEquals(updatedAccessory.getDailyRate(), result.getDailyRate());
+    assertEquals(updatedAccessory.getDescription(), result.getDescription());
+    assertEquals(updatedAccessory.getQuantity(), result.getQuantity());
   }
 
   @Test
@@ -149,8 +171,10 @@ public class AccessoryServiceTest {
     // Arrange
     UUID id = UUID.randomUUID();
     Accessory updatedAccessory = new Accessory();
-    updatedAccessory.setName("New Name");
+    updatedAccessory.setName("Baby comfort");
     updatedAccessory.setDailyRate(60.00);
+    updatedAccessory.setDescription("Baby comfort");
+    updatedAccessory.setQuantity(5);
 
     Mockito.when(accessoryRepository.findById(id)).thenReturn(Optional.empty());
 
@@ -167,6 +191,8 @@ public class AccessoryServiceTest {
     existingAccessory.setId(id);
     existingAccessory.setName("Accessory");
     existingAccessory.setDailyRate(50.00);
+    existingAccessory.setDescription("Accessory updated");
+    existingAccessory.setQuantity(5);
 
     Mockito.when(accessoryRepository.findById(id)).thenReturn(Optional.of(existingAccessory));
 
