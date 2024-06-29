@@ -1,8 +1,10 @@
 
 # Rental Service Application
 
-Sistema para gerenciar clientes, reservas, aluguéis de acessórios e grupos de carros em uma locadora de veículos.
-O sistema também inclui um microserviço para o envio de e-mails utilizando filas.
+Este projeto engloba uma API robusta para gerenciamento de clientes, reservas, aluguel de acessórios e
+grupos de carros dentro de uma locadora de veículos. Possui integração perfeita com o gateway de pagamento
+Stripe para transações online seguras. Além disso, o sistema inclui uma arquitetura de microsserviços para
+comunicação eficiente por e-mail, aproveitando filas de mensagens para maior confiabilidade e escalabilidade.
 
 ## Funcionalidades Principais
 
@@ -47,6 +49,8 @@ e garantir a entrega dos e-mails. O microserviço é responsável por:
 
 - Stripe API: Integração com a API do Stripe para processamento de pagamentos.
 
+- Springdoc OpenAPI: API documentada com o Springdoc OpenAPI Swagger
+
 ## Configuração do Microserviço de E-mails
 
 ### Para configurar o microserviço de envio de e-mails, siga os passos abaixo:
@@ -68,6 +72,14 @@ O sistema utiliza a tecnologia de integração de pagamentos Stripe para permiti
 - Segurança e Criptografia: Utilização de protocolos de segurança e criptografia para garantir a segurança das transações de pagamento e dos dados do usuário.
 
 - Tratamento de Eventos: Implementação de mecanismos para lidar com eventos e notificações do Stripe, como confirmações de pagamento e atualizações de status.
+
+## Documentação do Swagger
+
+Este projeto utiliza Swagger para documentar seus endpoints de API, facilitando o entendimento e teste das funcionalidades disponíveis.
+
+### Acessando o Swagger
+
+Para acessar a documentação do Swagger, navegue até [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) após executar o aplicativo.
 
 ### Endpoints Principais
 
