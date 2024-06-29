@@ -8,6 +8,9 @@ import com.rental.service.ReservationService;
 import com.rental.service.exception.PersonNotFoundException;
 import com.rental.service.exception.GroupNotFoundException;
 import com.stripe.exception.StripeException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +48,10 @@ public class ReservationController {
    */
   @GetMapping
   @PreAuthorize("hasAuthority('MANAGER')")
+  @Operation(summary = "Get All Reservations", description = "Fetch all reservations with pagination support.")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "List of reservations fetched successfully")
+  })
   public List<ReservationReadDto> getAllReservations(
       @RequestParam(required = false, defaultValue = "0") int pageNumber,
       @RequestParam(required = false, defaultValue = "10") int pageSize
@@ -67,6 +74,12 @@ public class ReservationController {
    */
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
+  @Operation(summary = "Create Reservation", description = "Create a new reservation.")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "201", description = "Reservation created successfully"),
+      @ApiResponse(responseCode = "404", description = "Group or Person not found"),
+      @ApiResponse(responseCode = "400", description = "Stripe exception occurred")
+  })
   public ReservationDto createReservation(@RequestBody @Valid ReservationCreationDto reservationCreationDto)
       throws GroupNotFoundException, PersonNotFoundException, StripeException {
     return reservationService.createReservation(

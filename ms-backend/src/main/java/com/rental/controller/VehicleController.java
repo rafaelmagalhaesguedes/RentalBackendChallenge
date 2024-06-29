@@ -6,6 +6,9 @@ import com.rental.entity.Vehicle;
 import com.rental.service.VehicleService;
 import com.rental.service.exception.GroupNotFoundException;
 import com.rental.service.exception.VehicleNotFoundException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
@@ -44,6 +47,11 @@ public class VehicleController {
    */
   @GetMapping("/{id}")
   @PreAuthorize("hasAuthority('MANAGER')")
+  @Operation(summary = "Get Vehicle by ID", description = "Fetch a vehicle by its ID.")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Vehicle fetched successfully"),
+      @ApiResponse(responseCode = "404", description = "Vehicle not found")
+  })
   public VehicleDto getVehicleById(@PathVariable UUID id) throws VehicleNotFoundException {
     return VehicleDto.fromEntity(vehicleService.getVehicleById(id));
   }
@@ -57,6 +65,10 @@ public class VehicleController {
    */
   @GetMapping
   @PreAuthorize("hasAuthority('MANAGER')")
+  @Operation(summary = "Get All Vehicles", description = "Fetch all vehicles with pagination support.")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "List of vehicles fetched successfully")
+  })
   public List<VehicleDto> getAllVehicles(
       @RequestParam(required = false, defaultValue = "0") int pageNumber,
       @RequestParam(required = false, defaultValue = "20") int pageSize) {
@@ -74,6 +86,11 @@ public class VehicleController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   @PreAuthorize("hasAuthority('MANAGER')")
+  @Operation(summary = "Create Vehicle", description = "Create a new vehicle.")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "201", description = "Vehicle created successfully"),
+      @ApiResponse(responseCode = "404", description = "Group not found")
+  })
   public VehicleDto createVehicle(@RequestBody @Valid VehicleCreationDto vehicleCreationDto) throws GroupNotFoundException {
     return vehicleService.createVehicle(vehicleCreationDto);
   }
@@ -89,6 +106,11 @@ public class VehicleController {
    */
   @PutMapping("/{id}")
   @PreAuthorize("hasAuthority('MANAGER')")
+  @Operation(summary = "Update Vehicle", description = "Update an existing vehicle.")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Vehicle updated successfully"),
+      @ApiResponse(responseCode = "404", description = "Vehicle or group not found")
+  })
   public VehicleDto updateVehicle(@RequestBody @Valid VehicleCreationDto vehicleCreationDto, @PathVariable UUID id) throws VehicleNotFoundException, GroupNotFoundException {
     return vehicleService.updateVehicle(vehicleCreationDto, id);
   }
@@ -102,6 +124,11 @@ public class VehicleController {
    */
   @DeleteMapping("/{id}")
   @PreAuthorize("hasAuthority('MANAGER')")
+  @Operation(summary = "Delete Vehicle", description = "Delete a vehicle by its ID.")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Vehicle deleted successfully"),
+      @ApiResponse(responseCode = "404", description = "Vehicle not found")
+  })
   public VehicleDto deleteVehicle(@PathVariable UUID id) throws VehicleNotFoundException {
     return VehicleDto.fromEntity(vehicleService.deleteVehicle(id));
   }

@@ -7,6 +7,9 @@ import com.rental.entity.Person;
 import com.rental.service.PersonService;
 import com.rental.service.exception.PersonExistingException;
 import com.rental.service.exception.PersonNotFoundException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
@@ -53,6 +56,11 @@ public class PersonController {
    * @throws PersonNotFoundException the person not found exception
    */
   @GetMapping("/{id}")
+  @Operation(summary = "Get Person by ID", description = "Fetch a person by their unique ID.")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Person found"),
+      @ApiResponse(responseCode = "404", description = "Person not found")
+  })
   public PersonDto getPersonById(@PathVariable UUID id) throws PersonNotFoundException {
     return PersonDto.fromEntity(
         personService.getPersonById(id)
@@ -68,6 +76,10 @@ public class PersonController {
    */
   @GetMapping
   @PreAuthorize("hasAuthority('MANAGER')")
+  @Operation(summary = "Get All Persons", description = "Fetch all persons with pagination support.")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "List of persons fetched successfully")
+  })
   public List<PersonDto> getAllPersons(
       @RequestParam(name = "pageNumber", required = false, defaultValue = "0") int pageNumber,
       @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize
@@ -87,6 +99,11 @@ public class PersonController {
    */
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
+  @Operation(summary = "Create Person", description = "Create a new person.")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "201", description = "Person created successfully"),
+      @ApiResponse(responseCode = "409", description = "Person already exists")
+  })
   public PersonDto personCreate(@RequestBody @Valid PersonCreationDto personCreationDto)
       throws PersonExistingException {
     return PersonDto.fromEntity(
@@ -103,6 +120,11 @@ public class PersonController {
    * @throws PersonNotFoundException the person not found exception
    */
   @PutMapping("/{id}")
+  @Operation(summary = "Update Person", description = "Update an existing person.")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Person updated successfully"),
+      @ApiResponse(responseCode = "404", description = "Person not found")
+  })
   public PersonDto personUpdate(
       @PathVariable UUID id,
       @RequestBody @Valid PersonUpdateDto personUpdateDto
@@ -120,6 +142,11 @@ public class PersonController {
    * @throws PersonNotFoundException the person not found exception
    */
   @DeleteMapping("/{id}")
+  @Operation(summary = "Delete Person", description = "Delete a person by their unique ID.")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Person deleted successfully"),
+      @ApiResponse(responseCode = "404", description = "Person not found")
+  })
   public PersonDto personDelete(@PathVariable UUID id) throws PersonNotFoundException {
     return PersonDto.fromEntity(
         personService.deletePerson(id)

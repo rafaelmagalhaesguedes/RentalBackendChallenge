@@ -3,6 +3,11 @@ package com.rental.controller;
 import com.rental.controller.dto.auth.AuthDto;
 import com.rental.controller.dto.auth.TokenDto;
 import com.rental.service.TokenService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * REST controller for authentication.
+ */
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -43,6 +51,13 @@ public class AuthController {
    * @return the response entity
    */
   @PostMapping("/login")
+  @Operation(summary = "User login", description = "Authenticate user and return JWT token")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Successful authentication",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = TokenDto.class))),
+      @ApiResponse(responseCode = "401", description = "Invalid email or password",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = TokenDto.class)))
+  })
   public ResponseEntity<TokenDto> login(@RequestBody AuthDto authDto) {
     try {
       UsernamePasswordAuthenticationToken usernamePassword =

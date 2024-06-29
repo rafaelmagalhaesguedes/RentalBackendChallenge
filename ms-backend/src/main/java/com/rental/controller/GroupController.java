@@ -5,6 +5,11 @@ import com.rental.controller.dto.group.GroupDto;
 import com.rental.entity.Group;
 import com.rental.service.GroupService;
 import com.rental.service.exception.GroupNotFoundException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
@@ -52,6 +57,13 @@ public class GroupController {
    */
   @GetMapping("/{id}")
   @PreAuthorize("hasAuthority('MANAGER')")
+  @Operation(summary = "Get group by ID", description = "Retrieve a group by its ID")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Group found",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = GroupDto.class))),
+      @ApiResponse(responseCode = "404", description = "Group not found",
+          content = @Content(mediaType = "application/json"))
+  })
   public GroupDto getGroupById(@PathVariable UUID id) throws GroupNotFoundException {
     return GroupDto.fromEntity(
         groupService.getGroupById(id)
@@ -67,12 +79,17 @@ public class GroupController {
    */
   @GetMapping
   @PreAuthorize("hasAuthority('MANAGER')")
+  @Operation(summary = "Get all groups", description = "Retrieve all groups with pagination")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Groups retrieved",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = GroupDto.class)))
+  })
   public List<GroupDto> getAllGroups(
       @RequestParam(required = false, defaultValue = "0") int pageNumber,
       @RequestParam(required = false, defaultValue = "20") int pageSize
   ) {
-    List<Group> paginatedCustomers = groupService.getAllGroups(pageNumber, pageSize);
-    return paginatedCustomers.stream()
+    List<Group> paginatedGroups = groupService.getAllGroups(pageNumber, pageSize);
+    return paginatedGroups.stream()
         .map(GroupDto::fromEntity)
         .toList();
   }
@@ -86,6 +103,13 @@ public class GroupController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   @PreAuthorize("hasAuthority('MANAGER')")
+  @Operation(summary = "Create group", description = "Create a new group")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "201", description = "Group created",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = GroupDto.class))),
+      @ApiResponse(responseCode = "400", description = "Invalid input",
+          content = @Content(mediaType = "application/json"))
+  })
   public GroupDto createGroup(@RequestBody @Valid GroupCreationDto groupCreationDto) {
     return GroupDto.fromEntity(
         groupService.createGroup(groupCreationDto.toEntity())
@@ -102,6 +126,15 @@ public class GroupController {
    */
   @PutMapping("/{id}")
   @PreAuthorize("hasAuthority('MANAGER')")
+  @Operation(summary = "Update group", description = "Update an existing group")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Group updated",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = GroupDto.class))),
+      @ApiResponse(responseCode = "404", description = "Group not found",
+          content = @Content(mediaType = "application/json")),
+      @ApiResponse(responseCode = "400", description = "Invalid input",
+          content = @Content(mediaType = "application/json"))
+  })
   public GroupDto updateGroup(@RequestBody @Valid GroupCreationDto groupCreationDto, @PathVariable UUID id) throws GroupNotFoundException {
     return GroupDto.fromEntity(
         groupService.updateGroup(groupCreationDto.toEntity(), id)
@@ -117,6 +150,13 @@ public class GroupController {
    */
   @DeleteMapping("/{id}")
   @PreAuthorize("hasAuthority('MANAGER')")
+  @Operation(summary = "Delete group", description = "Delete a group by its ID")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Group deleted",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = GroupDto.class))),
+      @ApiResponse(responseCode = "404", description = "Group not found",
+          content = @Content(mediaType = "application/json"))
+  })
   public GroupDto deleteGroup(@PathVariable UUID id) throws GroupNotFoundException {
     return GroupDto.fromEntity(
         groupService.deleteGroup(id)

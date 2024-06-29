@@ -5,6 +5,8 @@ import com.rental.controller.dto.accessory.AccessoryDto;
 import com.rental.entity.Accessory;
 import com.rental.service.AccessoryService;
 import com.rental.service.exception.AccessoryNotFoundException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
@@ -47,6 +49,9 @@ public class AccessoryController {
    */
   @GetMapping("/{id}")
   @PreAuthorize("hasAuthority('MANAGER')")
+  @Operation(summary = "Get accessory by ID", description = "Retrieve a specific accessory by its ID")
+  @ApiResponse(responseCode = "200", description = "Accessory successfully retrieved")
+  @ApiResponse(responseCode = "404", description = "Accessory not found")
   public AccessoryDto getAccessoryById(@PathVariable UUID id) throws AccessoryNotFoundException {
     return AccessoryDto.fromEntity(
         accessoryService.getAccessoryById(id)
@@ -62,6 +67,8 @@ public class AccessoryController {
    */
   @GetMapping
   @PreAuthorize("hasAuthority('MANAGER')")
+  @Operation(summary = "List all accessories", description = "List all accessories with pagination")
+  @ApiResponse(responseCode = "200", description = "List of accessories successfully retrieved")
   public List<AccessoryDto> getAllAccessories(
       @RequestParam(required = false, defaultValue = "0") int pageNumber,
       @RequestParam(required = false, defaultValue = "10") int pageSize) {
@@ -81,6 +88,8 @@ public class AccessoryController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   @PreAuthorize("hasAuthority('MANAGER')")
+  @Operation(summary = "Create accessory", description = "Create a new accessory")
+  @ApiResponse(responseCode = "201", description = "Accessory successfully created")
   public AccessoryDto createAccessory(@RequestBody @Valid AccessoryCreationDto accessoryCreationDto) {
     return AccessoryDto.fromEntity(
         accessoryService.createAccessory(accessoryCreationDto.toEntity())
@@ -97,6 +106,9 @@ public class AccessoryController {
    */
   @PutMapping("/{id}")
   @PreAuthorize("hasAuthority('MANAGER')")
+  @Operation(summary = "Update accessory", description = "Update an existing accessory")
+  @ApiResponse(responseCode = "200", description = "Accessory successfully updated")
+  @ApiResponse(responseCode = "404", description = "Accessory not found")
   public AccessoryDto updateAccessory(@Valid @RequestBody AccessoryCreationDto accessoryCreationDto, @PathVariable UUID id) throws AccessoryNotFoundException {
     return AccessoryDto.fromEntity(
         accessoryService.updateAccessory(accessoryCreationDto.toEntity(), id)
@@ -112,6 +124,9 @@ public class AccessoryController {
    */
   @DeleteMapping("/{id}")
   @PreAuthorize("hasAuthority('MANAGER')")
+  @Operation(summary = "Delete accessory", description = "Delete an accessory by its ID")
+  @ApiResponse(responseCode = "200", description = "Accessory successfully deleted")
+  @ApiResponse(responseCode = "404", description = "Accessory not found")
   public AccessoryDto deleteAccessory(@PathVariable UUID id) throws AccessoryNotFoundException {
     return AccessoryDto.fromEntity(
         accessoryService.deleteAccessory(id)
