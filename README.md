@@ -53,16 +53,6 @@ e garantir a entrega dos e-mails. O microserviço é responsável por:
 
 - Springdoc OpenAPI: API documentada com o Springdoc OpenAPI Swagger
 
-## Configuração do Microserviço de E-mails
-
-### Para configurar o microserviço de envio de e-mails, siga os passos abaixo:
-
-- Configuração do RabbitMQ: Certifique-se de ter o RabbitMQ instalado e configurado corretamente.
-
-- Configuração do Spring Boot: Edite o arquivo application.properties para configurar as propriedades do RabbitMQ, incluindo o host, porta, nome da fila, etc.
-
-- Execução do Microserviço: Execute o aplicativo Spring Boot que contém o microserviço de envio de e-mails. Certifique-se de que o aplicativo esteja conectado ao RabbitMQ e pronto para processar as mensagens na fila.
-
 ## Integração com o Stripe
 
 O sistema utiliza a tecnologia de integração de pagamentos Stripe para permitir que os usuários façam o pagamento das reservas de forma segura e conveniente. A integração com o Stripe inclui:
