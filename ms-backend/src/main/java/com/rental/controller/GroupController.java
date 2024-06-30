@@ -14,6 +14,9 @@ import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -64,6 +67,7 @@ public class GroupController {
       @ApiResponse(responseCode = "404", description = "Group not found",
           content = @Content(mediaType = "application/json"))
   })
+  @Cacheable(value = "groupById", key = "#id")
   public GroupDto getGroupById(@PathVariable UUID id) throws GroupNotFoundException {
     return GroupDto.fromEntity(
         groupService.getGroupById(id)
@@ -84,6 +88,7 @@ public class GroupController {
       @ApiResponse(responseCode = "200", description = "Groups retrieved",
           content = @Content(mediaType = "application/json", schema = @Schema(implementation = GroupDto.class)))
   })
+  @Cacheable(value = "allGroups", key = "#pageNumber + '-' + #pageSize")
   public List<GroupDto> getAllGroups(
       @RequestParam(required = false, defaultValue = "0") int pageNumber,
       @RequestParam(required = false, defaultValue = "20") int pageSize
@@ -110,6 +115,7 @@ public class GroupController {
       @ApiResponse(responseCode = "400", description = "Invalid input",
           content = @Content(mediaType = "application/json"))
   })
+  @CacheEvict(value = {"groupById", "allGroups"}, allEntries = true)
   public GroupDto createGroup(@RequestBody @Valid GroupCreationDto groupCreationDto) {
     return GroupDto.fromEntity(
         groupService.createGroup(groupCreationDto.toEntity())
@@ -135,6 +141,12 @@ public class GroupController {
       @ApiResponse(responseCode = "400", description = "Invalid input",
           content = @Content(mediaType = "application/json"))
   })
+  @Caching(
+      evict = {
+          @CacheEvict(value = "groupById", key = "#id"),
+          @CacheEvict(value = "allGroups", allEntries = true)
+      }
+  )
   public GroupDto updateGroup(@RequestBody @Valid GroupCreationDto groupCreationDto, @PathVariable UUID id) throws GroupNotFoundException {
     return GroupDto.fromEntity(
         groupService.updateGroup(groupCreationDto.toEntity(), id)
@@ -157,6 +169,12 @@ public class GroupController {
       @ApiResponse(responseCode = "404", description = "Group not found",
           content = @Content(mediaType = "application/json"))
   })
+  @Caching(
+      evict = {
+          @CacheEvict(value = "groupById", key = "#id"),
+          @CacheEvict(value = "allGroups", allEntries = true)
+      }
+  )
   public GroupDto deleteGroup(@PathVariable UUID id) throws GroupNotFoundException {
     return GroupDto.fromEntity(
         groupService.deleteGroup(id)
