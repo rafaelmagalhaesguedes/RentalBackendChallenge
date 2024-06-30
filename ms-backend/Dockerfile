@@ -4,6 +4,10 @@ FROM eclipse-temurin:17-jdk-jammy as build-image
 # Set working directory inside the container
 WORKDIR /to-build-app
 
+# Copy the Maven Wrapper files to the container
+COPY mvnw .
+COPY .mvn .mvn
+
 # Copy the POM file to the container
 COPY pom.xml .
 
