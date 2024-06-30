@@ -208,21 +208,3 @@ Para acessar a documentação do Swagger, navegue até [http://localhost:8080/sw
       "paymentUrl": "http://payment.url"
     }
     ```
-
-## Screenshots
-
-### Cria uma reserva com pagamento online
-
-![Alt text](screenshots/createReservationOnlinePayment.png)
-
-### Tela de pagamento Stripe
-
-![Alt text](screenshots/stripePaymentPanel.png)
-
-### Tela de succeso após o pagamento
-
-![Alt text](screenshots/paymentSucces.png)
-
-### Tela de falha caso o cliente cancele o pagamento
-
-![Alt text](screenshots/paymentCancel.png)
