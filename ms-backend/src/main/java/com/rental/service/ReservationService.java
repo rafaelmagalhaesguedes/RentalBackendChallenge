@@ -1,5 +1,6 @@
 package com.rental.service;
 
+import com.rental.controller.dto.reservation.ReservationCreationDto;
 import com.rental.controller.dto.reservation.ReservationDto;
 import com.rental.entity.Accessory;
 import com.rental.entity.Person;
@@ -89,42 +90,41 @@ public class ReservationService {
   /**
    * Create reservation reservation dto.
    *
-   * @param personId       the person id
-   * @param groupId        the group id
-   * @param accessoryIds   the accessory ids
-   * @param pickupDateTime the pickup date time
-   * @param returnDateTime the return date time
-   * @param paymentMethod  the payment method
+   * @param reservationDto the reservationDto
    * @return the reservation dto
    * @throws PersonNotFoundException the person not found exception
    * @throws GroupNotFoundException  the group not found exception
    * @throws StripeException         the stripe exception
    */
   @Transactional
-  public ReservationDto createReservation(UUID personId, UUID groupId, List<UUID> accessoryIds, LocalDateTime pickupDateTime, LocalDateTime returnDateTime, String paymentMethod) throws PersonNotFoundException, GroupNotFoundException, StripeException {
+  public ReservationDto createReservation(ReservationCreationDto reservationDto) throws PersonNotFoundException, GroupNotFoundException, StripeException {
 
-    Person person = personRepository.findById(personId).orElseThrow(PersonNotFoundException::new);
-    Group group = groupRepository.findById(groupId).orElseThrow(GroupNotFoundException::new);
-    List<Accessory> accessories = accessoryRepository.findAllById(accessoryIds);
-    int totalDays = calculateTotalDays(pickupDateTime, returnDateTime);
+    Person person = personRepository.findById(reservationDto.personId())
+        .orElseThrow(PersonNotFoundException::new);
+
+    Group group = groupRepository.findById(reservationDto.groupId())
+        .orElseThrow(GroupNotFoundException::new);
+
+    List<Accessory> accessories = accessoryRepository.findAllById(reservationDto.accessoryIds());
+
+    int totalDays = calculateTotalDays(reservationDto.pickupDateTime(), reservationDto.returnDateTime());
     double calcTotalAmount = calculateTotalAmount(group.getDailyRate(), totalDays, accessories);
 
     Reservation newReservation = new Reservation();
     newReservation.setPerson(person);
     newReservation.setGroup(group);
     newReservation.setAccessories(accessories);
-    newReservation.setPickupDateTime(pickupDateTime);
-    newReservation.setReturnDateTime(returnDateTime);
+    newReservation.setPickupDateTime(reservationDto.pickupDateTime());
+    newReservation.setReturnDateTime(reservationDto.returnDateTime());
     newReservation.setTotalAmount(calcTotalAmount);
     newReservation.setTotalDays(totalDays);
     newReservation.setReservationStatus(ReservationStatus.PENDING);
-    newReservation.setPaymentType(paymentMethod);
-
+    newReservation.setPaymentType(reservationDto.paymentType());
     newReservation.setCreatedDate(LocalDateTime.now());
 
     reservationRepository.save(newReservation);
 
-    return getReservationDto(person, calcTotalAmount, paymentMethod, newReservation);
+    return getReservationDto(person, calcTotalAmount, reservationDto.paymentType(), newReservation);
   }
 
   private ReservationDto getReservationDto(Person person, Double totalAmount, String paymentMethod, Reservation reservation) throws StripeException {

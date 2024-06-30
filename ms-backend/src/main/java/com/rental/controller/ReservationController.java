@@ -82,12 +82,7 @@ public class ReservationController {
       @ApiResponse(responseCode = "404", description = "Group or Person not found"),
       @ApiResponse(responseCode = "400", description = "Stripe exception occurred")
   })
-  public ReservationDto createReservation(@RequestBody @Valid ReservationCreationDto reservationCreationDto)
-      throws GroupNotFoundException, PersonNotFoundException, StripeException {
-    return reservationService.createReservation(
-        reservationCreationDto.personId(), reservationCreationDto.groupId(),
-        reservationCreationDto.accessoryIds(), reservationCreationDto.pickupDateTime(),
-        reservationCreationDto.returnDateTime(), reservationCreationDto.paymentType()
-    );
+  public ReservationDto createReservation(@RequestBody @Valid ReservationCreationDto reservationCreationDto) throws GroupNotFoundException, PersonNotFoundException, StripeException {
+    return reservationService.createReservation(reservationCreationDto);
   }
 }
