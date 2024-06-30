@@ -147,7 +147,7 @@ public class ReservationService {
     }
   }
 
-  private double calculateTotalAmount(double dailyRate, long totalDays, List<Accessory> accessories) {
+  private double calculateTotalAmount(double dailyRate, int totalDays, List<Accessory> accessories) {
     double totalAmount = dailyRate * totalDays;
 
     if (accessories != null && !accessories.isEmpty()) {
