@@ -67,14 +67,6 @@ O sistema utiliza a tecnologia de integração de pagamentos Stripe para permiti
 
 - Tratamento de Eventos: Implementação de mecanismos para lidar com eventos e notificações do Stripe, como confirmações de pagamento e atualizações de status.
 
-## Documentação do Swagger
-
-Este projeto utiliza Swagger para documentar seus endpoints de API, facilitando o entendimento e teste das funcionalidades disponíveis.
-
-### Acessando o Swagger
-
-Para acessar a documentação do Swagger, navegue até [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) após executar o aplicativo.
-
 ## Rodando a Aplicação com Docker
 
 ### Pré-requisitos
@@ -88,6 +80,14 @@ Certifique-se de ter o Docker instalado em sua máquina.
   docker-compose up -d
   ```
 4. Acesse a aplicação em http://localhost:8080
+
+## Documentação do Swagger
+
+Este projeto utiliza Swagger para documentar seus endpoints de API, facilitando o entendimento e teste das funcionalidades disponíveis.
+
+### Acessando o Swagger
+
+Para acessar a documentação do Swagger, navegue até [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) após executar o aplicativo.
 
 ### Endpoints Principais
 
