@@ -53,6 +53,8 @@ e garantir a entrega dos e-mails. O microserviço é responsável por:
 
 - Springdoc OpenAPI: API documentada com o Springdoc OpenAPI Swagger
 
+- Docker: Os serviços usam container docker para seu ciclo de vida.
+
 ## Integração com o Stripe
 
 O sistema utiliza a tecnologia de integração de pagamentos Stripe para permitir que os usuários façam o pagamento das reservas de forma segura e conveniente. A integração com o Stripe inclui:
@@ -72,6 +74,20 @@ Este projeto utiliza Swagger para documentar seus endpoints de API, facilitando 
 ### Acessando o Swagger
 
 Para acessar a documentação do Swagger, navegue até [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) após executar o aplicativo.
+
+## Rodando a Aplicação com Docker
+
+### Pré-requisitos
+
+Certifique-se de ter o Docker instalado em sua máquina.
+
+1. Clone o Repositório
+2. Configure as variáveis de ambiente se necessário
+3. Construa as imagens e suba os containers:
+  ```
+  docker-compose up -d
+  ```
+4. Acesse a aplicação em http://localhost:8080
 
 ### Endpoints Principais
 
