@@ -13,6 +13,8 @@ import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -52,6 +54,7 @@ public class VehicleController {
       @ApiResponse(responseCode = "200", description = "Vehicle fetched successfully"),
       @ApiResponse(responseCode = "404", description = "Vehicle not found")
   })
+  @Cacheable(value = "vehicleById", key = "#id")
   public VehicleDto getVehicleById(@PathVariable UUID id) throws VehicleNotFoundException {
     return VehicleDto.fromEntity(vehicleService.getVehicleById(id));
   }
@@ -69,6 +72,7 @@ public class VehicleController {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "List of vehicles fetched successfully")
   })
+  @Cacheable(value = "allVehicles", key = "#pageNumber + '-' + #pageSize")
   public List<VehicleDto> getAllVehicles(
       @RequestParam(required = false, defaultValue = "0") int pageNumber,
       @RequestParam(required = false, defaultValue = "20") int pageSize) {
@@ -91,6 +95,7 @@ public class VehicleController {
       @ApiResponse(responseCode = "201", description = "Vehicle created successfully"),
       @ApiResponse(responseCode = "404", description = "Group not found")
   })
+  @CacheEvict(value = {"vehicleById", "allVehicles"}, allEntries = true)
   public VehicleDto createVehicle(@RequestBody @Valid VehicleCreationDto vehicleCreationDto) throws GroupNotFoundException {
     return vehicleService.createVehicle(vehicleCreationDto);
   }
@@ -111,6 +116,7 @@ public class VehicleController {
       @ApiResponse(responseCode = "200", description = "Vehicle updated successfully"),
       @ApiResponse(responseCode = "404", description = "Vehicle or group not found")
   })
+  @CacheEvict(value = {"vehicleById", "allVehicles"}, allEntries = true)
   public VehicleDto updateVehicle(@RequestBody @Valid VehicleCreationDto vehicleCreationDto, @PathVariable UUID id) throws VehicleNotFoundException, GroupNotFoundException {
     return vehicleService.updateVehicle(vehicleCreationDto, id);
   }
@@ -129,6 +135,7 @@ public class VehicleController {
       @ApiResponse(responseCode = "200", description = "Vehicle deleted successfully"),
       @ApiResponse(responseCode = "404", description = "Vehicle not found")
   })
+  @CacheEvict(value = {"vehicleById", "allVehicles"}, allEntries = true)
   public VehicleDto deleteVehicle(@PathVariable UUID id) throws VehicleNotFoundException {
     return VehicleDto.fromEntity(vehicleService.deleteVehicle(id));
   }
