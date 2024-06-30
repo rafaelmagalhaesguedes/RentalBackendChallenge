@@ -1,6 +1,6 @@
 package com.rental.entity;
 
-import com.rental.enums.Status;
+import com.rental.enums.ReservationStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,7 +24,7 @@ public class Payment {
   @ManyToOne
   private Reservation reservation;
   private Double amount;
-  private Status status; // "Pending", "Completed", "Failed"
+  private ReservationStatus reservationStatus; // "Pending", "Completed", "Failed"
   private LocalDateTime paymentDate;
   private String paymentMethod; // "Online", "Counter"
 
@@ -39,16 +39,16 @@ public class Payment {
    * @param id            the id
    * @param reservation   the reservation
    * @param amount        the amount
-   * @param status        the status
+   * @param reservationStatus        the reservationStatus
    * @param paymentDate   the payment date
    * @param paymentMethod the payment method
    */
-  public Payment(UUID id, Reservation reservation, Double amount, Status status,
+  public Payment(UUID id, Reservation reservation, Double amount, ReservationStatus reservationStatus,
       LocalDateTime paymentDate, String paymentMethod) {
     this.id = id;
     this.reservation = reservation;
     this.amount = amount;
-    this.status = status;
+    this.reservationStatus = reservationStatus;
     this.paymentDate = paymentDate;
     this.paymentMethod = paymentMethod;
   }
@@ -108,21 +108,21 @@ public class Payment {
   }
 
   /**
-   * Gets status.
+   * Gets reservationStatus.
    *
-   * @return the status
+   * @return the reservationStatus
    */
-  public Status getStatus() {
-    return status;
+  public ReservationStatus getStatus() {
+    return reservationStatus;
   }
 
   /**
-   * Sets status.
+   * Sets reservationStatus.
    *
-   * @param status the status
+   * @param reservationStatus the reservationStatus
    */
-  public void setStatus(Status status) {
-    this.status = status;
+  public void setStatus(ReservationStatus reservationStatus) {
+    this.reservationStatus = reservationStatus;
   }
 
   /**

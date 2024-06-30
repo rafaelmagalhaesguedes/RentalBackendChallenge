@@ -3,11 +3,10 @@ package com.rental.controller.dto.reservation;
 import com.rental.controller.dto.accessory.AccessoryDto;
 import com.rental.controller.dto.person.PersonDto;
 import com.rental.entity.Reservation;
-import com.rental.enums.Status;
+import com.rental.enums.ReservationStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-import com.rental.entity.Person;
 import com.rental.entity.Group;
 
 /**
@@ -21,8 +20,10 @@ public record ReservationDto(
     LocalDateTime pickupDateTime,
     LocalDateTime returnDateTime,
     Double totalAmount,
-    Status status,
-    String paymentMethod,
+    Integer totalDays,
+    ReservationStatus reservationStatus,
+    String paymentType,
+    LocalDateTime createdDate,
     String paymentUrl
 ) {
 
@@ -45,8 +46,10 @@ public record ReservationDto(
         reservation.getPickupDateTime(),
         reservation.getReturnDateTime(),
         reservation.getTotalAmount(),
-        reservation.getStatus(),
-        reservation.getPaymentMethod(),
+        reservation.getTotalDays(),
+        reservation.getReservationStatus(),
+        reservation.getPaymentType(),
+        reservation.getCreatedDate(),
         paymentUrl
     );
   }

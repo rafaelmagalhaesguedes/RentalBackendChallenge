@@ -47,7 +47,7 @@ public class GlobalControllerAdvice {
 
     Map<String, Object> body = new HashMap<>();
     body.put("timestamp", LocalDateTime.now());
-    body.put("status", HttpStatus.BAD_REQUEST.value());
+    body.put("reservationStatus", HttpStatus.BAD_REQUEST.value());
     body.put("errors", errors);
     body.put("path", request.getDescription(false));
 
@@ -65,7 +65,7 @@ public class GlobalControllerAdvice {
   public ResponseEntity<Map<String, Object>> handleConstraintViolationExceptions(ConstraintViolationException ex, WebRequest request) {
     Map<String, Object> body = new HashMap<>();
     body.put("timestamp", LocalDateTime.now());
-    body.put("status", HttpStatus.BAD_REQUEST.value());
+    body.put("reservationStatus", HttpStatus.BAD_REQUEST.value());
     body.put("error", "Constraint Violation");
     body.put("path", request.getDescription(false));
 

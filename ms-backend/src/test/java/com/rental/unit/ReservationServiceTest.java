@@ -1,4 +1,4 @@
-package com.rental;
+package com.rental.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -10,7 +10,7 @@ import com.rental.entity.Accessory;
 import com.rental.entity.Group;
 import com.rental.entity.Person;
 import com.rental.entity.Reservation;
-import com.rental.enums.Status;
+import com.rental.enums.ReservationStatus;
 import com.rental.producer.ReservationProducer;
 import com.rental.repository.AccessoryRepository;
 import com.rental.repository.GroupRepository;
@@ -65,11 +65,10 @@ public class ReservationServiceTest {
     List<UUID> accessoryIds = Collections.singletonList(UUID.randomUUID());
     LocalDateTime pickupDateTime = LocalDateTime.now();
     LocalDateTime returnDateTime = pickupDateTime.plusHours(3);
-    Double totalAmount = 150.0;
     String paymentMethod = "Counter";
 
     ReservationCreationDto reservationDto = new ReservationCreationDto(
-        personId, groupId, accessoryIds, pickupDateTime, returnDateTime, totalAmount, paymentMethod
+        personId, groupId, accessoryIds, pickupDateTime, returnDateTime, paymentMethod
     );
 
     Person mockPerson = new Person();
@@ -87,12 +86,12 @@ public class ReservationServiceTest {
     // Act
     ReservationDto createdReservation = reservationService.createReservation(
         reservationDto.personId(), reservationDto.groupId(), reservationDto.accessoryIds(),
-        reservationDto.pickupDateTime(), reservationDto.returnDateTime(), reservationDto.totalAmount(),
-        reservationDto.paymentMethod()
+        reservationDto.pickupDateTime(), reservationDto.returnDateTime(),
+        reservationDto.paymentType()
     );
 
     // Assert
-    assertEquals(Status.PENDING, createdReservation.status());
+    assertEquals(ReservationStatus.PENDING, createdReservation.reservationStatus());
   }
 
   @Test
@@ -103,13 +102,12 @@ public class ReservationServiceTest {
     List<UUID> accessoryIds = Arrays.asList(UUID.randomUUID(), UUID.randomUUID());
     LocalDateTime pickupDateTime = LocalDateTime.now();
     LocalDateTime returnDateTime = pickupDateTime.plusHours(3);
-    Double totalAmount = 150.0;
     String paymentMethod = "Counter";
 
     Mockito.when(personRepository.findById(personId)).thenReturn(Optional.empty());
 
     // Act & Assert
-    assertThrows(PersonNotFoundException.class, () -> reservationService.createReservation(personId, groupId, accessoryIds, pickupDateTime, returnDateTime, totalAmount, paymentMethod));
+    assertThrows(PersonNotFoundException.class, () -> reservationService.createReservation(personId, groupId, accessoryIds, pickupDateTime, returnDateTime, paymentMethod));
   }
 
   @Test
@@ -120,8 +118,7 @@ public class ReservationServiceTest {
     List<UUID> accessoryIds = Arrays.asList(UUID.randomUUID(), UUID.randomUUID());
     LocalDateTime pickupDateTime = LocalDateTime.now();
     LocalDateTime returnDateTime = pickupDateTime.plusHours(3);
-    Double totalAmount = 150.0;
-    String paymentMethod = "Counter";
+    String paymentType = "Counter";
 
     Person person = new Person();
     person.setId(personId);
@@ -130,7 +127,7 @@ public class ReservationServiceTest {
     Mockito.when(groupRepository.findById(groupId)).thenReturn(Optional.empty());
 
     // Act & Assert
-    assertThrows(GroupNotFoundException.class, () -> reservationService.createReservation(personId, groupId, accessoryIds, pickupDateTime, returnDateTime, totalAmount, paymentMethod));
+    assertThrows(GroupNotFoundException.class, () -> reservationService.createReservation(personId, groupId, accessoryIds, pickupDateTime, returnDateTime, paymentType));
   }
 }
 

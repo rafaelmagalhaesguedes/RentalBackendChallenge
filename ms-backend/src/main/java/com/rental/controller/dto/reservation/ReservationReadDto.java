@@ -4,7 +4,7 @@ import com.rental.controller.dto.accessory.AccessoryDto;
 import com.rental.controller.dto.person.PersonDto;
 import com.rental.controller.dto.group.GroupDto;
 import com.rental.entity.Reservation;
-import com.rental.enums.Status;
+import com.rental.enums.ReservationStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -20,8 +20,10 @@ public record ReservationReadDto(
     LocalDateTime pickupDateTime,
     LocalDateTime returnDateTime,
     Double totalAmount,
-    Status status,
-    String paymentMethod
+    Integer totalDays,
+    ReservationStatus reservationStatus,
+    String paymentType,
+    LocalDateTime createdDate
 ) {
 
   /**
@@ -42,8 +44,10 @@ public record ReservationReadDto(
         reservation.getPickupDateTime(),
         reservation.getReturnDateTime(),
         reservation.getTotalAmount(),
-        reservation.getStatus(),
-        reservation.getPaymentMethod()
+        reservation.getTotalDays(),
+        reservation.getReservationStatus(),
+        reservation.getPaymentType(),
+        reservation.getCreatedDate()
     );
   }
 }

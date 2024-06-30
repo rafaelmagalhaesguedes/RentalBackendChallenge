@@ -1,6 +1,6 @@
 package com.rental.entity;
 
-import com.rental.enums.Status;
+import com.rental.enums.ReservationStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -13,8 +13,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -52,9 +50,14 @@ public class Reservation {
 
   private Double totalAmount;
 
+  private Integer totalDays;
+
+  private String paymentType; // "Online", "Counter"
+
   @Enumerated(EnumType.STRING)
-  private Status status;                  // "Pending", "Confirmed", "Cancelled"
-  private String paymentMethod;           // "Online", "Counter"
+  private ReservationStatus reservationStatus; // "Pending", "Confirmed", "Cancelled"
+
+  private LocalDateTime createdDate;
 
   /**
    * Instantiates a new Reservation.
@@ -71,12 +74,13 @@ public class Reservation {
    * @param pickupDateTime the pickup date time
    * @param returnDateTime the return date time
    * @param totalAmount    the total amount
-   * @param status         the status
-   * @param paymentMethod  the payment method
+   * @param totalDays    the total days
+   * @param reservationStatus         the reservationStatus
+   * @param paymentType  the payment method
    */
   public Reservation(UUID id, Person person, Group group, List<Accessory> accessories,
-      LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, Status status,
-      String paymentMethod) {
+      LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, Integer totalDays,
+      ReservationStatus reservationStatus, String paymentType) {
     this.id = id;
     this.person = person;
     this.group = group;
@@ -84,8 +88,9 @@ public class Reservation {
     this.pickupDateTime = pickupDateTime;
     this.returnDateTime = returnDateTime;
     this.totalAmount = totalAmount;
-    this.status = status;
-    this.paymentMethod = paymentMethod;
+    this.totalDays = totalDays;
+    this.reservationStatus = reservationStatus;
+    this.paymentType = paymentType;
   }
 
   /**
@@ -215,21 +220,57 @@ public class Reservation {
   }
 
   /**
-   * Gets status.
+   * Gets total days.
    *
-   * @return the status
+   * @return the total days
    */
-  public Status getStatus() {
-    return status;
+  public Integer getTotalDays() {
+    return totalDays;
   }
 
   /**
-   * Sets status.
+   * Sets total days.
    *
-   * @param status the status
+   * @param totalDays the total days
    */
-  public void setStatus(Status status) {
-    this.status = status;
+  public void setTotalDays(Integer totalDays) {
+    this.totalDays = totalDays;
+  }
+
+  /**
+   * Gets created date.
+   *
+   * @return the created date
+   */
+  public LocalDateTime getCreatedDate() {
+    return createdDate;
+  }
+
+  /**
+   * Sets created date.
+   *
+   * @param createdDate the created date
+   */
+  public void setCreatedDate(LocalDateTime createdDate) {
+    this.createdDate = createdDate;
+  }
+
+  /**
+   * Gets reservationStatus.
+   *
+   * @return the reservationStatus
+   */
+  public ReservationStatus getReservationStatus() {
+    return reservationStatus;
+  }
+
+  /**
+   * Sets reservationStatus.
+   *
+   * @param reservationStatus the reservationStatus
+   */
+  public void setReservationStatus(ReservationStatus reservationStatus) {
+    this.reservationStatus = reservationStatus;
   }
 
   /**
@@ -237,16 +278,16 @@ public class Reservation {
    *
    * @return the payment method
    */
-  public String getPaymentMethod() {
-    return paymentMethod;
+  public String getPaymentType() {
+    return paymentType;
   }
 
   /**
    * Sets payment method.
    *
-   * @param paymentMethod the payment method
+   * @param paymentType the payment method
    */
-  public void setPaymentMethod(String paymentMethod) {
-    this.paymentMethod = paymentMethod;
+  public void setPaymentType(String paymentType) {
+    this.paymentType = paymentType;
   }
 }

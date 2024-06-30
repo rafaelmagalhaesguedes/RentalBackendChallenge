@@ -46,7 +46,7 @@ public class ReservationProducer {
         reservation.getPickupDateTime(),
         reservation.getReturnDateTime(),
         reservation.getTotalAmount(),
-        reservation.getPaymentMethod()
+        reservation.getPaymentType()
     );
 
     emailDto.setText(emailText);

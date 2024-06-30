@@ -1,28 +1,28 @@
 package com.rental.enums;
 
 /**
- * The enum Status.
+ * The enum ReservationStatus.
  */
-public enum Status {
+public enum ReservationStatus {
 
   /**
-   * Pending status.
+   * Pending reservationStatus.
    */
   PENDING("Pending"),
 
   /**
-   * Confirmed status.
+   * Confirmed reservationStatus.
    */
   CONFIRMED("Confirmed"),
 
   /**
-   * Cancelled status.
+   * Cancelled reservationStatus.
    */
   CANCELLED("Cancelled");
 
   private final String name;
 
-  Status(String name) {
+  ReservationStatus(String name) {
     this.name = name;
   }
 

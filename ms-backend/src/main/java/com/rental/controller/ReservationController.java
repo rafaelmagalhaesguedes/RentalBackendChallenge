@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -52,6 +53,7 @@ public class ReservationController {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "List of reservations fetched successfully")
   })
+  @Cacheable(value = "allReservations", key = "#pageNumber + '-' + #pageSize")
   public List<ReservationReadDto> getAllReservations(
       @RequestParam(required = false, defaultValue = "0") int pageNumber,
       @RequestParam(required = false, defaultValue = "10") int pageSize
@@ -85,8 +87,7 @@ public class ReservationController {
     return reservationService.createReservation(
         reservationCreationDto.personId(), reservationCreationDto.groupId(),
         reservationCreationDto.accessoryIds(), reservationCreationDto.pickupDateTime(),
-        reservationCreationDto.returnDateTime(), reservationCreationDto.totalAmount(),
-        reservationCreationDto.paymentMethod()
+        reservationCreationDto.returnDateTime(), reservationCreationDto.paymentType()
     );
   }
 }

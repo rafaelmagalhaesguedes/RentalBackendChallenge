@@ -14,7 +14,6 @@ public record ReservationCreationDto(
     List<UUID> accessoryIds,
     LocalDateTime pickupDateTime,
     LocalDateTime returnDateTime,
-    Double totalAmount,
-    String paymentMethod
+    String paymentType
 ) { }
 

@@ -3,7 +3,7 @@ package com.rental.enums;
 /**
  * The enum Payment method.
  */
-public enum PaymentMethod {
+public enum PaymentType {
 
   /**
    * The Pay at counter.
@@ -17,7 +17,7 @@ public enum PaymentMethod {
 
   private final String name;
 
-  PaymentMethod(String name) {
+  PaymentType(String name) {
     this.name = name;
   }
 
