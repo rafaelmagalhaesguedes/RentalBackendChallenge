@@ -20,7 +20,7 @@ comunicação eficiente por e-mail, aproveitando filas de mensagens para maior c
 
 - Integração com o Stripe: Permite que os usuários façam o pagamento das reservas utilizando cartão de crédito/débito através do Stripe.
 
-## Microserviço de Envio de E-mails
+## Microserviço para Envio de E-mails
 
 O sistema inclui um microserviço para envio de e-mails, utilizando filas para processamento assíncrono
 e garantir a entrega dos e-mails. O microserviço é responsável por:
