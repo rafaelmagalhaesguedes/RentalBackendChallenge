@@ -157,12 +157,13 @@ Para acessar a documentação do Swagger, navegue até [http://localhost:8080/sw
             "name": "Accessory Name"
           }
         ],
-        "pickupDateTime": "2023-06-01T10:00:00",
-        "returnDateTime": "2023-06-10T10:00:00",
-        "totalAmount": 100.0,
-        "status": "CONFIRMED",
-        "paymentMethod": "online",
-        "paymentUrl": "http://payment.url"
+        "pickupDateTime": "2024-10-01T08:00:00",
+        "returnDateTime": "2024-11-05T10:00:00",
+        "totalAmount": 1000.00,
+        "totalDays": 8,
+        "reservationStatus": "PENDING",
+        "paymentType": "Online",
+        "createdDate": "2024-06-30T20:28:30.783332566"
       }
     ]
     ```
@@ -175,11 +176,10 @@ Para acessar a documentação do Swagger, navegue até [http://localhost:8080/sw
       "personId": "uuid",
       "groupId": "uuid",
       "accessoryIds": ["uuid"],
-      "pickupDateTime": "2023-06-01T10:00:00",
-      "returnDateTime": "2023-06-10T10:00:00",
-      "totalAmount": 100.0,
-      "status": "PENDING",
-      "paymentMethod": "online"
+      "pickupDateTime": "2024-10-01T08:00:00",
+      "returnDateTime": "2024-11-05T10:00:00",
+      "totalAmount": 15750.00,
+      "paymentType": "Online"
     }
     ```
   - Response:
@@ -197,14 +197,26 @@ Para acessar a documentação do Swagger, navegue até [http://localhost:8080/sw
       "accessories": [
         {
           "id": "uuid",
-          "name": "Accessory Name"
+          "name": "GPS",
+          "description": "GPS plus",
+          "quantity": 1,
+          "dailyRate": 100.0
+        },
+        {
+          "id": "fe664cdf-a69f-4aed-9522-e6f4ed23a075",
+          "name": "Bebê comforto",
+          "description": "GPS plus ergonomy top",
+          "quantity": 2,
+          "dailyRate": 100.0
         }
       ],
-      "pickupDateTime": "2023-06-01T10:00:00",
-      "returnDateTime": "2023-06-10T10:00:00",
-      "totalAmount": 100.0,
-      "status": "PENDING",
-      "paymentMethod": "online",
-      "paymentUrl": "http://payment.url"
+      "pickupDateTime": "2024-10-01T08:00:00",
+      "returnDateTime": "2024-11-05T10:00:00",
+      "totalAmount": 15750.0,
+      "totalDays": 35,
+      "reservationStatus": "PENDING",
+      "paymentType": "Online",
+      "createdDate": "2024-06-30T20:28:30.783332566",
+      "paymentUrl": "https://checkout.stripe.com/c/pay/cs_test_a1DWuVtXutyIcEyCPFOK2XiLoixgdRP7snfmN5fSmbsGleR0aWIwJIvseY#fidkdWxOYHwnPyd1blpxYHZxWjA0SmtVTWFCaT1WXHY8X2BnX0dIQ31pT0o8cTZVS3BRSUNqYTdAd2N0dDdoQmRWdjBOazRUU2tvSWtEV21Ka1Vyc3Q2XDZ%2FbUNvQGhLPVw2QENtQHdIdElDNTVhfFV9a21SQCcpJ2N3amhWYHdzYHcnP3F3cGApJ2lkfGpwcVF8dWAnPyd2bGtiaWBabHFgaCcpJ2BrZGdpYFVpZGZgbWppYWB3dic%2FcXdwYHgl"
     }
     ```
