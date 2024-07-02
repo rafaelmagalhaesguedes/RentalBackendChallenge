@@ -98,7 +98,7 @@ Para acessar a documentação do Swagger, navegue até [http://localhost:8080/sw
   - Request Body:
     ```json
     {
-      "username": "user123",
+      "email": "user@email.com",
       "password": "password123"
     }
     ```
@@ -116,7 +116,8 @@ Para acessar a documentação do Swagger, navegue até [http://localhost:8080/sw
   - Request Body:
     ```json
     {
-      "username" : "user123",
+      "fullName": "User Test", 
+      "username": "user123",
       "email": "user@example.com",
       "password": "password123",
       "role": "USER"
@@ -126,6 +127,8 @@ Para acessar a documentação do Swagger, navegue até [http://localhost:8080/sw
     ```json
     {
       "id": "uuid",
+      "fullName": "User Test",
+      "username": "user123",
       "email": "user@example.com",
       "role": "USER"
     }
@@ -188,11 +191,16 @@ Para acessar a documentação do Swagger, navegue até [http://localhost:8080/sw
       "id": "uuid",
       "person": {
         "id": "uuid",
-        "email": "user@example.com"
+        "fullName": "Rafael Magalhães Guedes",
+        "username": "rafaguedes",
+        "email": "user@example.com",
+        "role": "USER"
       },
       "group": {
         "id": "uuid",
-        "name": "Group Name"
+        "name": "Group GX",
+        "vehicles": "Renegade, Creta, Duster, Toro ou similares",
+        "dailyRate": 250.0
       },
       "accessories": [
         {
@@ -203,10 +211,10 @@ Para acessar a documentação do Swagger, navegue até [http://localhost:8080/sw
           "dailyRate": 100.0
         },
         {
-          "id": "fe664cdf-a69f-4aed-9522-e6f4ed23a075",
+          "id": "uuid",
           "name": "Bebê comforto",
-          "description": "GPS plus ergonomy top",
-          "quantity": 2,
+          "description": "Comfort plus ergonomic top",
+          "quantity": 1,
           "dailyRate": 100.0
         }
       ],
