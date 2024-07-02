@@ -2,6 +2,7 @@ package com.rental.controller;
 
 import com.rental.controller.dto.auth.AuthDto;
 import com.rental.controller.dto.auth.TokenDto;
+import com.rental.entity.Person;
 import com.rental.service.TokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -61,11 +62,11 @@ public class AuthController {
   public ResponseEntity<TokenDto> login(@RequestBody AuthDto authDto) {
     try {
       UsernamePasswordAuthenticationToken usernamePassword =
-          new UsernamePasswordAuthenticationToken(authDto.username(), authDto.password());
+          new UsernamePasswordAuthenticationToken(authDto.email(), authDto.password());
 
       Authentication auth = authenticationManager.authenticate(usernamePassword);
 
-      String token = tokenService.generateToken(auth.getName());
+      String token = tokenService.generateToken((Person) auth.getPrincipal());
 
       return ResponseEntity.ok(new TokenDto(token));
     } catch (BadCredentialsException ex) {

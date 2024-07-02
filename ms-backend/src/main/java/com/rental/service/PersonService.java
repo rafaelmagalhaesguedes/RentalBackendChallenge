@@ -52,6 +52,18 @@ public class PersonService implements UserDetailsService {
   }
 
   /**
+   * Gets person by email.
+   *
+   * @param email the email
+   * @return the person by email
+   * @throws PersonExistingException the person existing exception
+   */
+  public Person getPersonByEmail(String email) throws PersonExistingException {
+    return personRepository.findByEmail(email)
+        .orElseThrow(PersonExistingException::new);
+  }
+
+  /**
    * Gets all persons.
    *
    * @param pageNumber the page number
@@ -118,8 +130,8 @@ public class PersonService implements UserDetailsService {
   }
 
   @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    return personRepository.findByUsername(username)
-        .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
+  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    return personRepository.findByEmail(email)
+        .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
   }
 }
