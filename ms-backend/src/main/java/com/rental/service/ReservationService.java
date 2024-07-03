@@ -48,11 +48,11 @@ public class ReservationService {
    * Instantiates a new Reservation service.
    *
    * @param reservationRepository the reservation repository
-   * @param personService       the person service
-   * @param groupService        the group service
-   * @param accessoryService    the accessory service
+   * @param personService         the person service
+   * @param groupService          the group service
+   * @param accessoryService      the accessory service
    * @param paymentService        the payment service
-   * @param reservationProducer        the reservation producer
+   * @param reservationProducer   the reservation producer
    */
   @Autowired
   public ReservationService(ReservationRepository reservationRepository, PersonService personService, GroupService groupService, AccessoryService accessoryService, PaymentService paymentService, ReservationProducer reservationProducer) {
@@ -62,6 +62,114 @@ public class ReservationService {
     this.accessoryService = accessoryService;
     this.paymentService = paymentService;
     this.reservationProducer = reservationProducer;
+  }
+
+  /**
+   * Creates a new reservation based on the provided ReservationCreationDto.
+   *
+   * @param reservationDto The ReservationCreationDto containing reservation details.
+   * @return The ReservationDto representing the created reservation.
+   * @throws PersonNotFoundException If the person with the specified ID is not found.
+   * @throws GroupNotFoundException If the vehicle group with the specified ID is not found.
+   * @throws StripeException If there is an issue with the Stripe API during payment processing.
+   */
+  @Transactional
+  public ReservationDto createReservation(ReservationCreationDto reservationDto) throws PersonNotFoundException, GroupNotFoundException, StripeException {
+    Person person = personService.getPersonById(reservationDto.personId());
+    Group group = groupService.getGroupById(reservationDto.groupId());
+    List<Accessory> accessories = accessoryService.getAccessoriesById(reservationDto.accessoryIds());
+
+    int totalDays = getTotalDays(reservationDto.pickupDateTime(), reservationDto.returnDateTime());
+    double calcTotalAmount = getTotalAmount(group.getDailyRate(), totalDays, accessories);
+
+    Reservation newReservation = buildNewReservation(reservationDto, person, group, accessories, calcTotalAmount, totalDays);
+
+    return reserveCreated(person, calcTotalAmount, reservationDto.paymentType(), newReservation);
+  }
+
+  /**
+   * Builds a new reservation based on the provided data.
+   *
+   * @param reservationDto    The DTO containing reservation data.
+   * @param person            The person making the reservation.
+   * @param group             The group of vehicles for the reservation.
+   * @param accessories       The list of accessories selected for the reservation.
+   * @param calcTotalAmount   The calculated total amount for the reservation.
+   * @param totalDays         The total number of days for the reservation.
+   * @return                  The newly created Reservation entity.
+   */
+  private Reservation buildNewReservation(ReservationCreationDto reservationDto, Person person, Group group, List<Accessory> accessories, double calcTotalAmount, int totalDays) {
+    Reservation newReservation = new Reservation();
+
+    // Set properties
+    newReservation.setPerson(person);
+    newReservation.setGroup(group);
+    newReservation.setAccessories(accessories);
+    newReservation.setPickupDateTime(reservationDto.pickupDateTime());
+    newReservation.setReturnDateTime(reservationDto.returnDateTime());
+    newReservation.setTotalAmount(calcTotalAmount);
+    newReservation.setTotalDays(totalDays);
+    newReservation.setReservationStatus(ReservationStatus.PENDING);
+    newReservation.setPaymentType(reservationDto.paymentType());
+    newReservation.setCreatedDate(LocalDateTime.now());
+
+    return reservationRepository.save(newReservation);
+  }
+
+  /**
+   * Processes the payment for a reservation and publishes an email notification if payment is successful.
+   *
+   * @param person            The person associated with the reservation.
+   * @param totalAmount       The total amount to be paid for the reservation.
+   * @param paymentMethod     The payment method (online or other).
+   * @param reservation       The reservation entity.
+   * @return                  The ReservationDto representing the reservation after payment processing.
+   * @throws StripeException  If there is an issue with the Stripe API during payment processing.
+   */
+  private ReservationDto reserveCreated(Person person, Double totalAmount, String paymentMethod, Reservation reservation) throws StripeException {
+    if ("online".equalsIgnoreCase(paymentMethod)) {  // Online payment
+      Session paymentSession = paymentService.createCheckoutSession(
+          totalAmount,
+          PAYMENT_SUCCESS_URL,
+          PAYMENT_CANCEL_URL,
+          reservation
+      );
+
+      if (paymentSession.getUrl().contains("success")) {
+        reservationProducer.publishMessageEmail(person, reservation);
+      }
+
+      return ReservationDto.fromEntity(reservation, paymentSession.getUrl());
+    } else {  // Offline payment
+      reservationProducer.publishMessageEmail(person, reservation);
+      return ReservationDto.fromEntity(reservation, null);
+    }
+  }
+
+  /**
+   * Calculates the total amount for a reservation including daily rates of vehicles and accessories.
+   *
+   * @param dailyRate         The daily rate of the vehicle group.
+   * @param totalDays         The total number of days for the reservation.
+   * @param accessories       The list of accessories selected for the reservation.
+   * @return                  The calculated total amount for the reservation.
+   */
+  private double getTotalAmount(double dailyRate, int totalDays, List<Accessory> accessories) {
+    double accessoriesCost = accessories.stream()
+        .mapToDouble(Accessory::getDailyRate)
+        .sum();
+    return dailyRate * totalDays + accessoriesCost * totalDays;
+  }
+
+  /**
+   * Calculates the total number of days between the pickup and return date times.
+   *
+   * @param pickupDateTime    The date and time of pickup for the reservation.
+   * @param returnDateTime    The date and time of return for the reservation.
+   * @return                  The total number of days between pickup and return dates.
+   */
+  private int getTotalDays(LocalDateTime pickupDateTime, LocalDateTime returnDateTime) {
+    return (int) Duration.between(pickupDateTime, returnDateTime).toDays();
   }
 
   /**
@@ -88,78 +196,5 @@ public class ReservationService {
     Page<Reservation> page = reservationRepository.findAll(pageable);
 
     return page.toList();
-  }
-
-  /**
-   * Create reservation reservation dto.
-   *
-   * @param reservationDto the reservationDto
-   * @return the reservation dto
-   * @throws PersonNotFoundException the person not found exception
-   * @throws GroupNotFoundException  the group not found exception
-   * @throws StripeException         the stripe exception
-   */
-  @Transactional
-  public ReservationDto createReservation(ReservationCreationDto reservationDto) throws PersonNotFoundException, GroupNotFoundException, StripeException {
-
-    Person person = personService.getPersonById(reservationDto.personId());
-
-    Group group = groupService.getGroupById(reservationDto.groupId());
-
-    List<Accessory> accessories = accessoryService.getAccessoriesById(reservationDto.accessoryIds());
-
-    int totalDays = calculateTotalDays(reservationDto.pickupDateTime(), reservationDto.returnDateTime());
-    double calcTotalAmount = calculateTotalAmount(group.getDailyRate(), totalDays, accessories);
-
-    Reservation newReservation = buildNewReservation(reservationDto, person, group, accessories, calcTotalAmount, totalDays);
-
-    return processReservationPayment(person, calcTotalAmount, reservationDto.paymentType(), newReservation);
-  }
-
-  private Reservation buildNewReservation(ReservationCreationDto reservationDto, Person person, Group group, List<Accessory> accessories, double calcTotalAmount, int totalDays) {
-    Reservation newReservation = new Reservation();
-    newReservation.setPerson(person);
-    newReservation.setGroup(group);
-    newReservation.setAccessories(accessories);
-    newReservation.setPickupDateTime(reservationDto.pickupDateTime());
-    newReservation.setReturnDateTime(reservationDto.returnDateTime());
-    newReservation.setTotalAmount(calcTotalAmount);
-    newReservation.setTotalDays(totalDays);
-    newReservation.setReservationStatus(ReservationStatus.PENDING);
-    newReservation.setPaymentType(reservationDto.paymentType());
-    newReservation.setCreatedDate(LocalDateTime.now());
-
-    return reservationRepository.save(newReservation);
-  }
-
-  private ReservationDto processReservationPayment(Person person, Double totalAmount, String paymentMethod, Reservation reservation) throws StripeException {
-    if ("online".equalsIgnoreCase(paymentMethod)) {
-      Session paymentSession = paymentService.createCheckoutSession(
-          totalAmount,
-          PAYMENT_SUCCESS_URL,
-          PAYMENT_CANCEL_URL,
-          reservation
-      );
-
-      if (paymentSession.getUrl().contains("success")) {
-        reservationProducer.publishMessageEmail(person, reservation);
-      }
-
-      return ReservationDto.fromEntity(reservation, paymentSession.getUrl());
-    } else {
-      reservationProducer.publishMessageEmail(person, reservation);
-      return ReservationDto.fromEntity(reservation, null);
-    }
-  }
-
-  private double calculateTotalAmount(double dailyRate, int totalDays, List<Accessory> accessories) {
-    double accessoriesCost = accessories.stream()
-        .mapToDouble(Accessory::getDailyRate)
-        .sum();
-    return dailyRate * totalDays + accessoriesCost * totalDays;
-  }
-
-  private int calculateTotalDays(LocalDateTime pickupDateTime, LocalDateTime returnDateTime) {
-    return (int) Duration.between(pickupDateTime, returnDateTime).toDays();
   }
 }

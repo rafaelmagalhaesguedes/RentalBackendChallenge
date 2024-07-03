@@ -67,16 +67,16 @@ public class Reservation {
   /**
    * Instantiates a new Reservation.
    *
-   * @param id             the id
-   * @param person         the person
-   * @param group          the group
-   * @param accessories    the accessories
-   * @param pickupDateTime the pickup date time
-   * @param returnDateTime the return date time
-   * @param totalAmount    the total amount
-   * @param totalDays    the total days
-   * @param reservationStatus         the reservationStatus
-   * @param paymentType  the payment method
+   * @param id                the id
+   * @param person            the person
+   * @param group             the group
+   * @param accessories       the accessories
+   * @param pickupDateTime    the pickup date time
+   * @param returnDateTime    the return date time
+   * @param totalAmount       the total amount
+   * @param totalDays         the total days
+   * @param reservationStatus the reservationStatus
+   * @param paymentType       the payment method
    */
   public Reservation(UUID id, Person person, Group group, List<Accessory> accessories,
       LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, Integer totalDays,
@@ -93,6 +93,20 @@ public class Reservation {
     this.paymentType = paymentType;
   }
 
+  /**
+   * Instantiates a new Reservation.
+   *
+   * @param person            the person
+   * @param group             the group
+   * @param accessories       the accessories
+   * @param localDateTime     the local date time
+   * @param pickupDateTime    the pickup date time
+   * @param totalAmount       the total amount
+   * @param totalDays         the total days
+   * @param reservationStatus the reservation status
+   * @param s                 the s
+   * @param now               the now
+   */
   public Reservation(Person person, Group group, List<Accessory> accessories, LocalDateTime localDateTime, LocalDateTime pickupDateTime, double totalAmount, int totalDays, ReservationStatus reservationStatus,
       String s, LocalDateTime now) {
   }
