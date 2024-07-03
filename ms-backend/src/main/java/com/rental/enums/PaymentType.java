@@ -8,12 +8,12 @@ public enum PaymentType {
   /**
    * The Pay at counter.
    */
-  PAY_AT_COUNTER("Pagar no balcão da locadora"),
+  OFFLINE_PAYMENT("Offline payment"),
 
   /**
    * The Online payment.
    */
-  ONLINE_PAYMENT("Pagamento online realizado");
+  ONLINE_PAYMENT("Online payment");
 
   private final String name;
 

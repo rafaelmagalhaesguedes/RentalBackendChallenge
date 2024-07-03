@@ -8,12 +8,12 @@ public enum PaymentStatus {
   /**
    * The Pay at counter.
    */
-  CONFIRMED("Pagamento confirmado com sucesso!"),
+  CONFIRMED("Payment confirmed successfully!"),
 
   /**
    * The Online payment.
    */
-  CANCEL("Pagamento cancelado!");
+  CANCEL("Payment canceled!");
 
   private final String name;
 
