@@ -243,3 +243,27 @@ Para acessar a documentação do Swagger, navegue até [http://localhost:8080/sw
       "paymentUrl": "https://checkout.stripe.com/c/pay/cs_test_a1DWuVtXutyIcEyCPFOK2XiLoixgdRP7snfmN5fSmbsGleR0aWIwJIvseY#fidkdWxOYHwnPyd1blpxYHZxWjA0SmtVTWFCaT1WXHY8X2BnX0dIQ31pT0o8cTZVS3BRSUNqYTdAd2N0dDdoQmRWdjBOazRUU2tvSWtEV21Ka1Vyc3Q2XDZ%2FbUNvQGhLPVw2QENtQHdIdElDNTVhfFV9a21SQCcpJ2N3amhWYHdzYHcnP3F3cGApJ2lkfGpwcVF8dWAnPyd2bGtiaWBabHFgaCcpJ2BrZGdpYFVpZGZgbWppYWB3dic%2FcXdwYHgl"
     }
     ```
+
+- **Pagamento com Sucesso:**
+  - **GET /payment/success/{paymentId}**
+  
+  - Response:
+    ```json
+    {
+      "id": "5c1ad591-5060-497a-985f-80899f32d3b5",
+      "paymentStatus": "CONFIRMED",
+      "paymentDate": "2024-07-03T12:37:52.923245"
+    }
+    ```
+
+- **Pagamento cancelado:**
+  - **GET /payment/cancel/{paymentId}**
+
+  - Response:
+    ```json
+    {
+      "id": "5c1ad591-5060-497a-985f-80899f32d3b5",
+      "paymentStatus": "CANCEL",
+      "paymentDate": "2024-07-03T12:37:52.923245"
+    }
+    ```
