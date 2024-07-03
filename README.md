@@ -141,34 +141,49 @@ Para acessar a documentação do Swagger, navegue até [http://localhost:8080/sw
   - Query Parameters:
     - `pageNumber`: Número da página (padrão: 0)
     - `pageSize`: Tamanho da página (padrão: 10)
-  - Response:
+    - Response:
     ```json
-    [
+     [
       {
         "id": "uuid",
         "person": {
           "id": "uuid",
-          "email": "user@example.com"
+          "fullName": "Rafael Magalhães Guedes",
+          "username": "rafaguedes",
+          "email": "user@example.com",
+          "role": "USER"
         },
         "group": {
           "id": "uuid",
-          "name": "Group Name"
+          "name": "Group GX",
+          "vehicles": "Renegade, Creta, Duster, Toro ou similares",
+          "dailyRate": 250.0
         },
         "accessories": [
           {
             "id": "uuid",
-            "name": "Accessory Name"
+            "name": "GPS",
+            "description": "SmartPhone com GPS",
+            "quantity": 1,
+            "dailyRate": 100.0
+          },
+          {
+            "id": "uuid",
+            "name": "Bebê conforto",
+            "description": "Comfort plus ergonomic top",
+            "quantity": 1,
+            "dailyRate": 100.0
           }
         ],
         "pickupDateTime": "2024-10-01T08:00:00",
         "returnDateTime": "2024-11-05T10:00:00",
-        "totalAmount": 1000.00,
-        "totalDays": 8,
+        "totalAmount": 15750.0,
+        "totalDays": 35,
         "reservationStatus": "PENDING",
         "paymentType": "Online",
-        "createdDate": "2024-06-30T20:28:30.783332566"
+        "createdDate": "2024-06-30T20:28:30.783332566",
       }
-    ]
+     ]
     ```
 
 - **Criar Reserva:**
@@ -178,7 +193,7 @@ Para acessar a documentação do Swagger, navegue até [http://localhost:8080/sw
     {
       "personId": "uuid",
       "groupId": "uuid",
-      "accessoryIds": ["uuid"],
+      "accessoryIds": ["uuid", "uuid"],
       "pickupDateTime": "2024-10-01T08:00:00",
       "returnDateTime": "2024-11-05T10:00:00",
       "totalAmount": 15750.00,
@@ -206,13 +221,13 @@ Para acessar a documentação do Swagger, navegue até [http://localhost:8080/sw
         {
           "id": "uuid",
           "name": "GPS",
-          "description": "GPS plus",
+          "description": "SmartPhone com GPS",
           "quantity": 1,
           "dailyRate": 100.0
         },
         {
           "id": "uuid",
-          "name": "Bebê comforto",
+          "name": "Bebê conforto",
           "description": "Comfort plus ergonomic top",
           "quantity": 1,
           "dailyRate": 100.0
