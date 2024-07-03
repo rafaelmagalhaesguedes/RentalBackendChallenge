@@ -8,17 +8,17 @@ public enum ReservationStatus {
   /**
    * Pending reservationStatus.
    */
-  PENDING("Pending"),
+  PENDING("Reserva Pendente"),
 
   /**
    * Confirmed reservationStatus.
    */
-  CONFIRMED("Confirmed"),
+  CONFIRMED("Reserva Confirmada"),
 
   /**
    * Cancelled reservationStatus.
    */
-  CANCELLED("Cancelled");
+  CANCELLED("Reserva Cancelada");
 
   private final String name;
 

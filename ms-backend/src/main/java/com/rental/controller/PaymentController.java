@@ -1,8 +1,12 @@
 package com.rental.controller;
 
+import com.rental.controller.dto.payment.PaymentResponseDto;
 import com.rental.entity.Payment;
+import com.rental.enums.PaymentStatus;
 import com.rental.enums.ReservationStatus;
 import com.rental.repository.PaymentRepository;
+import com.rental.service.PaymentService;
+import com.rental.service.exception.PaymentNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -21,23 +25,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/payment")
 public class PaymentController {
 
-  private final PaymentRepository paymentRepository;
+  private final PaymentService paymentService;
 
   /**
    * Instantiates a new Payment controller.
    *
-   * @param paymentRepository the payment repository
+   * @param paymentService the payment service
    */
   @Autowired
-  public PaymentController(PaymentRepository paymentRepository) {
-    this.paymentRepository = paymentRepository;
+  public PaymentController(PaymentService paymentService) {
+    this.paymentService = paymentService;
   }
 
   /**
    * Payment success string.
    *
    * @param paymentId the payment id
-   * @param model     the model
    * @return the string
    */
   @GetMapping("/success/{paymentId}")
@@ -46,24 +49,17 @@ public class PaymentController {
       @ApiResponse(responseCode = "200", description = "Payment processed successfully"),
       @ApiResponse(responseCode = "404", description = "Payment not found")
   })
-  public String paymentSuccess(@PathVariable UUID paymentId, Model model) {
-    Payment payment = paymentRepository.findById(paymentId)
-        .orElseThrow(() -> new RuntimeException("Payment not found"));
-    payment.setStatus(ReservationStatus.CONFIRMED);
-    paymentRepository.save(payment);
-
-    // Add payment details to the model
-    model.addAttribute("payment", payment);
-    model.addAttribute("reservation", payment.getReservation());
-
-    return "payment-success";
+  public PaymentResponseDto paymentSuccess(@PathVariable UUID paymentId)
+      throws PaymentNotFoundException {
+    return PaymentResponseDto.fromEntity(
+        paymentService.paymentSuccess(paymentId)
+    );
   }
 
   /**
    * Payment failed string.
    *
    * @param paymentId the payment id
-   * @param model     the model
    * @return the string
    */
   @GetMapping("/cancel/{paymentId}")
@@ -72,15 +68,9 @@ public class PaymentController {
       @ApiResponse(responseCode = "200", description = "Payment processed as failed"),
       @ApiResponse(responseCode = "404", description = "Payment not found")
   })
-  public String paymentFailed(@PathVariable UUID paymentId, Model model) {
-    Payment payment = paymentRepository.findById(paymentId)
-        .orElseThrow(() -> new RuntimeException("Payment not found"));
-    payment.setStatus(ReservationStatus.CANCELLED);
-    paymentRepository.save(payment);
-
-    // Add payment details to the model
-    model.addAttribute("payment", payment);
-
-    return "payment-failed";
+  public PaymentResponseDto paymentFailed(@PathVariable UUID paymentId) throws PaymentNotFoundException {
+    return PaymentResponseDto.fromEntity(
+        paymentService.paymentCancel(paymentId)
+    );
   }
 }

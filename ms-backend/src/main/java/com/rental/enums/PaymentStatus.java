@@ -3,21 +3,21 @@ package com.rental.enums;
 /**
  * The enum Payment method.
  */
-public enum PaymentType {
+public enum PaymentStatus {
 
   /**
    * The Pay at counter.
    */
-  PAY_AT_COUNTER("Pagar no balcão da locadora"),
+  CONFIRMED("Pagamento confirmado com sucesso!"),
 
   /**
    * The Online payment.
    */
-  ONLINE_PAYMENT("Pagamento online realizado");
+  CANCEL("Pagamento cancelado!");
 
   private final String name;
 
-  PaymentType(String name) {
+  PaymentStatus(String name) {
     this.name = name;
   }
 

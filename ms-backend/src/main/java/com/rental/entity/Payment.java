@@ -1,5 +1,6 @@
 package com.rental.entity;
 
+import com.rental.enums.PaymentStatus;
 import com.rental.enums.ReservationStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,7 +25,7 @@ public class Payment {
   @ManyToOne
   private Reservation reservation;
   private Double amount;
-  private ReservationStatus reservationStatus; // "Pending", "Completed", "Failed"
+  private PaymentStatus paymentStatus; // "Pending", "Completed", "Failed"
   private LocalDateTime paymentDate;
   private String paymentMethod; // "Online", "Counter"
 
@@ -39,16 +40,16 @@ public class Payment {
    * @param id            the id
    * @param reservation   the reservation
    * @param amount        the amount
-   * @param reservationStatus        the reservationStatus
+   * @param paymentStatus the paymentStatus
    * @param paymentDate   the payment date
    * @param paymentMethod the payment method
    */
-  public Payment(UUID id, Reservation reservation, Double amount, ReservationStatus reservationStatus,
+  public Payment(UUID id, Reservation reservation, Double amount, PaymentStatus paymentStatus,
       LocalDateTime paymentDate, String paymentMethod) {
     this.id = id;
     this.reservation = reservation;
     this.amount = amount;
-    this.reservationStatus = reservationStatus;
+    this.paymentStatus = paymentStatus;
     this.paymentDate = paymentDate;
     this.paymentMethod = paymentMethod;
   }
@@ -112,17 +113,17 @@ public class Payment {
    *
    * @return the reservationStatus
    */
-  public ReservationStatus getStatus() {
-    return reservationStatus;
+  public PaymentStatus getStatus() {
+    return paymentStatus;
   }
 
   /**
    * Sets reservationStatus.
    *
-   * @param reservationStatus the reservationStatus
+   * @param paymentStatus the reservationStatus
    */
-  public void setStatus(ReservationStatus reservationStatus) {
-    this.reservationStatus = reservationStatus;
+  public void setStatus(PaymentStatus paymentStatus) {
+    this.paymentStatus = paymentStatus;
   }
 
   /**

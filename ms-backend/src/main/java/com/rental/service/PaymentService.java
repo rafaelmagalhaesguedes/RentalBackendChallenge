@@ -2,12 +2,15 @@ package com.rental.service;
 
 import com.rental.entity.Payment;
 import com.rental.entity.Reservation;
+import com.rental.enums.PaymentStatus;
 import com.rental.repository.PaymentRepository;
+import com.rental.service.exception.PaymentNotFoundException;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import jakarta.transaction.Transactional;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -78,5 +81,21 @@ public class PaymentService {
         .build();
 
     return Session.create(params);
+  }
+
+  public Payment paymentSuccess(UUID paymentId) throws PaymentNotFoundException {
+    Payment payment = paymentRepository.findById(paymentId)
+        .orElseThrow(PaymentNotFoundException::new);
+
+    payment.setStatus(PaymentStatus.CONFIRMED);
+    return paymentRepository.save(payment);
+  }
+
+  public Payment paymentCancel(UUID paymentId) throws PaymentNotFoundException {
+    Payment payment = paymentRepository.findById(paymentId)
+        .orElseThrow(PaymentNotFoundException::new);
+
+    payment.setStatus(PaymentStatus.CANCEL);
+    return paymentRepository.save(payment);
   }
 }
