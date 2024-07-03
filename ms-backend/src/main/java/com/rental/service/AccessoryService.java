@@ -3,6 +3,7 @@ package com.rental.service;
 import com.rental.entity.Accessory;
 import com.rental.repository.AccessoryRepository;
 import com.rental.service.exception.AccessoryNotFoundException;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,15 @@ public class AccessoryService {
   public Accessory getAccessoryById(UUID id) throws AccessoryNotFoundException {
     return accessoryRepository.findById(id)
         .orElseThrow(AccessoryNotFoundException::new);
+  }
+
+  /**
+   * Gets accessories by id.
+   *
+   * @return the accessories by id
+   */
+  public List<Accessory> getAccessoriesById(List<UUID> accessoryIds) {
+    return accessoryRepository.findAllByIdIn(accessoryIds);
   }
 
   /**
