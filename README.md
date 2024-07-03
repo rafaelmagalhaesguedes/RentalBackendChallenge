@@ -35,25 +35,27 @@ e garantir a entrega dos e-mails. O microserviço é responsável por:
 
 ## Tecnologias Utilizadas
 
-- Spring Boot: Framework para desenvolvimento de aplicativos Java.
+- **Spring Boot:** Framework para desenvolvimento de aplicativos Java.
 
-- Spring Security: Gerenciamento de autenticação e autorização.
+- **Spring Security:** Gerenciamento de autenticação e autorização.
 
-- Spring Data JPA: Acesso a dados utilizando o padrão JPA.
+- **Spring Data JPA:** Acesso a dados utilizando o padrão JPA.
 
-- Spring AMQP (RabbitMQ): Integração com RabbitMQ para envio de e-mails assíncronos.
+- **Spring AMQP (RabbitMQ):** Integração com RabbitMQ para envio de e-mails assíncronos.
 
-- Hibernate Validator: Validação de entrada de dados.
+- **Hibernate Validator:** Validação de entrada de dados.
 
-- JavaMail Sender: Envio de e-mails utilizando o protocolo SMTP.
+- **JavaMail Sender:** Envio de e-mails utilizando o protocolo SMTP.
 
-- Jakarta Validation: Validação de dados no lado do servidor.
+- **Jakarta Validation:** Validação de dados no lado do servidor.
 
-- Stripe API: Integração com a API do Stripe para processamento de pagamentos.
+- **Stripe API:** Integração com a API do Stripe para processamento de pagamentos.
 
-- Springdoc OpenAPI: API documentada com o Springdoc OpenAPI Swagger
+- **Springdoc OpenAPI:** API documentada com o Springdoc OpenAPI Swagger
 
-- Docker: Os serviços usam container docker para seu ciclo de vida.
+- **Nginx:** Servidor web e proxy reverso.
+
+- **Docker:** Os serviços usam container docker para seu ciclo de vida.
 
 ## Integração com o Stripe
 
