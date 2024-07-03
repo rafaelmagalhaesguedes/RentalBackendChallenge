@@ -93,6 +93,10 @@ public class Reservation {
     this.paymentType = paymentType;
   }
 
+  public Reservation(Person person, Group group, List<Accessory> accessories, LocalDateTime localDateTime, LocalDateTime pickupDateTime, double totalAmount, int totalDays, ReservationStatus reservationStatus,
+      String s, LocalDateTime now) {
+  }
+
   /**
    * Gets id.
    *

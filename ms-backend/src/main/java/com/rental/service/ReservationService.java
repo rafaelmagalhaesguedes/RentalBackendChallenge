@@ -35,28 +35,31 @@ import org.springframework.stereotype.Service;
 public class ReservationService {
 
   private final ReservationRepository reservationRepository;
-  private final PersonRepository personRepository;
-  private final GroupRepository groupRepository;
-  private final AccessoryRepository accessoryRepository;
+  private final PersonService personService;
+  private final GroupService groupService;
+  private final AccessoryService accessoryService;
   private final PaymentService paymentService;
   private final ReservationProducer reservationProducer;
+
+  private static final String PAYMENT_SUCCESS_URL = "http://localhost:8080/payment/success";
+  private static final String PAYMENT_CANCEL_URL = "http://localhost:8080/payment/cancel";
 
   /**
    * Instantiates a new Reservation service.
    *
    * @param reservationRepository the reservation repository
-   * @param personRepository      the person repository
-   * @param groupRepository       the group repository
-   * @param accessoryRepository   the accessory repository
+   * @param personService       the person service
+   * @param groupService        the group service
+   * @param accessoryService    the accessory service
    * @param paymentService        the payment service
+   * @param reservationProducer        the reservation producer
    */
   @Autowired
-  public ReservationService(ReservationRepository reservationRepository, PersonRepository personRepository, GroupRepository groupRepository, AccessoryRepository accessoryRepository, PaymentService paymentService,
-      ReservationProducer reservationProducer) {
+  public ReservationService(ReservationRepository reservationRepository, PersonService personService, GroupService groupService, AccessoryService accessoryService, PaymentService paymentService, ReservationProducer reservationProducer) {
     this.reservationRepository = reservationRepository;
-    this.personRepository = personRepository;
-    this.groupRepository = groupRepository;
-    this.accessoryRepository = accessoryRepository;
+    this.personService = personService;
+    this.groupService = groupService;
+    this.accessoryService = accessoryService;
     this.paymentService = paymentService;
     this.reservationProducer = reservationProducer;
   }
@@ -99,17 +102,21 @@ public class ReservationService {
   @Transactional
   public ReservationDto createReservation(ReservationCreationDto reservationDto) throws PersonNotFoundException, GroupNotFoundException, StripeException {
 
-    Person person = personRepository.findById(reservationDto.personId())
-        .orElseThrow(PersonNotFoundException::new);
+    Person person = personService.getPersonById(reservationDto.personId());
 
-    Group group = groupRepository.findById(reservationDto.groupId())
-        .orElseThrow(GroupNotFoundException::new);
+    Group group = groupService.getGroupById(reservationDto.groupId());
 
-    List<Accessory> accessories = accessoryRepository.findAllById(reservationDto.accessoryIds());
+    List<Accessory> accessories = accessoryService.getAccessoriesById(reservationDto.accessoryIds());
 
     int totalDays = calculateTotalDays(reservationDto.pickupDateTime(), reservationDto.returnDateTime());
     double calcTotalAmount = calculateTotalAmount(group.getDailyRate(), totalDays, accessories);
 
+    Reservation newReservation = buildNewReservation(reservationDto, person, group, accessories, calcTotalAmount, totalDays);
+
+    return processReservationPayment(person, calcTotalAmount, reservationDto.paymentType(), newReservation);
+  }
+
+  private Reservation buildNewReservation(ReservationCreationDto reservationDto, Person person, Group group, List<Accessory> accessories, double calcTotalAmount, int totalDays) {
     Reservation newReservation = new Reservation();
     newReservation.setPerson(person);
     newReservation.setGroup(group);
@@ -122,17 +129,15 @@ public class ReservationService {
     newReservation.setPaymentType(reservationDto.paymentType());
     newReservation.setCreatedDate(LocalDateTime.now());
 
-    reservationRepository.save(newReservation);
-
-    return getReservationDto(person, calcTotalAmount, reservationDto.paymentType(), newReservation);
+    return reservationRepository.save(newReservation);
   }
 
-  private ReservationDto getReservationDto(Person person, Double totalAmount, String paymentMethod, Reservation reservation) throws StripeException {
+  private ReservationDto processReservationPayment(Person person, Double totalAmount, String paymentMethod, Reservation reservation) throws StripeException {
     if ("online".equalsIgnoreCase(paymentMethod)) {
       Session paymentSession = paymentService.createCheckoutSession(
           totalAmount,
-          "http://localhost:8080/payment/success",
-          "http://localhost:8080/payment/cancel",
+          PAYMENT_SUCCESS_URL,
+          PAYMENT_CANCEL_URL,
           reservation
       );
 
@@ -148,16 +153,10 @@ public class ReservationService {
   }
 
   private double calculateTotalAmount(double dailyRate, int totalDays, List<Accessory> accessories) {
-    double totalAmount = dailyRate * totalDays;
-
-    if (accessories != null && !accessories.isEmpty()) {
-      double accessoriesCost = accessories.stream()
-          .mapToDouble(Accessory::getDailyRate)
-          .sum();
-      totalAmount += accessoriesCost * totalDays;
-    }
-
-    return totalAmount;
+    double accessoriesCost = accessories.stream()
+        .mapToDouble(Accessory::getDailyRate)
+        .sum();
+    return dailyRate * totalDays + accessoriesCost * totalDays;
   }
 
   private int calculateTotalDays(LocalDateTime pickupDateTime, LocalDateTime returnDateTime) {
