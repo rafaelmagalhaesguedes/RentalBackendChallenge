@@ -1,18 +1,13 @@
 package com.rental.integration;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.springframework.security.test.context.support.WithMockUser;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rental.controller.dto.person.PersonCreationDto;
-import com.rental.entity.Person;
 import com.rental.repository.PersonRepository;
 import com.rental.security.Role;
-import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
