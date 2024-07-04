@@ -2,7 +2,7 @@
 # Rental Service Application
 
 Este projeto engloba uma API robusta para gerenciamento de clientes, reservas, aluguel de acessórios e
-grupos de carros dentro de uma locadora de veículos. Possui integração perfeita com o gateway de pagamento
+grupos de carros dentro de uma locadora de veículos. Possui integração com o gateway de pagamento
 Stripe para transações online seguras. Além disso, o sistema inclui uma arquitetura de microsserviços para
 comunicação eficiente por e-mail, aproveitando filas de mensagens para maior confiabilidade e escalabilidade.
 
