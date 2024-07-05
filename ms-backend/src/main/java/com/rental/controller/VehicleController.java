@@ -85,19 +85,17 @@ public class VehicleController {
    *
    * @param vehicleCreationDto the vehicle creation dto
    * @return the vehicle dto
-   * @throws GroupNotFoundException the group not found exception
    */
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   @PreAuthorize("hasAuthority('MANAGER')")
   @Operation(summary = "Create Vehicle", description = "Create a new vehicle.")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Vehicle created successfully"),
-      @ApiResponse(responseCode = "404", description = "Group not found")
-  })
+  @ApiResponse(responseCode = "201", description = "Vehicle created successfully")
   @CacheEvict(value = {"vehicleById", "allVehicles"}, allEntries = true)
-  public VehicleDto createVehicle(@RequestBody @Valid VehicleCreationDto vehicleCreationDto) throws GroupNotFoundException {
-    return vehicleService.createVehicle(vehicleCreationDto);
+  public VehicleDto createVehicle(@RequestBody @Valid VehicleCreationDto vehicleCreationDto) {
+    return VehicleDto.fromEntity(
+            vehicleService.createVehicle(vehicleCreationDto.toEntity())
+    );
   }
 
   /**
@@ -107,18 +105,19 @@ public class VehicleController {
    * @param id                 the id
    * @return the vehicle dto
    * @throws VehicleNotFoundException the vehicle not found exception
-   * @throws GroupNotFoundException   the group not found exception
    */
   @PutMapping("/{id}")
   @PreAuthorize("hasAuthority('MANAGER')")
   @Operation(summary = "Update Vehicle", description = "Update an existing vehicle.")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Vehicle updated successfully"),
-      @ApiResponse(responseCode = "404", description = "Vehicle or group not found")
+      @ApiResponse(responseCode = "404", description = "Vehicle not found")
   })
   @CacheEvict(value = {"vehicleById", "allVehicles"}, allEntries = true)
-  public VehicleDto updateVehicle(@RequestBody @Valid VehicleCreationDto vehicleCreationDto, @PathVariable UUID id) throws VehicleNotFoundException, GroupNotFoundException {
-    return vehicleService.updateVehicle(vehicleCreationDto, id);
+  public VehicleDto updateVehicle(@RequestBody @Valid VehicleCreationDto vehicleCreationDto, @PathVariable UUID id) throws VehicleNotFoundException {
+    return VehicleDto.fromEntity(
+            vehicleService.updateVehicle(vehicleCreationDto.toEntity(), id)
+    );
   }
 
   /**
