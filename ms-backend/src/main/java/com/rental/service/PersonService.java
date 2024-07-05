@@ -85,16 +85,14 @@ public class PersonService implements UserDetailsService {
    * @throws PersonExistingException the person existing exception
    */
   public Person createPerson(Person person) throws PersonExistingException {
-    if (personRepository.existsByEmail(person.getEmail())) {
+    boolean existingPersonByEmail = personRepository.existsByEmail(person.getEmail());
+
+    if (existingPersonByEmail) {
       throw new PersonExistingException();
     }
 
-    String hashPassword = new BCryptPasswordEncoder().encode(person.getPassword());
-
-    person.setPassword(hashPassword);
-
+    person.setPassword(hashPassword(person));
     personProducer.publishMessageEmail(person);
-
     return personRepository.save(person);
   }
 
@@ -109,7 +107,8 @@ public class PersonService implements UserDetailsService {
   public Person updatePerson(UUID id, Person person) throws PersonNotFoundException {
     Person personFromDb = getPersonById(id);
 
-    personFromDb.setName(person.getName());
+    personFromDb.setFullName(person.getFullName());
+    personFromDb.setUsername(person.getUsername());
     personFromDb.setEmail(person.getEmail());
 
     return personRepository.save(personFromDb);
@@ -127,6 +126,13 @@ public class PersonService implements UserDetailsService {
 
     personRepository.delete(person);
     return person;
+  }
+
+  /**
+   * Hash Password
+   */
+  private static String hashPassword(Person person) {
+    return new BCryptPasswordEncoder().encode(person.getPassword());
   }
 
   @Override

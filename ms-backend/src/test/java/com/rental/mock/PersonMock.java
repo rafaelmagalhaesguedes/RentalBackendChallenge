@@ -5,6 +5,9 @@ import com.rental.security.Role;
 
 import java.util.UUID;
 
+/**
+ * The type Person mock.
+ */
 public class PersonMock {
     public static Person PERSON_CREATION = new Person(
             "Rafael Guedes",

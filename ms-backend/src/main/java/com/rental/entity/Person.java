@@ -130,21 +130,30 @@ public class Person implements UserDetails {
   }
 
   /**
-   * Gets name.
+   * Gets full name.
    *
-   * @return the name
+   * @return the full name
    */
-  public String getName() {
-    return username;
+  public String getFullName() {
+    return fullName;
+  }
+
+  /**
+   * Sets full name.
+   *
+   * @param fullName the full name
+   */
+  public void setFullName(String fullName) {
+    this.fullName = fullName;
   }
 
   /**
    * Sets name.
    *
-   * @param fullName the full name
+   * @param username the full name
    */
-  public void setName(String fullName) {
-    this.username = fullName;
+  public void setUsername(String username) {
+    this.username = username;
   }
 
   /**
@@ -163,24 +172,6 @@ public class Person implements UserDetails {
    */
   public void setEmail(String email) {
     this.email = email;
-  }
-
-  /**
-   * Gets full name.
-   *
-   * @return the full name
-   */
-  public String getFullName() {
-    return fullName;
-  }
-
-  /**
-   * Sets full name.
-   *
-   * @param fullName the full name
-   */
-  public void setFullName(String fullName) {
-    this.fullName = fullName;
   }
 
   /**
@@ -216,22 +207,13 @@ public class Person implements UserDetails {
   }
 
   @Override
-  public String getPassword() {
-    return this.password;
-  }
-
-  /**
-   * Sets username.
-   *
-   * @param username the username
-   */
-  public void setUsername(String username) {
-    this.username = username;
+  public String getUsername() {
+    return this.username;
   }
 
   @Override
-  public String getUsername() {
-    return this.username;
+  public String getPassword() {
+    return this.password;
   }
 
   @Override
