@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 import java.util.UUID;
 
 /**
@@ -175,5 +177,10 @@ public class Vehicle {
    */
   public void setYearOfManufacture(String yearOfManufacture) {
     this.yearOfManufacture = yearOfManufacture;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    return EqualsBuilder.reflectionEquals(obj, this);
   }
 }
