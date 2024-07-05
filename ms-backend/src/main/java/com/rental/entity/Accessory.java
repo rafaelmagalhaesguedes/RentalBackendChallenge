@@ -10,6 +10,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 import java.util.UUID;
 
 /**
@@ -39,10 +41,18 @@ public class Accessory {
   /**
    * Instantiates a new Accessory.
    *
-   * @param id the id
+   * @param id          the id
+   * @param name        the name
+   * @param description the description
+   * @param quantity    the quantity
+   * @param dailyRate   the daily rate
    */
-  public Accessory(String id) {
-    this.id = UUID.fromString(id);
+  public Accessory(UUID id, String name, String description, Integer quantity, Double dailyRate) {
+    this.id = id;
+    this.name = name;
+    this.description = description;
+    this.quantity = quantity;
+    this.dailyRate = dailyRate;
   }
 
   /**
@@ -148,5 +158,10 @@ public class Accessory {
    */
   public void setDailyRate(Double dailyRate) {
     this.dailyRate = dailyRate;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    return EqualsBuilder.reflectionEquals(obj, this);
   }
 }
