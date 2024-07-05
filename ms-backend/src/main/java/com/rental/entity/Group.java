@@ -10,6 +10,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -35,6 +37,21 @@ public class Group {
    * Instantiates a new Group.
    */
   public Group() { }
+
+  /**
+   * Instantiates a new Group.
+   *
+   * @param id        the id
+   * @param name      the name
+   * @param vehicles  the vehicles
+   * @param dailyRate the daily rate
+   */
+  public Group(UUID id, String name, String vehicles, Double dailyRate) {
+    this.id = id;
+    this.name = name;
+    this.vehicles = vehicles;
+    this.dailyRate = dailyRate;
+  }
 
   /**
    * Instantiates a new Group.
@@ -119,5 +136,10 @@ public class Group {
    */
   public void setVehicles(String vehicles) {
     this.vehicles = vehicles;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    return EqualsBuilder.reflectionEquals(obj, this);
   }
 }
