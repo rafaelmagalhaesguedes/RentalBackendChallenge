@@ -9,15 +9,11 @@ import java.util.UUID;
  * The type Person mock.
  */
 public class PersonMock {
-    public static Person PERSON_CREATION = new Person(
-            "Rafael Guedes",
-            "rafa",
-            "rafa@email.com",
-            "password",
-            Role.MANAGER
-    );
 
-    public static Person PERSON_WITH_ID_1 = new Person(
+    /**
+     * The constant PERSON_01.
+     */
+    public static Person PERSON_01 = new Person(
             UUID.randomUUID(),
             "Thais Guedes",
             "thais",
@@ -26,7 +22,10 @@ public class PersonMock {
             Role.USER
     );
 
-    public static Person PERSON_WITH_ID_2 = new Person(
+    /**
+     * The constant PERSON_02.
+     */
+    public static Person PERSON_02 = new Person(
             UUID.randomUUID(),
             "Ana Guedes",
             "ana",
@@ -35,6 +34,20 @@ public class PersonMock {
             Role.USER
     );
 
+    /**
+     * The constant PERSON_CREATION.
+     */
+    public static Person PERSON_CREATION = new Person(
+            "Rafael Guedes",
+            "rafa",
+            "rafa@email.com",
+            "password",
+            Role.MANAGER
+    );
+    
+    /**
+     * The constant PERSON_UPDATE.
+     */
     public static Person PERSON_UPDATE = new Person(
             "André Guedes",
             "andre",

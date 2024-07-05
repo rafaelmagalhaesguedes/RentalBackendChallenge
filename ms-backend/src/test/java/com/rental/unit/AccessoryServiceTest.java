@@ -27,6 +27,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+/**
+ * Unit Tests to Accessory Service Class
+ * *
+ * Created by Rafa Guedes
+ * */
 @ExtendWith(MockitoExtension.class)
 public class AccessoryServiceTest {
 

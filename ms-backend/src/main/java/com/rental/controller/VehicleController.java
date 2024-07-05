@@ -4,7 +4,6 @@ import com.rental.controller.dto.vehicle.VehicleCreationDto;
 import com.rental.controller.dto.vehicle.VehicleDto;
 import com.rental.entity.Vehicle;
 import com.rental.service.VehicleService;
-import com.rental.service.exception.GroupNotFoundException;
 import com.rental.service.exception.VehicleNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

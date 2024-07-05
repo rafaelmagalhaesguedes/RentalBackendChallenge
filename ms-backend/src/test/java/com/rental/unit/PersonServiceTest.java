@@ -48,20 +48,20 @@ public class PersonServiceTest {
   @Test
   public void testPersonRetrievalById() throws PersonNotFoundException {
     // Arrange
-    when(personRepository.findById(eq(PERSON_WITH_ID_1.getId()))).thenReturn(Optional.of(PERSON_WITH_ID_1));
+    when(personRepository.findById(eq(PERSON_01.getId()))).thenReturn(Optional.of(PERSON_01));
 
     // Act
-    Person personFromDb = personService.getPersonById(PERSON_WITH_ID_1.getId());
-    Mockito.verify(personRepository).findById(PERSON_WITH_ID_1.getId());
+    Person personFromDb = personService.getPersonById(PERSON_01.getId());
+    Mockito.verify(personRepository).findById(PERSON_01.getId());
 
     // Assert
-    assertThat(personFromDb).isEqualTo(PERSON_WITH_ID_1);
+    assertThat(personFromDb).isEqualTo(PERSON_01);
   }
 
   @Test
   public void testGetAllPersons() {
     // Arrange
-    List<Person> people = Arrays.asList(PERSON_WITH_ID_1, PERSON_WITH_ID_2);
+    List<Person> people = Arrays.asList(PERSON_01, PERSON_02);
     Page<Person> page = new PageImpl<>(people);
     Pageable pageable = PageRequest.of(0, 2);
 
@@ -89,14 +89,14 @@ public class PersonServiceTest {
   @Test
   public void testUpdatePerson() throws PersonNotFoundException {
     // Arrange
-    when(personRepository.findById(PERSON_WITH_ID_1.getId())).thenReturn(Optional.of(PERSON_WITH_ID_1));
-    when(personRepository.save(PERSON_WITH_ID_1)).thenReturn(PERSON_WITH_ID_1);
+    when(personRepository.findById(PERSON_01.getId())).thenReturn(Optional.of(PERSON_01));
+    when(personRepository.save(PERSON_01)).thenReturn(PERSON_01);
 
     // Act
-    Person result = personService.updatePerson(PERSON_WITH_ID_1.getId(), PERSON_UPDATE);
+    Person result = personService.updatePerson(PERSON_01.getId(), PERSON_UPDATE);
 
     // Assert
-    assertThat(result).isEqualTo(PERSON_WITH_ID_1);
+    assertThat(result).isEqualTo(PERSON_01);
   }
 
   @Test
@@ -112,14 +112,14 @@ public class PersonServiceTest {
   @Test
   public void testDeletePerson() throws PersonNotFoundException {
     // Arrange
-    when(personRepository.findById(PERSON_WITH_ID_1.getId())).thenReturn(Optional.of(PERSON_WITH_ID_1));
+    when(personRepository.findById(PERSON_01.getId())).thenReturn(Optional.of(PERSON_01));
 
     // Act
-    Person result = personService.deletePerson(PERSON_WITH_ID_1.getId());
+    Person result = personService.deletePerson(PERSON_01.getId());
 
     // Assert
-    assertEquals(PERSON_WITH_ID_1, result);
-    Mockito.verify(personRepository).delete(PERSON_WITH_ID_1);
+    assertEquals(PERSON_01, result);
+    Mockito.verify(personRepository).delete(PERSON_01);
   }
 
   @Test
