@@ -21,7 +21,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -40,20 +39,20 @@ public class AccessoryServiceTest {
   @Test
   public void testAccessoryRetrievalById() throws AccessoryNotFoundException {
     // Arrange
-   when(accessoryRepository.findById(eq(ACCESSORY_WITH_ID_01.getId())))
-        .thenReturn(Optional.of(ACCESSORY_WITH_ID_01));
+   when(accessoryRepository.findById(eq(ACCESSORY_01.getId())))
+        .thenReturn(Optional.of(ACCESSORY_01));
 
    // Act
-   Accessory getAccessory = accessoryService.getAccessoryById(ACCESSORY_WITH_ID_01.getId());
+   Accessory getAccessory = accessoryService.getAccessoryById(ACCESSORY_01.getId());
 
     // Assert
-    assertThat(getAccessory).isEqualTo(ACCESSORY_WITH_ID_01);
+    assertThat(getAccessory).isEqualTo(ACCESSORY_01);
   }
 
   @Test
   public void testGetAllAccessories() {
     // Arrange
-    List<Accessory> accessories = Arrays.asList(ACCESSORY_WITH_ID_01, ACCESSORY_WITH_ID_02);
+    List<Accessory> accessories = Arrays.asList(ACCESSORY_01, ACCESSORY_02);
     Page<Accessory> page = new PageImpl<>(accessories);
     Pageable pageable = PageRequest.of(0, 2);
 
@@ -84,42 +83,42 @@ public class AccessoryServiceTest {
   public void testUpdateAccessory() throws AccessoryNotFoundException {
 
     // Arrange
-    when(accessoryRepository.findById(ACCESSORY_WITH_ID_01.getId()))
-            .thenReturn(Optional.of(ACCESSORY_WITH_ID_01));
+    when(accessoryRepository.findById(ACCESSORY_01.getId()))
+            .thenReturn(Optional.of(ACCESSORY_01));
 
-    when(accessoryRepository.save(ACCESSORY_WITH_ID_01))
-            .thenReturn(ACCESSORY_WITH_ID_01);
+    when(accessoryRepository.save(ACCESSORY_01))
+            .thenReturn(ACCESSORY_01);
 
     // Act
-    Accessory result = accessoryService.updateAccessory(ACCESSORY_UPDATED, ACCESSORY_WITH_ID_01.getId());
+    Accessory result = accessoryService.updateAccessory(ACCESSORY_UPDATED, ACCESSORY_01.getId());
 
     // Assert
-    assertThat(result).isEqualTo(ACCESSORY_WITH_ID_01);
+    assertThat(result).isEqualTo(ACCESSORY_01);
   }
 
   @Test
   public void testUpdateAccessoryNotFoundException() {
     // Arrange
-    when(accessoryRepository.findById(ACCESSORY_WITH_ID_01.getId()))
+    when(accessoryRepository.findById(ACCESSORY_01.getId()))
             .thenReturn(Optional.empty());
 
     // Act & Assert
     assertThrows(AccessoryNotFoundException.class,
-        () -> accessoryService.updateAccessory(ACCESSORY_UPDATED, ACCESSORY_WITH_ID_01.getId()));
+        () -> accessoryService.updateAccessory(ACCESSORY_UPDATED, ACCESSORY_01.getId()));
   }
 
   @Test
   public void testDeleteAccessory() throws AccessoryNotFoundException {
     // Arrange
-    when(accessoryRepository.findById(ACCESSORY_WITH_ID_01.getId()))
-            .thenReturn(Optional.of(ACCESSORY_WITH_ID_01));
+    when(accessoryRepository.findById(ACCESSORY_01.getId()))
+            .thenReturn(Optional.of(ACCESSORY_01));
 
     // Act
-    Accessory result = accessoryService.deleteAccessory(ACCESSORY_WITH_ID_01.getId());
+    Accessory result = accessoryService.deleteAccessory(ACCESSORY_01.getId());
 
     // Assert
-    assertEquals(ACCESSORY_WITH_ID_01, result);
-    verify(accessoryRepository).delete(ACCESSORY_WITH_ID_01);
+    assertEquals(ACCESSORY_01, result);
+    verify(accessoryRepository).delete(ACCESSORY_01);
   }
 
   @Test
