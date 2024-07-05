@@ -2,23 +2,14 @@ version: '3.9'
 
 services:
 
-  backend1:
-    container_name: rental-backend1
+  backend:
+    container_name: rental-backend
     build:
       context: ./ms-backend
       dockerfile: Dockerfile
     restart: always
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/rental
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
-
-  backend2:
-    container_name: rental-backend2
-    build:
-      context: ./ms-backend
-      dockerfile: Dockerfile
-    restart: always
+    ports:
+      - "8080:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/rental
       SPRING_DATASOURCE_USERNAME: root
@@ -51,8 +42,7 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - backend1
-      - backend2
+      - backend
     networks:
       - rental-network
 
