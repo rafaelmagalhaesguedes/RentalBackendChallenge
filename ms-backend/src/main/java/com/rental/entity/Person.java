@@ -12,7 +12,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -43,6 +46,25 @@ public class Person implements UserDetails {
    * Instantiates a new Person.
    */
   public Person() { }
+
+  /**
+   * Instantiates a new Person.
+   *
+   * @param id       the id
+   * @param fullName the full name
+   * @param username the username
+   * @param email    the email
+   * @param password the password
+   * @param role     the role
+   */
+  public Person(UUID id, String fullName, String username, String email, String password, Role role) {
+    this.id = id;
+    this.fullName = fullName;
+    this.username = username;
+    this.email = email;
+    this.password = password;
+    this.role = role;
+  }
 
   /**
    * Instantiates a new Person.
@@ -230,5 +252,10 @@ public class Person implements UserDetails {
   @Override
   public boolean isEnabled() {
     return true;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    return EqualsBuilder.reflectionEquals(obj, this);
   }
 }
