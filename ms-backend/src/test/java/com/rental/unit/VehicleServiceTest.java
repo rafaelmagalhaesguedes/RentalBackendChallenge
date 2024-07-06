@@ -78,7 +78,10 @@ public class VehicleServiceTest {
     verify(repository).findAll(pageable);
 
     // Assert
-    assertThat(getAllVehicles).isEqualTo(vehicles);
+    assertThat(getAllVehicles).isNotEmpty();
+    assertThat(getAllVehicles).hasSize(2);
+    assertThat(getAllVehicles.get(0)).isEqualTo(VEHICLE_01);
+    assertThat(getAllVehicles.get(1)).isEqualTo(VEHICLE_02);
   }
 
   @Test
