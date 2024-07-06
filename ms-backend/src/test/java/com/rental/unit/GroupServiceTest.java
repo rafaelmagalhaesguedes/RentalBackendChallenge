@@ -1,18 +1,16 @@
 package com.rental.unit;
 
 import static com.rental.mock.GroupMock.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
-
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.rental.entity.Group;
 import com.rental.repository.GroupRepository;
 import com.rental.service.GroupService;
-import com.rental.service.exception.PersonExistingException;
 import com.rental.service.exception.GroupNotFoundException;
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +20,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -47,13 +44,25 @@ public class GroupServiceTest {
   public void testGroupRetrievalById() throws GroupNotFoundException {
     // Arrange
     when(repository.findById(eq(GROUP_01.getId())))
-        .thenReturn(Optional.of(GROUP_01));
+            .thenReturn(Optional.of(GROUP_01));
 
     // Act
     Group groupFromDb = service.getGroupById(GROUP_01.getId());
 
     // Assert
     assertThat(groupFromDb).isEqualTo(GROUP_01);
+  }
+
+  @Test
+  public void testGroupRetrievalByIdNotFound() {
+    // Arrange
+    UUID id = UUID.randomUUID();
+    when(repository.findById(eq(id))).thenReturn(Optional.empty());
+
+    // Act & Assert
+    assertThrows(GroupNotFoundException.class, () -> {
+      service.getGroupById(id);
+    });
   }
 
   @Test
@@ -74,7 +83,22 @@ public class GroupServiceTest {
   }
 
   @Test
-  public void testCreateGroup() throws PersonExistingException {
+  public void testRetrievalAllGroupsEmpty() {
+    // Arrange
+    Page<Group> page = new PageImpl<>(Arrays.asList());
+    Pageable pageable = PageRequest.of(0, 2);
+
+    // Act
+    when(repository.findAll(pageable)).thenReturn(page);
+    List<Group> getAllGroups = service.getAllGroups(0, 2);
+    verify(repository).findAll(pageable);
+
+    // Assert
+    assertThat(getAllGroups).isEmpty();
+  }
+
+  @Test
+  public void testCreateGroup() {
     // Arrange
     when(repository.save(GROUP_CREATION)).thenReturn(GROUP_CREATION);
 
@@ -84,6 +108,19 @@ public class GroupServiceTest {
 
     // Assert
     assertThat(newGroup).isEqualTo(GROUP_CREATION);
+  }
+
+  @Test
+  public void testCreateGroupFail() {
+    // Arrange
+    when(repository.save(GROUP_CREATION)).thenThrow(new RuntimeException("Unexpected error"));
+
+    // Act & Assert
+    RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+      service.createGroup(GROUP_CREATION);
+    });
+
+    assertThat(exception.getMessage()).isEqualTo("Unexpected error");
   }
 
   @Test
@@ -101,28 +138,26 @@ public class GroupServiceTest {
 
   @Test
   public void testUpdateGroupNotFoundException() {
-
     // Arrange
-    when(repository.findById(GROUP_01.getId()))
-        .thenReturn(Optional.empty());
+    when(repository.findById(GROUP_01.getId())).thenReturn(Optional.empty());
 
     // Act & Assert
-    assertThrows(GroupNotFoundException.class,
-        () -> service.updateGroup(GROUP_UPDATED, GROUP_01.getId()));
+    assertThrows(GroupNotFoundException.class, () -> {
+      service.updateGroup(GROUP_UPDATED, GROUP_01.getId());
+    });
   }
 
   @Test
   public void testDeleteGroup() throws GroupNotFoundException {
     // Arrange
-    when(repository.findById(GROUP_01.getId()))
-        .thenReturn(Optional.of(GROUP_01));
+    when(repository.findById(GROUP_01.getId())).thenReturn(Optional.of(GROUP_01));
 
     // Act
     Group result = service.deleteGroup(GROUP_01.getId());
 
     // Assert
     assertEquals(GROUP_01, result);
-    Mockito.verify(repository).delete(GROUP_01);
+    verify(repository).delete(GROUP_01);
   }
 
   @Test
@@ -130,11 +165,11 @@ public class GroupServiceTest {
     // Arrange
     UUID id = UUID.randomUUID();
 
-    Mockito.when(repository.findById(id))
-        .thenReturn(Optional.empty());
+    when(repository.findById(id)).thenReturn(Optional.empty());
 
     // Act & Assert
-    assertThrows(GroupNotFoundException.class,
-        () -> service.deleteGroup(id));
+    assertThrows(GroupNotFoundException.class, () -> {
+      service.deleteGroup(id);
+    });
   }
 }
