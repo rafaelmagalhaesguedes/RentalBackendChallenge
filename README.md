@@ -45,6 +45,8 @@ e garantir a entrega dos e-mails. O microserviço é responsável por:
 
 - **Hibernate Validator:** Validação de entrada de dados.
 
+- **JUnit 5:** Tests unitários e de integração.
+
 - **JavaMail Sender:** Envio de e-mails utilizando o protocolo SMTP.
 
 - **Jakarta Validation:** Validação de dados no lado do servidor.
