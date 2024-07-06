@@ -58,6 +58,20 @@ public class VehicleController {
     return VehicleDto.fromEntity(vehicleService.getVehicleById(id));
   }
 
+  @GetMapping("/license-plate")
+  @PreAuthorize("hasAuthority('MANAGER')")
+  @Operation(summary = "Get Vehicle by License Plate", description = "Fetch a vehicle by its license plate.")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "Vehicle fetched successfully"),
+          @ApiResponse(responseCode = "404", description = "Vehicle not found")
+  })
+  @Cacheable(value = "vehicleByLicensePlate", key = "#licensePlate")
+  public VehicleDto getVehicleByLicensePlate(@RequestBody @Valid String licensePlate) throws VehicleNotFoundException {
+    return VehicleDto.fromEntity(
+            vehicleService.getVehicleByLicensePlate(licensePlate)
+    );
+  }
+
   /**
    * Gets all vehicles.
    *

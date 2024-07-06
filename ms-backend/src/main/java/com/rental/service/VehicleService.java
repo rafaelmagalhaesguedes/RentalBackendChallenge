@@ -43,6 +43,20 @@ public class VehicleService {
   }
 
   /**
+   * Gets vehicle by license plate.
+   *
+   * @param licensePlate the license plate
+   * @return the vehicle by license plate
+   * @throws VehicleNotFoundException the vehicle not found exception
+   */
+  public Vehicle getVehicleByLicensePlate(String licensePlate) throws VehicleNotFoundException {
+    Vehicle vehicle = vehicleRepository.findByLicensePlate(licensePlate);
+    if (vehicle == null) throw new VehicleNotFoundException();
+
+    return vehicle;
+  }
+
+  /**
    * Gets all vehicles.
    *
    * @param pageNumber the page number
@@ -71,7 +85,7 @@ public class VehicleService {
    * Update vehicle.
    *
    * @param vehicle the vehicle creation
-   * @param id the id
+   * @param id      the id
    * @return the vehicle
    * @throws VehicleNotFoundException the vehicle not found exception
    */

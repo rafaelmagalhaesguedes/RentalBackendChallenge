@@ -9,4 +9,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface VehicleRepository extends JpaRepository<Vehicle, UUID> {
 
+    /**
+     * Find by license plate vehicle.
+     *
+     * @param licensePlate the license plate
+     * @return the vehicle
+     */
+    Vehicle findByLicensePlate(String licensePlate);
 }
