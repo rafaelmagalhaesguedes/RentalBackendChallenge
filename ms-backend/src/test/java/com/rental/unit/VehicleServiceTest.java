@@ -42,13 +42,24 @@ public class VehicleServiceTest {
 
   @Test
   public void testVehicleRetrievalById() throws VehicleNotFoundException {
+    // Arrange
+    when(repository.findById(eq(VEHICLE_01.getId()))).thenReturn(Optional.of(VEHICLE_01));
+
     // Act
-    when(repository.findById(eq(VEHICLE_01.getId())))
-        .thenReturn(Optional.of(VEHICLE_01));
-
     Vehicle vehicleFromDb = service.getVehicleById(VEHICLE_01.getId());
-
     verify(repository).findById(VEHICLE_01.getId());
+
+    // Assert
+    assertThat(vehicleFromDb).isEqualTo(VEHICLE_01);
+  }
+
+  @Test
+  public void testVehicleRetrievalByLicensePlate() throws VehicleNotFoundException {
+    // Arrange
+    when(repository.findByLicensePlate(eq(VEHICLE_01.getLicensePlate()))).thenReturn(VEHICLE_01);
+
+    // Act
+    Vehicle vehicleFromDb = service.getVehicleByLicensePlate(VEHICLE_01.getLicensePlate());
 
     // Assert
     assertThat(vehicleFromDb).isEqualTo(VEHICLE_01);
