@@ -59,7 +59,7 @@ public class PaymentService {
     return getSession(amount, successUrl, cancelUrl, payment);
   }
 
-  private Session getSession(Double amount, String successUrl, String cancelUrl, Payment payment) throws StripeException {
+  public Session getSession(Double amount, String successUrl, String cancelUrl, Payment payment) throws StripeException {
     SessionCreateParams params = SessionCreateParams.builder()
         .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
         .addLineItem(
