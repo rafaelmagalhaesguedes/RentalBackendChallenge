@@ -1,29 +1,61 @@
 version: '3.9'
 
+networks:
+  rental-network:
+    driver: bridge
+
 services:
 
-  backend:
-    container_name: rental-backend
+  nginx:
+    container_name: rental-nginx
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"
+    depends_on:
+      - backend1
+      - backend2
+    networks:
+      - rental-network
+
+  backend1:
+    container_name: rental-backend1
     build:
       context: ./ms-backend
       dockerfile: Dockerfile
     restart: always
-    ports:
-      - "8080:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/rental
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
+    networks:
+      - rental-network
+
+  backend2:
+    container_name: rental-backend2
+    build:
+      context: ./ms-backend
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/rental
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    networks:
+      - rental-network
 
   mysql:
     container_name: rental-db
     image: mysql:8.0.32
     restart: always
-    ports:
-      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: rental
+    networks:
+      - rental-network
 
   email-service:
     container_name: rental-email-service
@@ -31,21 +63,5 @@ services:
       context: ./ms-email
       dockerfile: Dockerfile
     restart: always
-    ports:
-      - "8081:8081"
-
-  nginx:
-    container_name: rental-nginx
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "80:80"
-    depends_on:
-      - backend
     networks:
       - rental-network
-
-networks:
-  rental-network:
-    driver: bridge
