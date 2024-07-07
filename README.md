@@ -8,7 +8,7 @@ comunicação eficiente por e-mail, aproveitando filas de mensagens para maior c
 
 ## Funcionalidades Principais
 
-- Autenticação e Autorização: Autenticação de usuários e autorização baseada em papéis (ADMIN, MANAGER).
+- Autenticação e Autorização: Autenticação de usuários e autorização baseada em papéis (ADMIN, MANAGER e USER).
 
 - Gerenciamento de Reservas: Registro e gerenciamento de reservas de acessórios para pessoas ou grupos de veículos.
 
