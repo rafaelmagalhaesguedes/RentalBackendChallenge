@@ -19,7 +19,6 @@ public record PersonCreationDto(
     String username,
 
     @Email(message = "Invalid email")
-    @NotBlank(message = "Email cannot be blank")
     String email,
 
     @NotBlank(message = "Password cannot be blank")

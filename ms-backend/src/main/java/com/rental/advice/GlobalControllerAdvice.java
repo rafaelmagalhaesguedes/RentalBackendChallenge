@@ -47,11 +47,11 @@ public class GlobalControllerAdvice {
 
     Map<String, Object> body = new HashMap<>();
     body.put("timestamp", LocalDateTime.now());
-    body.put("reservationStatus", HttpStatus.BAD_REQUEST.value());
+    body.put("reservationStatus", HttpStatus.UNPROCESSABLE_ENTITY.value());
     body.put("errors", errors);
     body.put("path", request.getDescription(false));
 
-    return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
   /**

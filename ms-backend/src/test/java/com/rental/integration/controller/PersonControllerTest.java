@@ -9,7 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rental.TestSecurityConfig;
+import com.rental.utils.TestSecurityConfig;
 import com.rental.controller.PersonController;
 import com.rental.service.PersonService;
 import com.rental.service.TokenService;
@@ -71,7 +71,6 @@ public class PersonControllerTest {
     @Test
     public void testDeletePerson() throws Exception {
         UUID id = UUID.randomUUID();
-
         when(personService.deletePerson(id)).thenReturn(PERSON_01);
 
         mockMvc.perform(delete("/persons/{id}", id)
