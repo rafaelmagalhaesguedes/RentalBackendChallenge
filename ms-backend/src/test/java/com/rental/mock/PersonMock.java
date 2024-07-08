@@ -10,9 +10,6 @@ import java.util.UUID;
  */
 public class PersonMock {
 
-    /**
-     * The constant PERSON_01.
-     */
     public static Person PERSON_01 = new Person(
             UUID.randomUUID(),
             "Thais Guedes",
@@ -22,9 +19,6 @@ public class PersonMock {
             Role.USER
     );
 
-    /**
-     * The constant PERSON_02.
-     */
     public static Person PERSON_02 = new Person(
             UUID.randomUUID(),
             "Ana Guedes",
@@ -34,9 +28,6 @@ public class PersonMock {
             Role.USER
     );
 
-    /**
-     * The constant PERSON_CREATION.
-     */
     public static Person PERSON_CREATION = new Person(
             "Rafael Guedes",
             "rafa",
@@ -44,15 +35,10 @@ public class PersonMock {
             "password",
             Role.MANAGER
     );
-    
-    /**
-     * The constant PERSON_UPDATE.
-     */
+
     public static Person PERSON_UPDATE = new Person(
             "André Guedes",
             "andre",
-            "andre@email.com",
-            "password",
-            Role.ADMIN
+            "andre@email.com"
     );
 }

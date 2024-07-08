@@ -9,9 +9,6 @@ import java.util.UUID;
  */
 public class GroupMock {
 
-    /**
-     * The constant GROUP_01.
-     */
     public static Group GROUP_01 = new Group(
             UUID.randomUUID(),
             "Group GX",
@@ -19,9 +16,6 @@ public class GroupMock {
             250.00
     );
 
-    /**
-     * The constant GROUP_02.
-     */
     public static Group GROUP_02 = new Group(
             UUID.randomUUID(),
             "Group GW",
@@ -29,18 +23,13 @@ public class GroupMock {
             350.00
     );
 
-    /**
-     * The constant GROUP_CREATION.
-     */
+
     public static Group GROUP_CREATION = new Group(
             "Group GW",
             "Renegade, Compass, Tracker or similar",
             450.00
     );
 
-    /**
-     * The constant GROUP_UPDATED.
-     */
     public static Group GROUP_UPDATED = new Group(
             "Group RX",
             "HB20, Corolla, Civic or similar",
