@@ -1,5 +1,6 @@
 package com.rental.entity;
 
+import com.rental.enums.PaymentType;
 import com.rental.enums.ReservationStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -109,6 +110,18 @@ public class Reservation {
    */
   public Reservation(Person person, Group group, List<Accessory> accessories, LocalDateTime localDateTime, LocalDateTime pickupDateTime, double totalAmount, int totalDays, ReservationStatus reservationStatus,
       String s, LocalDateTime now) {
+  }
+
+  /**
+   * Instantiates a new Reservation.
+   *
+   * @param mockPerson    the mock person
+   * @param mockGroup     the mock group
+   * @param now           the now
+   * @param localDateTime the local date time
+   * @param paymentType   the payment type
+   */
+  public Reservation(Person mockPerson, Group mockGroup, LocalDateTime now, LocalDateTime localDateTime, PaymentType paymentType) {
   }
 
   /**

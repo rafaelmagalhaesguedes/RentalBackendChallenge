@@ -1,5 +1,6 @@
 package com.rental.mock;
 
+import com.rental.controller.dto.reservation.ReservationCreationDto;
 import com.rental.entity.Accessory;
 import com.rental.entity.Person;
 import com.rental.entity.Reservation;
@@ -13,6 +14,17 @@ import java.util.List;
 import java.util.UUID;
 
 public class ReservationMock {
+
+    public static final String URL_RESERVATION = "/reservation";
+
+    // Mock data for Reservation 00
+    public static final UUID PERSON_ID = UUID.randomUUID();
+    public static final UUID GROUP_ID = UUID.randomUUID();
+    public static final List<UUID> ACCESSORY_IDS = List.of(UUID.randomUUID(), UUID.randomUUID());
+    public static final LocalDateTime PICKUP_DATE_TIME = LocalDateTime.now().plusDays(1);
+    public static final LocalDateTime RETURN_DATE_TIME = LocalDateTime.now().plusDays(7);
+    public static final String PAYMENT_TYPE = "ONLINE";
+    public static final String PAYMENT_URL = "http://payment.url";
 
     // Mock data for Reservation 01
     private static final UUID ID_01 = UUID.randomUUID();
@@ -39,6 +51,16 @@ public class ReservationMock {
     private static final String PAYMENT_TYPE_02 = "Offline";
     private static final ReservationStatus RESERVATION_STATUS_02 = ReservationStatus.CONFIRMED;
     private static final LocalDateTime CREATED_DATE_02 = LocalDateTime.now();
+
+    // Mock reservation create
+    public static final ReservationCreationDto RESERVATION_CREATION = new ReservationCreationDto(
+            PERSON_ID,
+            GROUP_ID,
+            ACCESSORY_IDS,
+            PICKUP_DATE_TIME,
+            RETURN_DATE_TIME,
+            PAYMENT_TYPE
+    );
 
     // Mock reservations
     public static final Reservation RESERVATION_01 = createReservation(ID_01, PERSON_01, GROUP_01, ACCESSORIES_01, PICKUP_DATE_TIME_01,
