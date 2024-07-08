@@ -1,11 +1,11 @@
 package com.rental.integration.controller;
 
+import static com.rental.mock.AuthMock.*;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rental.TestSecurityConfig;
+import com.rental.utils.TestSecurityConfig;
 import com.rental.controller.AuthController;
-import com.rental.controller.dto.auth.AuthDto;
 import com.rental.entity.Person;
-import com.rental.security.Role;
 import com.rental.service.PersonService;
 import com.rental.service.TokenService;
 import org.junit.jupiter.api.Test;
@@ -20,8 +20,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -53,33 +51,31 @@ public class AuthControllerTest {
 
     @Test
     public void testLoginSuccess() throws Exception {
-        AuthDto authDto = new AuthDto("test@test.com", "password");
-        Person person = new Person(UUID.randomUUID(), "Test User", "test", "test@test.com", "password", Role.USER);
-        String token = "mock-token";
-
+        // Arrange
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
-                .thenReturn(new UsernamePasswordAuthenticationToken(person, null, person.getAuthorities()));
-        when(tokenService.generateToken(any(Person.class))).thenReturn(token);
+                .thenReturn(new UsernamePasswordAuthenticationToken(PERSON, null, PERSON.getAuthorities()));
+        when(tokenService.generateToken(any(Person.class))).thenReturn(TOKEN);
 
-        mockMvc.perform(post("/auth/login")
+        // Act + Assert
+        mockMvc.perform(post(AUTH_URL)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(authDto)))
+                        .content(objectMapper.writeValueAsString(LOGIN)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.token").value(token));
+                .andExpect(jsonPath("$.token").value(TOKEN));
     }
 
     @Test
     public void testLoginFailure() throws Exception {
-        AuthDto authDto = new AuthDto("test@test.com", "wrong-password");
-
+        // Arrange
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
-                .thenThrow(new BadCredentialsException("Invalid email or password."));
+                .thenThrow(new BadCredentialsException(ERROR_MESSAGE));
 
-        mockMvc.perform(post("/auth/login")
+        // Act + Assert
+        mockMvc.perform(post(AUTH_URL)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(authDto)))
+                        .content(objectMapper.writeValueAsString(LOGIN)))
                 .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("$.token").value("Invalid email or password."));
+                .andExpect(jsonPath("$.token").value(ERROR_MESSAGE));
     }
 }
 

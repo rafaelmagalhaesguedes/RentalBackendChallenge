@@ -1,17 +1,14 @@
-package com.rental;
+package com.rental.utils;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
  * The type Test security config.
  */
 @Configuration
-@EnableWebSecurity
 public class TestSecurityConfig {
 
     /**
@@ -24,20 +21,10 @@ public class TestSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/**")) // Ignora CSRF para todas as requisições
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/**"))
                 .authorizeHttpRequests(authorize -> authorize
-                        .anyRequest().permitAll() // Permite todas as requisições para testes
+                        .anyRequest().permitAll()
                 );
         return http.build();
-    }
-
-    /**
-     * Web security customizer web security customizer.
-     *
-     * @return the web security customizer
-     */
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/h2-console/**");
     }
 }
