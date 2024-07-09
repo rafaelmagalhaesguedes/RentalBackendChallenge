@@ -40,13 +40,24 @@ public class EmailService {
   @Value(value = "${spring.mail.username}")
   private String emailFrom;
 
+  @Value(value = "${admin.email}")
+  private String adminEmail;
+
+  @Value(value = "${manager.email}")
+  private String managerEmail;
+
   /**
-   * Send email email.
+   * Send email.
    *
    * @param email the email
    */
   @Transactional
   public void sendEmail(Email email) {
+    sendUserEmail(email);
+    sendAdminAndManagerEmail(email);
+  }
+
+  private void sendUserEmail(Email email) {
     email.setSendDateEmail(LocalDateTime.now());
     email.setEmailFrom(emailFrom);
 
@@ -63,5 +74,31 @@ public class EmailService {
     }
 
     emailRepository.save(email);
+  }
+
+  private void sendAdminAndManagerEmail(Email email) {
+    Email adminAndManagerEmailEntity = new Email();
+    adminAndManagerEmailEntity.setSendDateEmail(LocalDateTime.now());
+    adminAndManagerEmailEntity.setEmailFrom(emailFrom);
+    adminAndManagerEmailEntity.setEmailTo(adminEmail);
+    adminAndManagerEmailEntity.setSubject("New Reservation Created");
+    adminAndManagerEmailEntity.setText("A new reservation has been created with the following details:\n\n" +
+            "User: " + email.getEmailTo() + "\n" +
+            "Subject: " + email.getSubject() + "\n" +
+            "Message: " + email.getText());
+
+    try {
+      SimpleMailMessage message = new SimpleMailMessage();
+      message.setTo(adminEmail, managerEmail);  // Envia para o administrador e o gerente
+      message.setSubject(adminAndManagerEmailEntity.getSubject());
+      message.setText(adminAndManagerEmailEntity.getText());
+      javaMailSender.send(message);
+
+      adminAndManagerEmailEntity.setStatusEmail(StatusEmail.SENT);
+    } catch (MailException e) {
+      adminAndManagerEmailEntity.setStatusEmail(StatusEmail.ERROR);
+    }
+
+    emailRepository.save(adminAndManagerEmailEntity);
   }
 }
