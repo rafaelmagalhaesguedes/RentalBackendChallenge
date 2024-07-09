@@ -17,7 +17,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.test.util.ReflectionTestUtils;
 
 public class EmailServiceTest {
 
@@ -30,12 +30,13 @@ public class EmailServiceTest {
     @Mock
     private JavaMailSender javaMailSender;
 
-    @Value("${spring.mail.username}")
-    private String emailFrom;
-
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+
+        ReflectionTestUtils.setField(emailService, "emailFrom", "user@example.com");
+        ReflectionTestUtils.setField(emailService, "adminEmail", "admin@example.com");
+        ReflectionTestUtils.setField(emailService, "managerEmail", "manager@example.com");
     }
 
     @Test
@@ -53,11 +54,11 @@ public class EmailServiceTest {
         emailService.sendEmail(email);
 
         // Assert
-        verify(javaMailSender, times(1)).send(any(SimpleMailMessage.class));
-        verify(emailRepository, times(1)).save(any(Email.class));
+        verify(javaMailSender, times(2)).send(any(SimpleMailMessage.class));
+        verify(emailRepository, times(2)).save(any(Email.class));
         assertThat(email.getStatusEmail()).isEqualTo(StatusEmail.SENT);
         assertThat(email.getSendDateEmail()).isNotNull();
-        assertThat(email.getEmailFrom()).isEqualTo(emailFrom);
+        assertThat(email.getEmailFrom()).isEqualTo("user@example.com");
     }
 
     @Test
@@ -75,10 +76,10 @@ public class EmailServiceTest {
         emailService.sendEmail(email);
 
         // Assert
-        verify(javaMailSender, times(1)).send(any(SimpleMailMessage.class));
-        verify(emailRepository, times(1)).save(any(Email.class));
+        verify(javaMailSender, times(2)).send(any(SimpleMailMessage.class));
+        verify(emailRepository, times(2)).save(any(Email.class));
         assertThat(email.getStatusEmail()).isEqualTo(StatusEmail.ERROR);
         assertThat(email.getSendDateEmail()).isNotNull();
-        assertThat(email.getEmailFrom()).isEqualTo(emailFrom);
+        assertThat(email.getEmailFrom()).isEqualTo("user@example.com");
     }
 }
