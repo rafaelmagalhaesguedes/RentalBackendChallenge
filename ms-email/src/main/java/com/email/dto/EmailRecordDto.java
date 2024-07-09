@@ -1,4 +1,4 @@
-package com.email.dtos;
+package com.email.dto;
 
 import java.util.UUID;
 

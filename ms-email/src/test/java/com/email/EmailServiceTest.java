@@ -4,11 +4,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-import com.email.entities.Email;
+import com.email.entity.Email;
 import com.email.enums.StatusEmail;
-import com.email.repositories.EmailRepository;
+import com.email.repository.EmailRepository;
 
-import com.email.services.EmailService;
+import com.email.service.EmailService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

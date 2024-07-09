@@ -1,4 +1,4 @@
-package com.email.entities;
+package com.email.entity;
 
 import com.email.enums.StatusEmail;
 import jakarta.persistence.Column;

@@ -1,8 +1,8 @@
-package com.email.services;
+package com.email.service;
 
-import com.email.entities.Email;
+import com.email.entity.Email;
 import com.email.enums.StatusEmail;
-import com.email.repositories.EmailRepository;
+import com.email.repository.EmailRepository;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Value;
