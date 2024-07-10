@@ -58,10 +58,11 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST, "/persons").permitAll()
                     .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                     .requestMatchers("/payment/**").permitAll()
+                    .requestMatchers("/swagger-ui").permitAll()
                     .requestMatchers("/swagger-ui/**").permitAll()
                     .requestMatchers("/v3/api-docs/**").permitAll()
                     .requestMatchers("/swagger-resources/**").permitAll()
-                    .requestMatchers("/").permitAll() // Allow public access to the root endpoint
+                    .requestMatchers("/").permitAll()
                     .anyRequest().authenticated()
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
