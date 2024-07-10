@@ -6,6 +6,14 @@ grupos de carros dentro de uma locadora de veículos. Possui integração com o 
 Stripe para transações online seguras. Além disso, o sistema inclui uma arquitetura de microsserviços para
 comunicação eficiente por e-mail, aproveitando filas de mensagens para maior confiabilidade e escalabilidade.
 
+## Documentação do Swagger
+
+Este projeto utiliza Swagger para documentar seus endpoints de API, facilitando o entendimento e teste das funcionalidades disponíveis.
+
+### Acessando o Swagger
+
+Para acessar a documentação do Swagger: https://ms-backend.up.railway.app/swagger-ui/index.html.
+
 ## Funcionalidades Principais
 
 - Autenticação e Autorização: Autenticação de usuários e autorização baseada em papéis (ADMIN, MANAGER e USER).
@@ -84,14 +92,6 @@ Certifique-se de ter o Docker instalado em sua máquina.
   docker-compose up -d
   ```
 4. Acesse a aplicação em http://localhost:8080
-
-## Documentação do Swagger
-
-Este projeto utiliza Swagger para documentar seus endpoints de API, facilitando o entendimento e teste das funcionalidades disponíveis.
-
-### Acessando o Swagger
-
-Para acessar a documentação do Swagger, navegue até [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) após executar o aplicativo.
 
 ### Endpoints Principais
 
