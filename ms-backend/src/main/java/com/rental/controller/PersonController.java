@@ -72,13 +72,13 @@ public class PersonController {
    * @return the person by email
    * @throws PersonNotFoundException the person not found exception
    */
-  @PostMapping("/email")
+  @GetMapping("/{email}")
   @Operation(summary = "Get Person by Email", description = "Fetch a person by their unique Email.")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "Person found"),
           @ApiResponse(responseCode = "404", description = "Person not found")
   })
-  public PersonDto getPersonByEmail(@RequestBody String email) throws PersonNotFoundException {
+  public PersonDto getPersonByEmail(@PathVariable String email) throws PersonNotFoundException {
     return PersonDto.fromEntity(personService.getPersonByEmail(email));
   }
 
