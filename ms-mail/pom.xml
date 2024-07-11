@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.email</groupId>
-	<artifactId>ms-email</artifactId>
+	<artifactId>ms-mail</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>email</name>
 	<description>Demo project for Spring Boot</description>

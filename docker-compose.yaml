@@ -60,7 +60,7 @@ services:
   email-service:
     container_name: rental-email-service
     build:
-      context: ./ms-email
+      context: ms-mail
       dockerfile: Dockerfile
     restart: always
     networks:
