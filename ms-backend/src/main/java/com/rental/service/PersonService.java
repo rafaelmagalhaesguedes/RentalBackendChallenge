@@ -56,11 +56,11 @@ public class PersonService implements UserDetailsService {
    *
    * @param email the email
    * @return the person by email
-   * @throws PersonExistingException the person existing exception
+   * @throws PersonNotFoundException the person existing exception
    */
-  public Person getPersonByEmail(String email) throws PersonExistingException {
+  public Person getPersonByEmail(String email) throws PersonNotFoundException {
     return personRepository.findByEmail(email)
-        .orElseThrow(PersonExistingException::new);
+        .orElseThrow(PersonNotFoundException::new);
   }
 
   /**

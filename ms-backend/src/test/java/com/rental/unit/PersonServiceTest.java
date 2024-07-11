@@ -59,6 +59,29 @@ public class PersonServiceTest {
   }
 
   @Test
+  public void testPersonRetrievalByEmail() throws PersonNotFoundException {
+    // Arrange
+    when(personRepository.findByEmail(eq(PERSON_01.getEmail()))).thenReturn(Optional.of(PERSON_01));
+
+    // Act
+    Person personFromDb = personService.getPersonByEmail(PERSON_01.getEmail());
+    verify(personRepository).findByEmail(PERSON_01.getEmail());
+
+    // Assert
+    assertThat(personFromDb).isEqualTo(PERSON_01);
+  }
+
+  @Test
+  public void testPersonRetrievalByEmailNotFound() {
+    // Arrange
+    var falseEmail = "failed@failed.com";
+    when(personRepository.findByEmail(eq(falseEmail))).thenReturn(Optional.empty());
+
+    // Act & Assert
+    assertThrows(PersonNotFoundException.class, () -> personService.getPersonByEmail(falseEmail));
+  }
+
+  @Test
   public void testPersonRetrievalByIdNotFound() {
     // Arrange
     UUID id = UUID.randomUUID();

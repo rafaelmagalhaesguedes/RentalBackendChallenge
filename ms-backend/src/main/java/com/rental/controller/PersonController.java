@@ -62,9 +62,24 @@ public class PersonController {
       @ApiResponse(responseCode = "404", description = "Person not found")
   })
   public PersonDto getPersonById(@PathVariable UUID id) throws PersonNotFoundException {
-    return PersonDto.fromEntity(
-        personService.getPersonById(id)
-    );
+    return PersonDto.fromEntity(personService.getPersonById(id));
+  }
+
+  /**
+   * Gets person by email.
+   *
+   * @param email the email
+   * @return the person by email
+   * @throws PersonNotFoundException the person not found exception
+   */
+  @GetMapping("/email")
+  @Operation(summary = "Get Person by Email", description = "Fetch a person by their unique Email.")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "Person found"),
+          @ApiResponse(responseCode = "404", description = "Person not found")
+  })
+  public PersonDto getPersonByEmail(@RequestBody String email) throws PersonNotFoundException {
+    return PersonDto.fromEntity(personService.getPersonByEmail(email));
   }
 
   /**
@@ -104,8 +119,7 @@ public class PersonController {
       @ApiResponse(responseCode = "201", description = "Person created successfully"),
       @ApiResponse(responseCode = "409", description = "Person already exists")
   })
-  public PersonDto personCreate(@RequestBody @Valid PersonCreationDto personCreationDto)
-      throws PersonExistingException {
+  public PersonDto personCreate(@RequestBody @Valid PersonCreationDto personCreationDto) throws PersonExistingException {
     return PersonDto.fromEntity(
         personService.createPerson(personCreationDto.toEntity())
     );
@@ -148,8 +162,6 @@ public class PersonController {
       @ApiResponse(responseCode = "404", description = "Person not found")
   })
   public PersonDto personDelete(@PathVariable UUID id) throws PersonNotFoundException {
-    return PersonDto.fromEntity(
-        personService.deletePerson(id)
-    );
+    return PersonDto.fromEntity(personService.deletePerson(id));
   }
 }
