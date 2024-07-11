@@ -72,7 +72,7 @@ public class PersonController {
    * @return the person by email
    * @throws PersonNotFoundException the person not found exception
    */
-  @GetMapping("/email")
+  @PostMapping("/email")
   @Operation(summary = "Get Person by Email", description = "Fetch a person by their unique Email.")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "Person found"),
