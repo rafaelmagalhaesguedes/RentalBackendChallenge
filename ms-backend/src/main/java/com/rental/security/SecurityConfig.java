@@ -21,9 +21,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-/**
- * The type Security config.
- */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
@@ -31,23 +28,11 @@ public class SecurityConfig {
 
   private final JwtFilter jwtFilter;
 
-  /**
-   * Instantiates a new Security config.
-   *
-   * @param jwtFilter the jwt filter
-   */
   @Autowired
   public SecurityConfig(JwtFilter jwtFilter) {
     this.jwtFilter = jwtFilter;
   }
 
-  /**
-   * Security filter chain security filter chain.
-   *
-   * @param httpSecurity the http security
-   * @return the security filter chain
-   * @throws Exception the exception
-   */
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
     return httpSecurity
@@ -55,8 +40,8 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .cors(withDefaults())
             .authorizeHttpRequests(authorize -> authorize
-                    .requestMatchers("/persons").permitAll()
                     .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/persons/**").authenticated()
                     .requestMatchers("/payment/**").permitAll()
                     .requestMatchers("/swagger-ui").permitAll()
                     .requestMatchers("/swagger-ui/**").permitAll()
@@ -81,23 +66,11 @@ public class SecurityConfig {
     return source;
   }
 
-  /**
-   * Authentication manager.
-   *
-   * @param authenticationConfiguration the authentication configuration
-   * @return the authentication manager
-   * @throws Exception the exception
-   */
   @Bean
   public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
     return authenticationConfiguration.getAuthenticationManager();
   }
 
-  /**
-   * Password encoder password encoder.
-   *
-   * @return the password encoder
-   */
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
