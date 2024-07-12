@@ -1,5 +1,6 @@
 package com.rental.controller;
 
+import com.rental.controller.dto.person.EmailRequestDto;
 import com.rental.controller.dto.person.PersonCreationDto;
 import com.rental.controller.dto.person.PersonDto;
 import com.rental.controller.dto.person.PersonUpdateDto;
@@ -68,18 +69,18 @@ public class PersonController {
   /**
    * Gets person by email.
    *
-   * @param email the email
+   * @param emailRequestDto the email
    * @return the person by email
    * @throws PersonNotFoundException the person not found exception
    */
-  @GetMapping("/{email}")
+  @PostMapping("/email")
   @Operation(summary = "Get Person by Email", description = "Fetch a person by their unique Email.")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "Person found"),
           @ApiResponse(responseCode = "404", description = "Person not found")
   })
-  public PersonDto getPersonByEmail(@PathVariable String email) throws PersonNotFoundException {
-    return PersonDto.fromEntity(personService.getPersonByEmail(email));
+  public PersonDto getPersonByEmail(@RequestBody EmailRequestDto emailRequestDto) throws PersonNotFoundException {
+    return PersonDto.fromEntity(personService.getPersonByEmail(emailRequestDto.email()));
   }
 
   /**
