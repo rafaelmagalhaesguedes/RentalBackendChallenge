@@ -71,13 +71,12 @@ public class AccessoryController {
    * @return a list of accessory DTOs
    */
   @GetMapping
-  @PreAuthorize("hasAuthority('MANAGER')")
   @Operation(summary = "List all accessories", description = "List all accessories with pagination")
   @ApiResponse(responseCode = "200", description = "List of accessories successfully retrieved")
   @Cacheable(value = "accessoriesCache")
   public List<AccessoryDto> getAllAccessories(
       @RequestParam(required = false, defaultValue = "0") int pageNumber,
-      @RequestParam(required = false, defaultValue = "10") int pageSize) {
+      @RequestParam(required = false, defaultValue = "20") int pageSize) {
     List<Accessory> paginatedAccessories = accessoryService.getAllAccessories(pageNumber, pageSize);
 
     return paginatedAccessories.stream()

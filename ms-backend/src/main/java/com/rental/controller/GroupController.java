@@ -82,7 +82,6 @@ public class GroupController {
    * @return the all groups
    */
   @GetMapping
-  @PreAuthorize("hasAuthority('MANAGER')")
   @Operation(summary = "Get all groups", description = "Retrieve all groups with pagination")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Groups retrieved",
