@@ -12,6 +12,7 @@ import com.rental.repository.GroupRepository;
 import com.rental.repository.PaymentRepository;
 import com.rental.repository.PersonRepository;
 import com.rental.repository.ReservationRepository;
+import com.rental.security.Role;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
