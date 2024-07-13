@@ -15,31 +15,14 @@ import java.util.UUID;
 public class DataSeederConfig implements CommandLineRunner {
 
     private final AccessoryRepository accessoryRepository;
-    private final GroupRepository groupRepository;
 
-    public DataSeederConfig(AccessoryRepository accessoryRepository, GroupRepository groupRepository) {
+    public DataSeederConfig(AccessoryRepository accessoryRepository) {
         this.accessoryRepository = accessoryRepository;
-        this.groupRepository = groupRepository;
     }
 
     @Override
     public void run(String... args) throws Exception {
         seedAccessories();
-        seedGroups();
-    }
-
-    private void seedGroups() {
-        List<Group> groups = new ArrayList<>();
-
-        groups.add(new Group(UUID.randomUUID(), "Grupo A", "Uno, Mobi, Kwid ou similar", 150.00));
-        groups.add(new Group(UUID.randomUUID(), "Grupo B", "Argo, Gol, HB20 ou similar", 200.00));
-        groups.add(new Group(UUID.randomUUID(), "Grupo C", "Chronos, Logan, HB20S ou similar", 250.00));
-        groups.add(new Group(UUID.randomUUID(), "Grupo D", "Creta, Captur, T-Cross ou similar", 280.00));
-        groups.add(new Group(UUID.randomUUID(), "Grupo E", "Renegade, Toro ou similar", 300.00));
-        groups.add(new Group(UUID.randomUUID(), "Grupo F", "Doblò, Spin ou similar", 350.00));
-        groups.add(new Group(UUID.randomUUID(), "Grupo G", "Hilux, S10, Ranger ou similar", 350.00));
-
-        groupRepository.saveAll(groups);
     }
 
     private void seedAccessories() {
