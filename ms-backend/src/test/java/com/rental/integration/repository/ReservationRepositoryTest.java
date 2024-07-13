@@ -28,7 +28,7 @@ public class ReservationRepositoryTest {
     public void testCreateReservation() {
         // Arrange
         Person mockPerson = new Person("Test 01", "test", "test01@email.com", "password", Role.MANAGER);
-        Group mockGroup = new Group("Group 01", "group1", 200.00);
+        Group mockGroup = new Group("Group 01", "group1", 200.00, "url");
         Reservation reservation = new Reservation(mockPerson, mockGroup, LocalDateTime.now(), LocalDateTime.now().plusDays(1), PaymentType.ONLINE_PAYMENT);
 
         // Persist associated entities first to avoid detached entity issue

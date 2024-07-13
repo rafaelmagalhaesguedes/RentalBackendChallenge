@@ -20,7 +20,9 @@ public record GroupCreationDto(
     String vehicles,
 
     @Positive(message = "Daily rate is a positive number")
-    Double dailyRate
+    Double dailyRate,
+
+    String imageURL
 ) {
 
   /**
@@ -29,6 +31,6 @@ public record GroupCreationDto(
    * @return the group
    */
   public Group toEntity() {
-    return new Group(name, vehicles, dailyRate);
+    return new Group(name, vehicles, dailyRate, imageURL);
   }
 }

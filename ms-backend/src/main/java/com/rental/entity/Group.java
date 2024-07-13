@@ -33,6 +33,8 @@ public class Group {
 
   private Double dailyRate;
 
+  private String imageURL;
+
   /**
    * Instantiates a new Group.
    */
@@ -46,11 +48,12 @@ public class Group {
    * @param vehicles  the vehicles
    * @param dailyRate the daily rate
    */
-  public Group(UUID id, String name, String vehicles, Double dailyRate) {
+  public Group(UUID id, String name, String vehicles, Double dailyRate, String imageURL) {
     this.id = id;
     this.name = name;
     this.vehicles = vehicles;
     this.dailyRate = dailyRate;
+    this.imageURL = imageURL;
   }
 
   /**
@@ -60,10 +63,11 @@ public class Group {
    * @param vehicles  the vehicles
    * @param dailyRate the daily rate
    */
-  public Group(String name, String vehicles, Double dailyRate) {
+  public Group(String name, String vehicles, Double dailyRate, String imageURL) {
     this.name = name;
     this.vehicles = vehicles;
     this.dailyRate = dailyRate;
+    this.imageURL = imageURL;
   }
 
   /**
@@ -136,6 +140,24 @@ public class Group {
    */
   public void setVehicles(String vehicles) {
     this.vehicles = vehicles;
+  }
+
+  /**
+   * Gets image url.
+   *
+   * @return the image url
+   */
+  public String getImageURL() {
+    return imageURL;
+  }
+
+  /**
+   * Sets image url.
+   *
+   * @param imageURL the image url
+   */
+  public void setImageURL(String imageURL) {
+    this.imageURL = imageURL;
   }
 
   @Override

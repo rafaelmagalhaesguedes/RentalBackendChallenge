@@ -12,7 +12,8 @@ public record GroupDto(
     UUID id,
     String name,
     String vehicles,
-    Double dailyRate
+    Double dailyRate,
+    String imageURL
 ) {
 
   /**
@@ -26,7 +27,8 @@ public record GroupDto(
         group.getId(),
         group.getName(),
         group.getVehicles(),
-        group.getDailyRate()
+        group.getDailyRate(),
+            group.getImageURL()
     );
   }
 }

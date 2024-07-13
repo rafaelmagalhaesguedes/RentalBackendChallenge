@@ -13,26 +13,30 @@ public class GroupMock {
             UUID.randomUUID(),
             "Group GX",
             "Acura, BMW, Aston Martin or similar",
-            250.00
+            250.00,
+            "url"
     );
 
     public static Group GROUP_02 = new Group(
             UUID.randomUUID(),
             "Group GW",
             "Renegade, Compass, Tracker or similar",
-            350.00
+            350.00,
+            "url"
     );
 
 
     public static Group GROUP_CREATION = new Group(
             "Group GW",
             "Renegade, Compass, Tracker or similar",
-            450.00
+            450.00,
+            "url"
     );
 
     public static Group GROUP_UPDATED = new Group(
             "Group RX",
             "HB20, Corolla, Civic or similar",
-            150.00
+            150.00,
+            "url"
     );
 }
