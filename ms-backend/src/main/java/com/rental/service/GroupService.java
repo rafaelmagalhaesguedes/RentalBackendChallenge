@@ -79,6 +79,7 @@ public class GroupService {
     groupFromDb.setName(group.getName());
     groupFromDb.setVehicles(group.getVehicles());
     groupFromDb.setDailyRate(group.getDailyRate());
+    groupFromDb.setImageURL(group.getImageURL());
 
     return groupRepository.save(groupFromDb);
   }
