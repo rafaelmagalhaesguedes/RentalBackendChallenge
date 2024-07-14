@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * The interface Reservation repository.
- */
+ **/
 @Repository
 public interface ReservationRepository extends JpaRepository <Reservation, UUID> {
     Optional<Reservation> findByPersonEmail(String email);
