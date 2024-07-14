@@ -52,7 +52,6 @@ public class AccessoryController {
    * @throws AccessoryNotFoundException the accessory not found exception
    */
   @GetMapping("/{id}")
-  @PreAuthorize("hasAuthority('MANAGER')")
   @Operation(summary = "Get accessory by ID", description = "Retrieve a specific accessory by its ID")
   @ApiResponse(responseCode = "200", description = "Accessory successfully retrieved")
   @ApiResponse(responseCode = "404", description = "Accessory not found")
@@ -92,7 +91,6 @@ public class AccessoryController {
    */
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  @PreAuthorize("hasAuthority('MANAGER')")
   @Operation(summary = "Create accessory", description = "Create a new accessory")
   @ApiResponse(responseCode = "201", description = "Accessory successfully created")
   @CacheEvict(value = "accessoriesCache", allEntries = true)
@@ -111,7 +109,6 @@ public class AccessoryController {
    * @throws AccessoryNotFoundException if the accessory with the given ID is not found
    */
   @PutMapping("/{id}")
-  @PreAuthorize("hasAuthority('MANAGER')")
   @Operation(summary = "Update accessory", description = "Update an existing accessory")
   @ApiResponse(responseCode = "200", description = "Accessory successfully updated")
   @ApiResponse(responseCode = "404", description = "Accessory not found")
@@ -133,7 +130,6 @@ public class AccessoryController {
    * @throws AccessoryNotFoundException if no accessory with the given ID is found.
    */
   @DeleteMapping("/{id}")
-  @PreAuthorize("hasAuthority('MANAGER')")
   @Operation(summary = "Delete accessory", description = "Delete an accessory by its ID")
   @ApiResponse(responseCode = "200", description = "Accessory successfully deleted")
   @ApiResponse(responseCode = "404", description = "Accessory not found")

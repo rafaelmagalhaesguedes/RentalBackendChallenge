@@ -48,7 +48,6 @@ public class ReservationController {
    * @return the all reservations
    */
   @GetMapping
-  @PreAuthorize("hasAuthority('MANAGER')")
   @Operation(summary = "Get All Reservations", description = "Fetch all reservations with pagination support.")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "List of reservations fetched successfully")

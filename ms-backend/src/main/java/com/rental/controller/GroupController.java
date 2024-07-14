@@ -59,7 +59,6 @@ public class GroupController {
    * @throws GroupNotFoundException the group not found exception
    */
   @GetMapping("/{id}")
-  @PreAuthorize("hasAuthority('MANAGER')")
   @Operation(summary = "Get group by ID", description = "Retrieve a group by its ID")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Group found",
@@ -106,7 +105,6 @@ public class GroupController {
    */
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  @PreAuthorize("hasAuthority('MANAGER')")
   @Operation(summary = "Create group", description = "Create a new group")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Group created",
@@ -130,7 +128,6 @@ public class GroupController {
    * @throws GroupNotFoundException the group not found exception
    */
   @PutMapping("/{id}")
-  @PreAuthorize("hasAuthority('MANAGER')")
   @Operation(summary = "Update group", description = "Update an existing group")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Group updated",
@@ -160,7 +157,6 @@ public class GroupController {
    * @throws GroupNotFoundException the group not found exception
    */
   @DeleteMapping("/{id}")
-  @PreAuthorize("hasAuthority('MANAGER')")
   @Operation(summary = "Delete group", description = "Delete a group by its ID")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Group deleted",

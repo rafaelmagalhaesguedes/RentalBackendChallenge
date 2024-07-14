@@ -47,7 +47,6 @@ public class VehicleController {
    * @throws VehicleNotFoundException the vehicle not found exception
    */
   @GetMapping("/{id}")
-  @PreAuthorize("hasAuthority('MANAGER')")
   @Operation(summary = "Get Vehicle by ID", description = "Fetch a vehicle by its ID.")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Vehicle fetched successfully"),
@@ -59,7 +58,6 @@ public class VehicleController {
   }
 
   @GetMapping("/license-plate")
-  @PreAuthorize("hasAuthority('MANAGER')")
   @Operation(summary = "Get Vehicle by License Plate", description = "Fetch a vehicle by its license plate.")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "Vehicle fetched successfully"),
@@ -80,7 +78,6 @@ public class VehicleController {
    * @return the all vehicles
    */
   @GetMapping
-  @PreAuthorize("hasAuthority('MANAGER')")
   @Operation(summary = "Get All Vehicles", description = "Fetch all vehicles with pagination support.")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "List of vehicles fetched successfully")
@@ -101,7 +98,6 @@ public class VehicleController {
    */
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  @PreAuthorize("hasAuthority('MANAGER')")
   @Operation(summary = "Create Vehicle", description = "Create a new vehicle.")
   @ApiResponse(responseCode = "201", description = "Vehicle created successfully")
   @CacheEvict(value = {"vehicleById", "allVehicles"}, allEntries = true)
@@ -120,7 +116,6 @@ public class VehicleController {
    * @throws VehicleNotFoundException the vehicle not found exception
    */
   @PutMapping("/{id}")
-  @PreAuthorize("hasAuthority('MANAGER')")
   @Operation(summary = "Update Vehicle", description = "Update an existing vehicle.")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Vehicle updated successfully"),
@@ -141,7 +136,6 @@ public class VehicleController {
    * @throws VehicleNotFoundException the vehicle not found exception
    */
   @DeleteMapping("/{id}")
-  @PreAuthorize("hasAuthority('MANAGER')")
   @Operation(summary = "Delete Vehicle", description = "Delete a vehicle by its ID.")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Vehicle deleted successfully"),

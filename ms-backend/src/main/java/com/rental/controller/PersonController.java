@@ -91,7 +91,6 @@ public class PersonController {
    * @return the all persons
    */
   @GetMapping
-  @PreAuthorize("hasAuthority('MANAGER')")
   @Operation(summary = "Get All Persons", description = "Fetch all persons with pagination support.")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "List of persons fetched successfully")
