@@ -41,8 +41,8 @@ public class ReservationService {
   private final PaymentService paymentService;
   private final ReservationProducer reservationProducer;
 
-  private static final String PAYMENT_SUCCESS_URL = "http://localhost:8080/payment/success";
-  private static final String PAYMENT_CANCEL_URL = "http://localhost:8080/payment/cancel";
+  private static final String PAYMENT_SUCCESS_URL = "http://localhost/payment/success";
+  private static final String PAYMENT_CANCEL_URL = "http://localhost/payment/cancel";
 
   /**
    * Instantiates a new Reservation service.
