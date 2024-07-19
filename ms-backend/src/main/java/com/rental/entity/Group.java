@@ -35,9 +35,6 @@ public class Group {
 
   private String imageURL;
 
-  /**
-   * Instantiates a new Group.
-   */
   public Group() { }
 
   /**
@@ -70,92 +67,42 @@ public class Group {
     this.imageURL = imageURL;
   }
 
-  /**
-   * Gets id.
-   *
-   * @return the id
-   */
   public UUID getId() {
     return id;
   }
 
-  /**
-   * Sets id.
-   *
-   * @param id the id
-   */
   public void setId(UUID id) {
     this.id = id;
   }
 
-  /**
-   * Gets name.
-   *
-   * @return the name
-   */
   public String getName() {
     return name;
   }
 
-  /**
-   * Sets name.
-   *
-   * @param name the name
-   */
   public void setName(String name) {
     this.name = name;
   }
 
-  /**
-   * Gets daily rate.
-   *
-   * @return the daily rate
-   */
   public Double getDailyRate() {
     return dailyRate;
   }
 
-  /**
-   * Sets daily rate.
-   *
-   * @param dailyRate the daily rate
-   */
   public void setDailyRate(Double dailyRate) {
     this.dailyRate = dailyRate;
   }
 
-  /**
-   * Gets vehicles.
-   *
-   * @return the vehicles
-   */
   public String getVehicles() {
     return vehicles;
   }
 
-  /**
-   * Sets vehicles.
-   *
-   * @param vehicles the vehicles
-   */
   public void setVehicles(String vehicles) {
     this.vehicles = vehicles;
   }
 
-  /**
-   * Gets image url.
-   *
-   * @return the image url
-   */
   public String getImageURL() {
     return imageURL;
   }
 
-  /**
-   * Sets image url.
-   *
-   * @param imageURL the image url
-   */
   public void setImageURL(String imageURL) {
     this.imageURL = imageURL;
   }

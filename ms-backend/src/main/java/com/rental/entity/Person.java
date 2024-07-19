@@ -42,9 +42,6 @@ public class Person implements UserDetails {
 
   private Role role;
 
-  /**
-   * Instantiates a new Person.
-   */
   public Person() { }
 
   /**
@@ -111,92 +108,42 @@ public class Person implements UserDetails {
     this.email = email;
   }
 
-  /**
-   * Gets id.
-   *
-   * @return the id
-   */
   public UUID getId() {
     return id;
   }
 
-  /**
-   * Sets id.
-   *
-   * @param id the id
-   */
   public void setId(UUID id) {
     this.id = id;
   }
 
-  /**
-   * Gets full name.
-   *
-   * @return the full name
-   */
   public String getFullName() {
     return fullName;
   }
 
-  /**
-   * Sets full name.
-   *
-   * @param fullName the full name
-   */
   public void setFullName(String fullName) {
     this.fullName = fullName;
   }
 
-  /**
-   * Sets name.
-   *
-   * @param username the full name
-   */
   public void setUsername(String username) {
     this.username = username;
   }
 
-  /**
-   * Gets email.
-   *
-   * @return the email
-   */
   public String getEmail() {
     return email;
   }
 
-  /**
-   * Sets email.
-   *
-   * @param email the email
-   */
   public void setEmail(String email) {
     this.email = email;
   }
 
-  /**
-   * Sets password.
-   *
-   * @param password the password
-   */
   public void setPassword(String password) {
     this.password = password;
   }
 
-  /**
-   * Gets role.
-   *
-   * @return the role
-   */
   public Role getRole() {
     return role;
   }
 
-  /**
-   * Sets role.
-   *
-   * @param role the role
-   */
   public void setRole(Role role) {
     this.role = role;
   }

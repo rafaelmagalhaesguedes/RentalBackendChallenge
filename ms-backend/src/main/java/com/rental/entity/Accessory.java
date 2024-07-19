@@ -33,9 +33,6 @@ public class Accessory {
 
   private Double dailyRate;
 
-  /**
-   * Instantiates a new Accessory.
-   */
   public Accessory() { }
 
   /**
@@ -70,92 +67,42 @@ public class Accessory {
     this.dailyRate = dailyRate;
   }
 
-  /**
-   * Gets id.
-   *
-   * @return the id
-   */
   public UUID getId() {
     return id;
   }
 
-  /**
-   * Sets id.
-   *
-   * @param id the id
-   */
   public void setId(UUID id) {
     this.id = UUID.fromString(String.valueOf(id));
   }
 
-  /**
-   * Gets name.
-   *
-   * @return the name
-   */
   public String getName() {
     return name;
   }
 
-  /**
-   * Sets name.
-   *
-   * @param name the name
-   */
   public void setName(String name) {
     this.name = name;
   }
 
-  /**
-   * Gets description.
-   *
-   * @return the description
-   */
   public String getDescription() {
     return description;
   }
 
-  /**
-   * Sets description.
-   *
-   * @param description the description
-   */
   public void setDescription(String description) {
     this.description = description;
   }
 
-  /**
-   * Gets quantity.
-   *
-   * @return the quantity
-   */
   public Integer getQuantity() {
     return quantity;
   }
 
-  /**
-   * Sets quantity.
-   *
-   * @param quantity the quantity
-   */
   public void setQuantity(Integer quantity) {
     this.quantity = quantity;
   }
 
-  /**
-   * Gets daily rate.
-   *
-   * @return the daily rate
-   */
   public Double getDailyRate() {
     return dailyRate;
   }
 
-  /**
-   * Sets daily rate.
-   *
-   * @param dailyRate the daily rate
-   */
   public void setDailyRate(Double dailyRate) {
     this.dailyRate = dailyRate;
   }

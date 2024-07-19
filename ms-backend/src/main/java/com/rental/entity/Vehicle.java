@@ -28,9 +28,6 @@ public class Vehicle {
 
   private String yearOfManufacture;
 
-  /**
-   * Instantiates a new Vehicle.
-   */
   public Vehicle() { }
 
   /**
@@ -71,110 +68,50 @@ public class Vehicle {
     this.yearOfManufacture = yearOfManufacture;
   }
 
-  /**
-   * Gets id.
-   *
-   * @return the id
-   */
   public UUID getId() {
     return id;
   }
 
-  /**
-   * Sets id.
-   *
-   * @param id the id
-   */
   public void setId(UUID id) {
     this.id = id;
   }
 
-  /**
-   * Gets model.
-   *
-   * @return the model
-   */
   public String getModel() {
     return model;
   }
 
-  /**
-   * Sets model.
-   *
-   * @param model the model
-   */
   public void setModel(String model) {
     this.model = model;
   }
 
-  /**
-   * Gets license plate.
-   *
-   * @return the license plate
-   */
   public String getLicensePlate() {
     return licensePlate;
   }
 
-  /**
-   * Sets license plate.
-   *
-   * @param licensePlate the license plate
-   */
   public void setLicensePlate(String licensePlate) {
     this.licensePlate = licensePlate;
   }
 
-  /**
-   * Gets brand.
-   *
-   * @return the brand
-   */
   public String getBrand() {
     return brand;
   }
 
-  /**
-   * Sets brand.
-   *
-   * @param brand the brand
-   */
   public void setBrand(String brand) {
     this.brand = brand;
   }
 
-  /**
-   * Gets color.
-   *
-   * @return the color
-   */
   public String getColor() {
     return color;
   }
 
-  /**
-   * Sets color.
-   *
-   * @param color the color
-   */
   public void setColor(String color) {
     this.color = color;
   }
 
-  /**
-   * Gets year of manufacture.
-   *
-   * @return the year of manufacture
-   */
   public String getYearOfManufacture() {
     return yearOfManufacture;
   }
 
-  /**
-   * Sets year of manufacture.
-   *
-   * @param yearOfManufacture the year of manufacture
-   */
   public void setYearOfManufacture(String yearOfManufacture) {
     this.yearOfManufacture = yearOfManufacture;
   }
