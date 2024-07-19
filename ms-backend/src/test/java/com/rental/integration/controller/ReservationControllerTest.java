@@ -12,7 +12,13 @@ import com.rental.utils.TestSecurityConfig;
 import com.rental.controller.ReservationController;
 import com.rental.controller.dto.reservation.ReservationCreationDto;
 import com.rental.controller.dto.reservation.ReservationDto;
+import com.rental.controller.dto.reservation.ReservationPaymentDto;
+import com.rental.controller.dto.reservation.ReservationReadDto;
 import com.rental.service.ReservationService;
+import com.rental.service.exception.PersonNotFoundException;
+import com.rental.service.exception.GroupNotFoundException;
+import com.rental.service.exception.ReservationNotFoundException;
+import com.stripe.exception.StripeException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +29,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.UUID;
 
 @WebMvcTest(ReservationController.class)
 @Import(TestSecurityConfig.class)
@@ -41,17 +48,46 @@ public class ReservationControllerTest {
     private JwtFilter jwtFilter;
 
     @Test
-    public void testCreateReservation() throws Exception {
+    public void testCreateOnlineReservation() throws Exception {
         // Arrange
-        ReservationDto reservationDto = ReservationDto.fromEntity(RESERVATION_01, PAYMENT_URL);
+        ReservationPaymentDto reservationPaymentDto = ReservationPaymentDto.fromEntity(RESERVATION_01, PAYMENT_URL);
 
-        when(reservationService.createReservation(Mockito.any(ReservationCreationDto.class)))
+        when(reservationService.createReservationWithOnlinePayment(Mockito.any(ReservationCreationDto.class)))
+                .thenReturn(reservationPaymentDto);
+
+        // Act + Assert
+        mockMvc.perform(post("/reservation/payment/online")
+                        .content(objectMapper.writeValueAsString(RESERVATION_CREATION))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testCreateStoreReservation() throws Exception {
+        // Arrange
+        ReservationDto reservationDto = ReservationDto.fromEntity(RESERVATION_01);
+
+        when(reservationService.createReservationWithStorePayment(Mockito.any(ReservationCreationDto.class)))
                 .thenReturn(reservationDto);
 
         // Act + Assert
-        mockMvc.perform(post(URL_RESERVATION)
+        mockMvc.perform(post("/reservation/payment/store")
                         .content(objectMapper.writeValueAsString(RESERVATION_CREATION))
                         .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testGetReservationById() throws Exception {
+        // Arrange
+        UUID reservationId = UUID.randomUUID();
+        ReservationReadDto reservationReadDto = ReservationReadDto.fromEntity(RESERVATION_01);
+
+        when(reservationService.getReservationById(reservationId))
+                .thenReturn(RESERVATION_01);
+
+        // Act + Assert
+        mockMvc.perform(get("/reservation/" + reservationId))
                 .andExpect(status().isOk());
     }
 
@@ -62,7 +98,7 @@ public class ReservationControllerTest {
                 .thenReturn(List.of(RESERVATION_01, RESERVATION_02));
 
         // Act + Assert
-        mockMvc.perform(get(URL_RESERVATION)
+        mockMvc.perform(get("/reservation")
                         .param("pageNumber", "0")
                         .param("pageSize", "10"))
                 .andExpect(status().isOk());

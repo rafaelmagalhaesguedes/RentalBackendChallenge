@@ -2,18 +2,17 @@ package com.rental.controller.dto.reservation;
 
 import com.rental.controller.dto.accessory.AccessoryDto;
 import com.rental.controller.dto.person.PersonDto;
-import com.rental.entity.Group;
 import com.rental.entity.Reservation;
 import com.rental.enums.ReservationStatus;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import com.rental.entity.Group;
 
 /**
  * The type Reservation dto.
  */
-public record ReservationDto(
+public record ReservationPaymentDto(
     UUID id,
     PersonDto person,
     Group group,
@@ -24,17 +23,19 @@ public record ReservationDto(
     Integer totalDays,
     ReservationStatus reservationStatus,
     String paymentType,
-    LocalDateTime createdDate
+    LocalDateTime createdDate,
+    String paymentUrl
 ) {
 
   /**
    * From entity reservation dto.
    *
    * @param reservation the reservation
+   * @param paymentUrl  the payment url
    * @return the reservation dto
    */
-  public static ReservationDto fromEntity(Reservation reservation) {
-    return new ReservationDto(
+  public static ReservationPaymentDto fromEntity(Reservation reservation, String paymentUrl) {
+    return new ReservationPaymentDto(
         reservation.getId(),
         PersonDto.fromEntity(reservation.getPerson()),
         reservation.getGroup(),
@@ -48,7 +49,8 @@ public record ReservationDto(
         reservation.getTotalDays(),
         reservation.getReservationStatus(),
         reservation.getPaymentType(),
-        reservation.getCreatedDate()
+        reservation.getCreatedDate(),
+        paymentUrl
     );
   }
 }

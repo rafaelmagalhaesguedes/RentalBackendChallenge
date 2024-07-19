@@ -59,7 +59,8 @@ public class ReservationMock {
             ACCESSORY_IDS,
             PICKUP_DATE_TIME,
             RETURN_DATE_TIME,
-            PAYMENT_TYPE
+            TOTAL_AMOUNT_01,
+            TOTAL_DAYS_01
     );
 
     // Mock reservations

@@ -5,20 +5,11 @@ package com.rental.enums;
  */
 public enum ReservationStatus {
 
-  /**
-   * Pending reservationStatus.
-   */
-  PENDING("Pending Reservation"),
+  PENDING("PENDING"),
 
-  /**
-   * Confirmed reservationStatus.
-   */
-  CONFIRMED("Confirmed reservation"),
+  CONFIRMED("CONFIRMED"),
 
-  /**
-   * Cancelled reservationStatus.
-   */
-  CANCELLED("Reservation Canceled");
+  CANCELLED("CANCELLED");
 
   private final String name;
 
@@ -26,11 +17,6 @@ public enum ReservationStatus {
     this.name = name;
   }
 
-  /**
-   * Gets name.
-   *
-   * @return the name
-   */
   public String getName() {
     return name;
   }

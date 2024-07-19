@@ -14,6 +14,7 @@ import static org.mockito.Mockito.when;
 
 import com.rental.controller.dto.reservation.ReservationCreationDto;
 import com.rental.controller.dto.reservation.ReservationDto;
+import com.rental.controller.dto.reservation.ReservationPaymentDto;
 import com.rental.entity.Reservation;
 import com.rental.mock.ReservationMock;
 import com.rental.producer.ReservationProducer;
@@ -72,7 +73,7 @@ public class ReservationServiceTest {
     ReservationProducer reservationProducer;
 
     @Test
-    public void testCreateReservation() throws PersonNotFoundException, GroupNotFoundException, StripeException {
+    public void testCreateReservationWithOnlinePayment() throws PersonNotFoundException, GroupNotFoundException, StripeException {
         // Arrange
         when(personService.getPersonById(PERSON_01.getId())).thenReturn(PERSON_01);
         when(groupService.getGroupById(GROUP_01.getId())).thenReturn(GROUP_01);
@@ -85,10 +86,10 @@ public class ReservationServiceTest {
 
         ReservationCreationDto reservationDto = new ReservationCreationDto(
                 PERSON_01.getId(), GROUP_01.getId(), Arrays.asList(ACCESSORY_01.getId(), ACCESSORY_02.getId()),
-                RESERVATION_01.getPickupDateTime(), RESERVATION_01.getReturnDateTime(), "online");
+                RESERVATION_01.getPickupDateTime(), RESERVATION_01.getReturnDateTime(), RESERVATION_01.getTotalAmount(), RESERVATION_01.getTotalDays());
 
         // Act
-        ReservationDto createdReservation = reservationService.createReservation(reservationDto);
+        ReservationPaymentDto createdReservation = reservationService.createReservationWithOnlinePayment(reservationDto);
 
         // Assert
         assertThat(createdReservation).isNotNull();
@@ -96,6 +97,31 @@ public class ReservationServiceTest {
         verify(groupService).getGroupById(GROUP_01.getId());
         verify(accessoryService).getAccessoriesById(any());
         verify(reservationRepository).save(any(Reservation.class));
+        verify(paymentService).createCheckoutSession(any(Double.class), any(String.class), any(String.class), any(Reservation.class));
+    }
+
+    @Test
+    public void testCreateReservationWithStorePayment() throws PersonNotFoundException, GroupNotFoundException {
+        // Arrange
+        when(personService.getPersonById(PERSON_01.getId())).thenReturn(PERSON_01);
+        when(groupService.getGroupById(GROUP_01.getId())).thenReturn(GROUP_01);
+        when(accessoryService.getAccessoriesById(any())).thenReturn(Arrays.asList(ACCESSORY_01, ACCESSORY_02));
+        when(reservationRepository.save(any(Reservation.class))).thenReturn(RESERVATION_01);
+
+        ReservationCreationDto reservationDto = new ReservationCreationDto(
+                PERSON_01.getId(), GROUP_01.getId(), Arrays.asList(ACCESSORY_01.getId(), ACCESSORY_02.getId()),
+                RESERVATION_01.getPickupDateTime(), RESERVATION_01.getReturnDateTime(), RESERVATION_01.getTotalAmount(), RESERVATION_01.getTotalDays());
+
+        // Act
+        ReservationDto createdReservation = reservationService.createReservationWithStorePayment(reservationDto);
+
+        // Assert
+        assertThat(createdReservation).isNotNull();
+        verify(personService).getPersonById(PERSON_01.getId());
+        verify(groupService).getGroupById(GROUP_01.getId());
+        verify(accessoryService).getAccessoriesById(any());
+        verify(reservationRepository).save(any(Reservation.class));
+        verify(reservationProducer).publishMessageEmail(any(), any());
     }
 
     @Test
@@ -105,10 +131,10 @@ public class ReservationServiceTest {
 
         ReservationCreationDto reservationDto = new ReservationCreationDto(
                 UUID.randomUUID(), GROUP_01.getId(), Arrays.asList(ACCESSORY_01.getId(), ACCESSORY_02.getId()),
-                RESERVATION_01.getPickupDateTime(), RESERVATION_01.getReturnDateTime(), "online");
+                RESERVATION_01.getPickupDateTime(), RESERVATION_01.getReturnDateTime(), RESERVATION_01.getTotalAmount(), RESERVATION_01.getTotalDays());
 
         // Act & Assert
-        assertThrows(PersonNotFoundException.class, () -> reservationService.createReservation(reservationDto));
+        assertThrows(PersonNotFoundException.class, () -> reservationService.createReservationWithOnlinePayment(reservationDto));
     }
 
     @Test
@@ -119,10 +145,10 @@ public class ReservationServiceTest {
 
         ReservationCreationDto reservationDto = new ReservationCreationDto(
                 PERSON_01.getId(), UUID.randomUUID(), Arrays.asList(ACCESSORY_01.getId(), ACCESSORY_02.getId()),
-                RESERVATION_01.getPickupDateTime(), RESERVATION_01.getReturnDateTime(), "online");
+                RESERVATION_01.getPickupDateTime(), RESERVATION_01.getReturnDateTime(), RESERVATION_01.getTotalAmount(), RESERVATION_01.getTotalDays());
 
         // Act & Assert
-        assertThrows(GroupNotFoundException.class, () -> reservationService.createReservation(reservationDto));
+        assertThrows(GroupNotFoundException.class, () -> reservationService.createReservationWithOnlinePayment(reservationDto));
     }
 
     @Test
@@ -178,4 +204,3 @@ public class ReservationServiceTest {
         assertThat(getAllReservations).isEmpty();
     }
 }
-
