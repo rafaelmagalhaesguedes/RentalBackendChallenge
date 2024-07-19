@@ -16,26 +16,12 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - backend1
-      - backend2
+      - backend
     networks:
       - rental-network
 
-  backend1:
-    container_name: rental-backend1
-    build:
-      context: ./ms-backend
-      dockerfile: Dockerfile
-    restart: always
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/rental
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
-    networks:
-      - rental-network
-
-  backend2:
-    container_name: rental-backend2
+  backend:
+    container_name: rental-backend
     build:
       context: ./ms-backend
       dockerfile: Dockerfile
