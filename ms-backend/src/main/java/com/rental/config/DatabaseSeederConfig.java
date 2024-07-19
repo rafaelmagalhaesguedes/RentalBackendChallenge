@@ -46,7 +46,6 @@ public class DatabaseSeederConfig {
                 new Group(UUID.randomUUID(), "Grupo A", "Mobi, Uno, Kwid ou similares", 120.00, "https://raw.githubusercontent.com/rafaelmagalhaesguedes/CDN-GitHub/main/images/a.png"),
                 new Group(UUID.randomUUID(), "Grupo B", "Argo, HB20, Onix ou similares", 160.00, "https://raw.githubusercontent.com/rafaelmagalhaesguedes/CDN-GitHub/main/images/b.png"),
                 new Group(UUID.randomUUID(), "Grupo C", "Chronos, HB20S, Onix Plus ou similares", 195.00, "https://raw.githubusercontent.com/rafaelmagalhaesguedes/CDN-GitHub/main/images/c.png"),
-                new Group(UUID.randomUUID(), "Grupo D", "Creta, Captur, T-Cross ou similares", 220.00, "https://raw.githubusercontent.com/rafaelmagalhaesguedes/CDN-GitHub/main/images/d.png"),
                 new Group(UUID.randomUUID(), "Grupo E", "Chevrolet Spin ou Fiat Doblò", 240.00, "https://raw.githubusercontent.com/rafaelmagalhaesguedes/CDN-GitHub/main/images/e.png"),
                 new Group(UUID.randomUUID(), "Grupo G", "Renegade, Compass, Tracker ou similares", 280.00, "https://raw.githubusercontent.com/rafaelmagalhaesguedes/CDN-GitHub/main/images/g.png"),
                 new Group(UUID.randomUUID(), "Grupo P", "Hilux, S10, Ranger ou similares", 300.00, "https://raw.githubusercontent.com/rafaelmagalhaesguedes/CDN-GitHub/main/images/p.png")

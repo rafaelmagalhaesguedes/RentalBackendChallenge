@@ -55,32 +55,18 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .cors(withDefaults())
             .authorizeHttpRequests(authorize -> authorize
+                    .requestMatchers("/").permitAll()
                     .requestMatchers(HttpMethod.GET, "/group").permitAll()
                     .requestMatchers(HttpMethod.GET, "/accessory").permitAll()
                     .requestMatchers(HttpMethod.POST, "/persons").permitAll()
                     .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                    .requestMatchers("/payment/**").permitAll()
-                    .requestMatchers("/swagger-ui").permitAll()
                     .requestMatchers("/swagger-ui/**").permitAll()
                     .requestMatchers("/v3/api-docs/**").permitAll()
                     .requestMatchers("/swagger-resources/**").permitAll()
-                    .requestMatchers("/").permitAll()
                     .anyRequest().authenticated()
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
-  }
-
-  @Bean
-  public CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration configuration = new CorsConfiguration();
-    configuration.addAllowedOriginPattern("*");
-    configuration.addAllowedMethod("*");
-    configuration.addAllowedHeader("*");
-    configuration.setAllowCredentials(true);
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
-    return source;
   }
 
   /**
