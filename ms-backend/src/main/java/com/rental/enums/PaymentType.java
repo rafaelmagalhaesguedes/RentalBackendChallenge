@@ -5,15 +5,9 @@ package com.rental.enums;
  */
 public enum PaymentType {
 
-  /**
-   * The Pay at counter.
-   */
-  OFFLINE_PAYMENT("Offline payment"),
+  STORE_PAYMENT("STORE_PAYMENT"),
 
-  /**
-   * The Online payment.
-   */
-  ONLINE_PAYMENT("Online payment");
+  ONLINE_PAYMENT("ONLINE_PAYMENT");
 
   private final String name;
 
@@ -21,11 +15,6 @@ public enum PaymentType {
     this.name = name;
   }
 
-  /**
-   * Gets name.
-   *
-   * @return the name
-   */
   public String getName() {
     return this.name;
   }

@@ -66,7 +66,7 @@ public class PaymentService {
             SessionCreateParams.LineItem.builder()
                 .setPriceData(
                     SessionCreateParams.LineItem.PriceData.builder()
-                        .setCurrency("usd")
+                        .setCurrency("BRL")
                         .setUnitAmount((long) (amount * 100)) // amount in cents
                         .setProductData(
                             SessionCreateParams.LineItem.PriceData.ProductData.builder()
@@ -76,8 +76,8 @@ public class PaymentService {
                 .setQuantity(1L)
                 .build())
         .setMode(SessionCreateParams.Mode.PAYMENT)
-        .setSuccessUrl(successUrl + "/" + payment.getId())
-        .setCancelUrl(cancelUrl + "/" + payment.getId())
+        .setSuccessUrl(successUrl)
+        .setCancelUrl(cancelUrl)
         .build();
 
     return Session.create(params);

@@ -5,15 +5,11 @@ package com.rental.enums;
  */
 public enum PaymentStatus {
 
-  /**
-   * The Pay at counter.
-   */
-  CONFIRMED("Payment confirmed successfully!"),
+  CONFIRMED("CONFIRMED"),
 
-  /**
-   * The Online payment.
-   */
-  CANCEL("Payment canceled!");
+  CANCEL("CANCELLED"),
+
+  PENDING("PENDING");
 
   private final String name;
 
@@ -21,11 +17,6 @@ public enum PaymentStatus {
     this.name = name;
   }
 
-  /**
-   * Gets name.
-   *
-   * @return the name
-   */
   public String getName() {
     return this.name;
   }
