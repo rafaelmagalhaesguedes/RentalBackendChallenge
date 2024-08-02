@@ -10,10 +10,6 @@ comunicação eficiente por e-mail, aproveitando filas de mensagens para maior c
 
 Este projeto utiliza Swagger para documentar seus endpoints de API, facilitando o entendimento e teste das funcionalidades disponíveis.
 
-### Acessando o Swagger
-
-Para acessar a documentação do Swagger: https://ms-backend.up.railway.app/swagger-ui/index.html.
-
 ## Funcionalidades Principais
 
 - Autenticação e Autorização: Autenticação de usuários e autorização baseada em papéis (ADMIN, MANAGER e USER).
