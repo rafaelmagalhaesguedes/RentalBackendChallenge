@@ -36,16 +36,6 @@ public class Person implements UserDetails {
 
   public Person() { }
 
-  /**
-   * Instantiates a new Person.
-   *
-   * @param id       the id
-   * @param fullName the full name
-   * @param username the username
-   * @param email    the email
-   * @param password the password
-   * @param role     the role
-   */
   public Person(UUID id, String fullName, String username, String email, String password, Role role) {
     this.id = id;
     this.fullName = fullName;
@@ -55,15 +45,6 @@ public class Person implements UserDetails {
     this.role = role;
   }
 
-  /**
-   * Instantiates a new Person.
-   *
-   * @param fullName the full name
-   * @param username the username
-   * @param email    the email
-   * @param password the password
-   * @param role     the role
-   */
   public Person(String fullName, String username, String email, String password, Role role) {
     this.fullName = fullName;
     this.username = username;
@@ -72,14 +53,6 @@ public class Person implements UserDetails {
     this.role = role;
   }
 
-  /**
-   * Instantiates a new Person.
-   *
-   * @param fullName the full name
-   * @param username the username
-   * @param email    the email
-   * @param password the password
-   */
   public Person(String fullName, String username, String email, String password) {
     this.fullName = fullName;
     this.username = username;
@@ -87,13 +60,6 @@ public class Person implements UserDetails {
     this.password = password;
   }
 
-  /**
-   * Instantiates a new Person.
-   *
-   * @param fullName the full name
-   * @param username the username
-   * @param email    the email
-   */
   public Person(String fullName, String username, String email) {
     this.fullName = fullName;
     this.username = username;

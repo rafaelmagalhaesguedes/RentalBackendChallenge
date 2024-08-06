@@ -8,9 +8,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import java.util.UUID;
 
-/**
- * The type Vehicle.
- */
 @Entity
 public class Vehicle {
 
@@ -30,16 +27,6 @@ public class Vehicle {
 
   public Vehicle() { }
 
-  /**
-   * Instantiates a new Vehicle.
-   *
-   * @param id                the id
-   * @param model             the model
-   * @param licensePlate      the license plate
-   * @param brand             the brand
-   * @param color             the color
-   * @param yearOfManufacture the year of manufacture
-   */
   public Vehicle(UUID id, String model, String licensePlate, String brand, String color,
       String yearOfManufacture) {
     this.id = id;
@@ -50,15 +37,6 @@ public class Vehicle {
     this.yearOfManufacture = yearOfManufacture;
   }
 
-  /**
-   * Instantiates a new Vehicle.
-   *
-   * @param model             the model
-   * @param licensePlate      the license plate
-   * @param brand             the brand
-   * @param color             the color
-   * @param yearOfManufacture the year of manufacture
-   */
   public Vehicle(String model, String licensePlate, String brand, String color,
       String yearOfManufacture) {
     this.model = model;

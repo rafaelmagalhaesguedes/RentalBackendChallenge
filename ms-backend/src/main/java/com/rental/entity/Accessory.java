@@ -35,15 +35,6 @@ public class Accessory {
 
   public Accessory() { }
 
-  /**
-   * Instantiates a new Accessory.
-   *
-   * @param id          the id
-   * @param name        the name
-   * @param description the description
-   * @param quantity    the quantity
-   * @param dailyRate   the daily rate
-   */
   public Accessory(UUID id, String name, String description, Integer quantity, Double dailyRate) {
     this.id = id;
     this.name = name;
@@ -52,14 +43,6 @@ public class Accessory {
     this.dailyRate = dailyRate;
   }
 
-  /**
-   * Instantiates a new Accessory.
-   *
-   * @param name        the name
-   * @param description the description
-   * @param quantity    the quantity
-   * @param dailyRate   the daily rate
-   */
   public Accessory(String name, String description, Integer quantity, Double dailyRate) {
     this.name = name;
     this.description = description;
