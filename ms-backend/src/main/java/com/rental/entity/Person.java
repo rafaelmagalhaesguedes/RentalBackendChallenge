@@ -1,18 +1,9 @@
 package com.rental.entity;
 
 import com.rental.security.Role;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.persistence.*;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -40,6 +31,7 @@ public class Person implements UserDetails {
 
   private String password;
 
+  @Enumerated(EnumType.STRING)
   private Role role;
 
   public Person() { }

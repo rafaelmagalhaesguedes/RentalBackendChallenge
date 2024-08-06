@@ -1,11 +1,13 @@
-package com.rental.config;
+package com.rental.database;
 
 import com.rental.entity.Group;
 import com.rental.entity.Accessory;
+import com.rental.entity.Person;
 import com.rental.repository.PersonRepository;
 import com.rental.repository.GroupRepository;
 import com.rental.repository.AccessoryRepository;
 import com.rental.repository.ReservationRepository;
+import com.rental.security.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Component
-public class DatabaseSeederConfig {
+public class Seeder {
 
     @Autowired
     private PersonRepository personRepository;
@@ -39,6 +41,17 @@ public class DatabaseSeederConfig {
         if (accessoryRepository.count() == 0) {
             seedAccessories();
         }
+        if (personRepository.count() == 0) {
+            seedPerson();
+        }
+    }
+
+    private void seedPerson() {
+        List<Person> persons = Arrays.asList(
+                new Person(UUID.randomUUID(), "Admin", "Admin", "admin@email.com", "secret_admin", Role.ADMIN),
+                new Person(UUID.randomUUID(), "User", "User", "user@email.com", "secret_user", Role.USER)
+            );
+        personRepository.saveAll(persons);
     }
 
     private void seedGroups() {
