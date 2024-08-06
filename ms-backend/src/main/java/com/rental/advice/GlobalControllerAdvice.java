@@ -1,8 +1,7 @@
 package com.rental.advice;
 
-import com.rental.service.exception.NotFoundException;
+import com.rental.service.exception.*;
 import jakarta.validation.ConstraintViolationException;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
@@ -20,15 +19,18 @@ import org.springframework.web.context.request.WebRequest;
 public class GlobalControllerAdvice {
 
   /**
-   * Handle not found response entity.
+   * Handle constraint violation exceptions.
    *
-   * @param exception the exception
-   * @return the response entity
+   * @param ex the ConstraintViolationException
+   * @return the response entity with error details
    */
-  @ExceptionHandler
-  public ResponseEntity<String> handleNotFound(NotFoundException exception) {
-    return ResponseEntity.status(HttpStatus.NOT_FOUND)
-        .body(exception.getMessage());
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity<Map<String, Object>> handleConstraintViolationExceptions(ConstraintViolationException ex) {
+    Map<String, Object> body = new HashMap<>();
+    body.put("message", ex.getMessage());
+    body.put("statusCode", HttpStatus.BAD_REQUEST.value());
+
+    return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
   }
 
   /**
@@ -46,29 +48,129 @@ public class GlobalControllerAdvice {
     }
 
     Map<String, Object> body = new HashMap<>();
-    body.put("timestamp", LocalDateTime.now());
-    body.put("reservationStatus", HttpStatus.UNPROCESSABLE_ENTITY.value());
+    body.put("statusCode", HttpStatus.UNPROCESSABLE_ENTITY.value());
     body.put("errors", errors);
-    body.put("path", request.getDescription(false));
 
     return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
   /**
-   * Handle constraint violation exceptions.
+   * Handle NotFoundException response entity.
    *
-   * @param ex the ConstraintViolationException
-   * @param request the web request
-   * @return the response entity with error details
+   * @param ex the NotFoundException
+   * @return the response entity
    */
-  @ExceptionHandler(ConstraintViolationException.class)
-  public ResponseEntity<Map<String, Object>> handleConstraintViolationExceptions(ConstraintViolationException ex, WebRequest request) {
+  @ExceptionHandler(NotFoundException.class)
+  public ResponseEntity<Map<String, Object>> handleNotFoundException(NotFoundException ex) {
     Map<String, Object> body = new HashMap<>();
-    body.put("timestamp", LocalDateTime.now());
-    body.put("reservationStatus", HttpStatus.BAD_REQUEST.value());
-    body.put("error", "Constraint Violation");
-    body.put("path", request.getDescription(false));
+    body.put("message", ex.getMessage());
+    body.put("statusCode", HttpStatus.NOT_FOUND.value());
 
-    return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+  }
+
+  /**
+   * Handle CustomerNotFoundException response entity.
+   *
+   * @param ex the CustomerNotFoundException
+   * @return the response entity
+   */
+  @ExceptionHandler(CustomerNotFoundException.class)
+  public ResponseEntity<Map<String, Object>> handleCustomerNotFoundException(CustomerNotFoundException ex) {
+    Map<String, Object> body = new HashMap<>();
+    body.put("message", ex.getMessage());
+    body.put("statusCode", HttpStatus.NOT_FOUND.value());
+
+    return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+  }
+
+  /**
+   * Handle GroupNotFoundException response entity.
+   *
+   * @param ex the GroupNotFoundException
+   * @return the response entity
+   */
+  @ExceptionHandler(GroupNotFoundException.class)
+  public ResponseEntity<Map<String, Object>> handleGroupNotFoundException(GroupNotFoundException ex) {
+    Map<String, Object> body = new HashMap<>();
+    body.put("message", ex.getMessage());
+    body.put("statusCode", HttpStatus.NOT_FOUND.value());
+
+    return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+  }
+
+  /**
+   * Handle PaymentNotFoundException response entity.
+   *
+   * @param ex the PaymentNotFoundException
+   * @return the response entity
+   */
+  @ExceptionHandler(PaymentNotFoundException.class)
+  public ResponseEntity<Map<String, Object>> handlePaymentNotFoundException(PaymentNotFoundException ex) {
+    Map<String, Object> body = new HashMap<>();
+    body.put("message", ex.getMessage());
+    body.put("statusCode", HttpStatus.NOT_FOUND.value());
+
+    return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+  }
+
+  /**
+   * Handle PersonNotFoundException response entity.
+   *
+   * @param ex the PersonNotFoundException
+   * @return the response entity
+   */
+  @ExceptionHandler(PersonNotFoundException.class)
+  public ResponseEntity<Map<String, Object>> handlePersonNotFoundException(PersonNotFoundException ex) {
+    Map<String, Object> body = new HashMap<>();
+    body.put("message", ex.getMessage());
+    body.put("statusCode", HttpStatus.NOT_FOUND.value());
+
+    return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+  }
+
+  /**
+   * Handle PersonExistingException response entity.
+   *
+   * @param ex the PersonExistingException
+   * @return the response entity
+   */
+  @ExceptionHandler(PersonExistingException.class)
+  public ResponseEntity<Map<String, Object>> handlePersonExistingException(PersonExistingException ex) {
+    Map<String, Object> body = new HashMap<>();
+    body.put("message", ex.getMessage());
+    body.put("statusCode", HttpStatus.NOT_FOUND.value());
+
+    return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+  }
+
+  /**
+   * Handle ReservationNotFoundException response entity.
+   *
+   * @param ex the ReservationNotFoundException
+   * @return the response entity
+   */
+  @ExceptionHandler(ReservationNotFoundException.class)
+  public ResponseEntity<Map<String, Object>> handleReservationNotFoundException(ReservationNotFoundException ex) {
+    Map<String, Object> body = new HashMap<>();
+    body.put("message", ex.getMessage());
+    body.put("statusCode", HttpStatus.NOT_FOUND.value());
+
+    return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+  }
+
+  /**
+   * Handle VehicleNotFoundException response entity.
+   *
+   * @param ex the VehicleNotFoundException
+   * @return the response entity
+   */
+  @ExceptionHandler(VehicleNotFoundException.class)
+  public ResponseEntity<Map<String, Object>> handleVehicleNotFoundException(VehicleNotFoundException ex) {
+    Map<String, Object> body = new HashMap<>();
+    body.put("message", ex.getMessage());
+    body.put("statusCode", HttpStatus.NOT_FOUND.value());
+
+    return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
   }
 }
