@@ -134,9 +134,9 @@ public class ReservationService {
     reservation.setReservationStatus(ReservationStatus.PENDING);
 
     if (reservationType)
-      reservation.setPaymentType(String.valueOf(PaymentType.ONLINE_PAYMENT));
+      reservation.setPaymentType(PaymentType.ONLINE_PAYMENT);
     else
-      reservation.setPaymentType(String.valueOf(PaymentType.STORE_PAYMENT));
+      reservation.setPaymentType(PaymentType.STORE_PAYMENT);
 
     reservation.setCreatedDate(LocalDateTime.now());
 
