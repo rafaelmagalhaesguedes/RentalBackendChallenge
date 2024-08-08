@@ -1,0 +1,42 @@
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #151515;
+  height: 10vh;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 75%;
+  margin: 0 auto;
+}
+
+div {
+  display: flex;
+  align-items: center;
+}
+
+header h1 {
+  color: #fff;
+  font-size: 2rem;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 1.5rem;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #fff;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 1rem;
+}
