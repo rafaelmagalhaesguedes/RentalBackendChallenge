@@ -1,97 +1,71 @@
-
 # Rental Service Application
+This project encompasses a robust API for managing clients, reservations, accessory rentals, and vehicle groups within a car rental service. It features integration with the Stripe payment gateway for secure online transactions. Additionally, the system includes a microservices architecture for efficient email communication, utilizing message queues for enhanced reliability and scalability.
 
-Este projeto engloba uma API robusta para gerenciamento de clientes, reservas, aluguel de acessórios e
-grupos de carros dentro de uma locadora de veículos. Possui integração com o gateway de pagamento
-Stripe para transações online seguras. Além disso, o sistema inclui uma arquitetura de microsserviços para
-comunicação eficiente por e-mail, aproveitando filas de mensagens para maior confiabilidade e escalabilidade.
+## Main Features
+- Authentication and Authorization: User authentication and role-based authorization (ADMIN, MANAGER, and USER).
 
-## Documentação do Swagger
+- Reservation Management: Register and manage accessory reservations for individuals or vehicle groups.
 
-Este projeto utiliza Swagger para documentar seus endpoints de API, facilitando o entendimento e teste das funcionalidades disponíveis.
+- Person Management: Create, list, update, and delete information about individuals, including clients and employees.
 
-## Funcionalidades Principais
+- Accessory Management: Create, list, update, and delete accessories available for rental.
 
-- Autenticação e Autorização: Autenticação de usuários e autorização baseada em papéis (ADMIN, MANAGER e USER).
+- Vehicle Group Management: Create, list, update, and delete vehicle groups.
 
-- Gerenciamento de Reservas: Registro e gerenciamento de reservas de acessórios para pessoas ou grupos de veículos.
+- Stripe Integration: Allows users to pay for reservations using credit/debit cards through Stripe.
 
-- Gerenciamento de Pessoas: Cadastro, listagem, atualização e exclusão de informações de pessoas, incluindo clientes e funcionários.
+## Email Sending Microservice
+The system includes a microservice for sending emails, utilizing queues for asynchronous processing and ensuring email delivery. The microservice is responsible for:
 
-- Gerenciamento de Acessórios: Cadastro, listagem, atualização e exclusão de acessórios disponíveis para aluguel.
+- Asynchronous Email Sending: Sending emails asynchronously to avoid blocking during the execution of other tasks.
 
-- Gerenciamento de Grupos de veículos: Criação, listagem, atualização e exclusão de grupos de veículos.
+- Failure Handling: Robust and efficient handling of email sending failures.
 
-- Integração com o Stripe: Permite que os usuários façam o pagamento das reservas utilizando cartão de crédito/débito através do Stripe.
+- RabbitMQ Configuration: Using RabbitMQ for queue management and ensuring email delivery.
 
-## Microserviço para Envio de E-mails
+- Uses Cloud AMQP: Provides cloud-hosted messaging infrastructure, ensuring high availability, scalability, and performance for RabbitMQ queues.
 
-O sistema inclui um microserviço para envio de e-mails, utilizando filas para processamento assíncrono
-e garantir a entrega dos e-mails. O microserviço é responsável por:
+## Technologies Used
+- Spring Boot: Framework for developing Java applications.
 
-- Envio de E-mails Assíncrono: Envio assíncrono de e-mails para evitar bloqueios durante a execução de outras tarefas.
+- Spring AMQP (RabbitMQ): Integration with RabbitMQ for asynchronous email sending.
 
-- Tratamento de Falhas: Lidar com falhas de envio de e-mails de forma robusta e eficiente.
+- JUnit 5: Unit and integration testing.
 
-- Configuração com RabbitMQ: Utilização do RabbitMQ para gerenciamento de filas e garantia de entrega dos e-mails.
+- Stripe API: Integration with the Stripe API for payment processing.
 
-- Utiliza a Cloud AMQP para fornecer uma infraestrutura de mensageria hospedada na nuvem, garantindo alta disponibilidade, escalabilidade e desempenho para o sistema de filas do RabbitMQ.
+- SpringDoc OpenAPI: API documented with SpringDoc OpenAPI Swagger.
 
-## Tecnologias Utilizadas
+- NGINX: Web server and reverse proxy.
 
-- **Spring Boot:** Framework para desenvolvimento de aplicativos Java.
+- Docker: Services use Docker containers for their lifecycle.
 
-- **Spring Security:** Gerenciamento de autenticação e autorização.
+## Stripe Integration
+The system uses Stripe payment integration to allow users to pay for reservations securely and conveniently. Stripe integration includes:
 
-- **Spring Data JPA:** Acesso a dados utilizando o padrão JPA.
+- Stripe API Configuration: Setting up Stripe API keys in the system for authentication and communication with the service.
 
-- **Spring AMQP (RabbitMQ):** Integração com RabbitMQ para envio de e-mails assíncronos.
+- Payment Endpoints Implementation: Developing endpoints in the system to initiate and process payment transactions using the Stripe API.
 
-- **Hibernate Validator:** Validação de entrada de dados.
+- Security and Encryption: Using security protocols and encryption to ensure the safety of payment transactions and user data.
 
-- **JUnit 5:** Tests unitários e de integração.
+- Event Handling: Implementing mechanisms to handle Stripe events and notifications, such as payment confirmations and status updates.
 
-- **JavaMail Sender:** Envio de e-mails utilizando o protocolo SMTP.
+## Running the Application with Docker
+### Prerequisites
+Ensure Docker is installed on your machine.
 
-- **Jakarta Validation:** Validação de dados no lado do servidor.
-
-- **Stripe API:** Integração com a API do Stripe para processamento de pagamentos.
-
-- **Springdoc OpenAPI:** API documentada com o Springdoc OpenAPI Swagger
-
-- **Nginx:** Servidor web e proxy reverso.
-
-- **Docker:** Os serviços usam container docker para seu ciclo de vida.
-
-## Integração com o Stripe
-
-O sistema utiliza a tecnologia de integração de pagamentos Stripe para permitir que os usuários façam o pagamento das reservas de forma segura e conveniente. A integração com o Stripe inclui:
-
-- Configuração da API do Stripe: Configuração das chaves de API do Stripe no sistema para autenticação e comunicação com o serviço.
-
-- Implementação dos Endpoints de Pagamento: Desenvolvimento de endpoints no sistema para iniciar e processar transações de pagamento utilizando a API do Stripe.
-
-- Segurança e Criptografia: Utilização de protocolos de segurança e criptografia para garantir a segurança das transações de pagamento e dos dados do usuário.
-
-- Tratamento de Eventos: Implementação de mecanismos para lidar com eventos e notificações do Stripe, como confirmações de pagamento e atualizações de status.
-
-## Rodando a Aplicação com Docker
-
-### Pré-requisitos
-
-Certifique-se de ter o Docker instalado em sua máquina.
-
-1. Clone o Repositório
-2. Configure as variáveis de ambiente se necessário
-3. Construa as imagens e suba os containers:
+1. Clone the Repository
+2. Configure environment variables if needed
+3. Build images and start containers:
   ```
   docker-compose up -d
   ```
-4. Acesse a aplicação em http://localhost:8080
+4. Access the application at http://localhost:8080
 
-### Endpoints Principais
+### Main Endpoints
 
-#### Autenticação
+#### Authentication
 
 - **Login:**
   - **POST /auth/login**
@@ -109,9 +83,9 @@ Certifique-se de ter o Docker instalado em sua máquina.
     }
     ```
 
-#### Usuários
+#### Users
 
-- **Criar Usuário:**
+- **Create User:**
   - **POST /persons**
   - Request Body:
     ```json
@@ -134,13 +108,13 @@ Certifique-se de ter o Docker instalado em sua máquina.
     }
     ```
 
-#### Reservas
+#### Reservations
 
-- **Listar Reservas:**
+- **List Reservations:**
   - **GET /reservations**
   - Query Parameters:
-    - `pageNumber`: Número da página (padrão: 0)
-    - `pageSize`: Tamanho da página (padrão: 10)
+    - `pageNumber`: Page number (default: 0)
+    - `pageSize`: Page size (default: 10)
     - Response:
     ```json
      [
@@ -148,15 +122,15 @@ Certifique-se de ter o Docker instalado em sua máquina.
         "id": "uuid",
         "person": {
           "id": "uuid",
-          "fullName": "Rafael Magalhães Guedes",
-          "username": "rafaguedes",
+          "fullName": "User test",
+          "username": "user",
           "email": "user@example.com",
           "role": "USER"
         },
         "group": {
           "id": "uuid",
           "name": "Group GX",
-          "vehicles": "Renegade, Creta, Duster, Toro ou similares",
+          "vehicles": "Renegade, Creta, Duster, Toro or similar",
           "dailyRate": 250.0
         },
         "accessories": [
@@ -169,7 +143,7 @@ Certifique-se de ter o Docker instalado em sua máquina.
           },
           {
             "id": "uuid",
-            "name": "Bebê conforto",
+            "name": "Baby comfort",
             "description": "Comfort plus ergonomic top",
             "quantity": 1,
             "dailyRate": 100.0
@@ -186,7 +160,7 @@ Certifique-se de ter o Docker instalado em sua máquina.
      ]
     ```
 
-- **Criar Reserva:**
+- **Create Reservation:**
   - **POST /reservations**
   - Request Body:
     ```json
@@ -206,29 +180,29 @@ Certifique-se de ter o Docker instalado em sua máquina.
       "id": "uuid",
       "person": {
         "id": "uuid",
-        "fullName": "Rafael Magalhães Guedes",
-        "username": "rafaguedes",
+        "fullName": "User test",
+        "username": "user",
         "email": "user@example.com",
         "role": "USER"
       },
       "group": {
         "id": "uuid",
         "name": "Group GX",
-        "vehicles": "Renegade, Creta, Duster, Toro ou similares",
+        "vehicles": "Renegade, Creta, Duster, Toro or similar",
         "dailyRate": 250.0
       },
       "accessories": [
         {
           "id": "uuid",
           "name": "GPS",
-          "description": "SmartPhone com GPS",
+          "description": "SmartPhone with GPS",
           "quantity": 1,
           "dailyRate": 100.0
         },
         {
           "id": "uuid",
-          "name": "Bebê conforto",
-          "description": "Comfort plus ergonomic top",
+          "name": "Baby comfort",
+          "description": "Comfort plus ergonomic top.",
           "quantity": 1,
           "dailyRate": 100.0
         }
@@ -244,7 +218,7 @@ Certifique-se de ter o Docker instalado em sua máquina.
     }
     ```
 
-- **Pagamento com Sucesso:**
+- **Payment Successfully:**
   - **GET /payment/success/{paymentId}**
   
   - Response:
@@ -256,7 +230,7 @@ Certifique-se de ter o Docker instalado em sua máquina.
     }
     ```
 
-- **Pagamento cancelado:**
+- **Payment Failed:**
   - **GET /payment/cancel/{paymentId}**
 
   - Response:
