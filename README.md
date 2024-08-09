@@ -40,17 +40,6 @@ The system includes a microservice for sending emails, utilizing queues for asyn
 
 - Docker: Services use Docker containers for their lifecycle.
 
-## Stripe Integration
-The system uses Stripe payment integration to allow users to pay for reservations securely and conveniently. Stripe integration includes:
-
-- Stripe API Configuration: Setting up Stripe API keys in the system for authentication and communication with the service.
-
-- Payment Endpoints Implementation: Developing endpoints in the system to initiate and process payment transactions using the Stripe API.
-
-- Security and Encryption: Using security protocols and encryption to ensure the safety of payment transactions and user data.
-
-- Event Handling: Implementing mechanisms to handle Stripe events and notifications, such as payment confirmations and status updates.
-
 ## Running the Application with Docker
 ### Prerequisites
 Ensure Docker is installed on your machine.
