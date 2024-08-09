@@ -5,6 +5,7 @@ import com.rental.entity.Accessory;
 import com.rental.entity.Person;
 import com.rental.entity.Reservation;
 import com.rental.entity.Group;
+import com.rental.enums.PaymentType;
 import com.rental.enums.ReservationStatus;
 import com.stripe.model.checkout.Session;
 
@@ -23,7 +24,7 @@ public class ReservationMock {
     public static final List<UUID> ACCESSORY_IDS = List.of(UUID.randomUUID(), UUID.randomUUID());
     public static final LocalDateTime PICKUP_DATE_TIME = LocalDateTime.now().plusDays(1);
     public static final LocalDateTime RETURN_DATE_TIME = LocalDateTime.now().plusDays(7);
-    public static final String PAYMENT_TYPE = "ONLINE";
+    public static final PaymentType PAYMENT_TYPE = PaymentType.ONLINE_PAYMENT;
     public static final String PAYMENT_URL = "http://payment.url";
 
     // Mock data for Reservation 01
@@ -35,7 +36,7 @@ public class ReservationMock {
     private static final LocalDateTime RETURN_DATE_TIME_01 = LocalDateTime.of(2024, 7, 5, 10, 0);
     private static final double TOTAL_AMOUNT_01 = 500.0;
     private static final int TOTAL_DAYS_01 = 4;
-    private static final String PAYMENT_TYPE_01 = "Online";
+    private static final PaymentType PAYMENT_TYPE_01 = PaymentType.ONLINE_PAYMENT;
     private static final ReservationStatus RESERVATION_STATUS_01 = ReservationStatus.PENDING;
     private static final LocalDateTime CREATED_DATE_01 = LocalDateTime.now();
 
@@ -48,7 +49,7 @@ public class ReservationMock {
     private static final LocalDateTime RETURN_DATE_TIME_02 = LocalDateTime.of(2024, 8, 3, 10, 0);
     private static final double TOTAL_AMOUNT_02 = 300.0;
     private static final int TOTAL_DAYS_02 = 2;
-    private static final String PAYMENT_TYPE_02 = "Offline";
+    private static final PaymentType PAYMENT_TYPE_02 = PaymentType.ONLINE_PAYMENT;
     private static final ReservationStatus RESERVATION_STATUS_02 = ReservationStatus.CONFIRMED;
     private static final LocalDateTime CREATED_DATE_02 = LocalDateTime.now();
 
@@ -65,10 +66,10 @@ public class ReservationMock {
 
     // Mock reservations
     public static final Reservation RESERVATION_01 = createReservation(ID_01, PERSON_01, GROUP_01, ACCESSORIES_01, PICKUP_DATE_TIME_01,
-            RETURN_DATE_TIME_01, TOTAL_AMOUNT_01, TOTAL_DAYS_01, PAYMENT_TYPE_01, RESERVATION_STATUS_01, CREATED_DATE_01);
+            RETURN_DATE_TIME_01, TOTAL_AMOUNT_01, TOTAL_DAYS_01, String.valueOf(PAYMENT_TYPE_01), RESERVATION_STATUS_01, CREATED_DATE_01);
 
     public static final Reservation RESERVATION_02 = createReservation(ID_02, PERSON_02, GROUP_02, ACCESSORIES_02, PICKUP_DATE_TIME_02,
-            RETURN_DATE_TIME_02, TOTAL_AMOUNT_02, TOTAL_DAYS_02, PAYMENT_TYPE_02, RESERVATION_STATUS_02, CREATED_DATE_02);
+            RETURN_DATE_TIME_02, TOTAL_AMOUNT_02, TOTAL_DAYS_02, String.valueOf(PAYMENT_TYPE_02), RESERVATION_STATUS_02, CREATED_DATE_02);
 
     private static Reservation createReservation(UUID id, Person person, Group group, List<Accessory> accessories, LocalDateTime pickupDateTime,
                                                  LocalDateTime returnDateTime, double totalAmount, int totalDays, String paymentType,
@@ -82,7 +83,7 @@ public class ReservationMock {
         reservation.setReturnDateTime(returnDateTime);
         reservation.setTotalAmount(totalAmount);
         reservation.setTotalDays(totalDays);
-        reservation.setPaymentType(paymentType);
+        reservation.setPaymentType(PaymentType.valueOf(paymentType));
         reservation.setReservationStatus(reservationStatus);
         reservation.setCreatedDate(createdDate);
         return reservation;

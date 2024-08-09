@@ -3,6 +3,7 @@ package com.rental.controller.dto.reservation;
 import com.rental.controller.dto.accessory.AccessoryDto;
 import com.rental.controller.dto.person.PersonDto;
 import com.rental.entity.Reservation;
+import com.rental.enums.PaymentType;
 import com.rental.enums.ReservationStatus;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,7 +23,7 @@ public record ReservationPaymentDto(
     Double totalAmount,
     Integer totalDays,
     ReservationStatus reservationStatus,
-    String paymentType,
+    PaymentType paymentType,
     LocalDateTime createdDate,
     String paymentUrl
 ) {

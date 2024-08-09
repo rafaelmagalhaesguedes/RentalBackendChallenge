@@ -4,6 +4,7 @@ import com.rental.controller.dto.accessory.AccessoryDto;
 import com.rental.controller.dto.person.PersonDto;
 import com.rental.controller.dto.group.GroupDto;
 import com.rental.entity.Reservation;
+import com.rental.enums.PaymentType;
 import com.rental.enums.ReservationStatus;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,7 +23,7 @@ public record ReservationReadDto(
     Double totalAmount,
     Integer totalDays,
     ReservationStatus reservationStatus,
-    String paymentType,
+    PaymentType paymentType,
     LocalDateTime createdDate
 ) {
 
