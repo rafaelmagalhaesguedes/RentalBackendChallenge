@@ -33,8 +33,11 @@ This project is a comprehensive full-stack application designed for a car rental
 
 ### Front-end
 - NodeJS: JavaScript runtime environment for developing and running applications.
+
 - ReactJS: Library for building dynamic and reactive user interfaces.
+
 - TypeScript:  Programming language that adds static typing to JavaScript, improving code maintainability and scalability.
+
 - Axios: Library for making HTTP requests, used for communication with APIs.
 
 ## Main Features
