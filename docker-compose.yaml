@@ -27,19 +27,20 @@ services:
       dockerfile: Dockerfile
     restart: always
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/rental
+      SPRING_DATASOURCE_URL: jdbc:postgresql://rental-db:5432/rental
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
     networks:
       - rental-network
 
-  mysql:
+  postgres:
     container_name: rental-db
-    image: mysql:8.0.32
+    image: postgres:15
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: rental
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: rental
     networks:
       - rental-network
 
