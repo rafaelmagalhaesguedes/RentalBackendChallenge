@@ -1,8 +1,10 @@
-# Rental Car Service Full Stack Application
+# Rental Car Service - Full Stack Application
+
 <div>
   <img alt="SpringBoot" src="https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white">
   <img alt="React" src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB">
 </div>
+<br />
 
 ![home](ms-frontend/src/assets/images/home.png)
 
