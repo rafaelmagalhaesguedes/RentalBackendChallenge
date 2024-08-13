@@ -1,3 +1,5 @@
+<div align="center">
+
 # Rental Car System - Full Stack Application
 
 <div>
@@ -5,6 +7,8 @@
   <img alt="React" src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB">
 </div>
 <br />
+
+</div>
 
 ![home](ms-frontend/src/assets/images/home.png)
 
