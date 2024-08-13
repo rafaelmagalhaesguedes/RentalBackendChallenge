@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * The type Reservation creation dto.
+ * Reservation creation dto.
  */
 public record ReservationCreationDto(
     UUID personId,
