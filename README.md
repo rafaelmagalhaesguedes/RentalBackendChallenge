@@ -1,4 +1,11 @@
-# Rental Service Application
+# Rental Car Service Full Stack Application
+<div>
+  <img alt="SpringBoot" src="https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white">
+  <img alt="React" src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB">
+</div>
+
+![home](ms-frontend/src/assets/images/home.png)
+
 This project encompasses a robust API for managing clients, reservations, accessory rentals, and vehicle groups within a car rental service. It features integration with the Stripe payment gateway for secure online transactions. Additionally, the system includes a microservices architecture for efficient email communication, utilizing message queues for enhanced reliability and scalability.
 
 ## Main Features
