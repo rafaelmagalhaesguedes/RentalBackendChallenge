@@ -33,7 +33,7 @@ public class PersonProducer {
    */
   public void publishMessageEmail(Person person) {
     EmailDto emailDto = new EmailDto();
-    emailDto.setUserId(person.getId());
+    // emailDto.setUserName(person.getId());
     emailDto.setEmailTo(person.getEmail());
     emailDto.setSubject("Cadastro concluído com sucesso!");
 
