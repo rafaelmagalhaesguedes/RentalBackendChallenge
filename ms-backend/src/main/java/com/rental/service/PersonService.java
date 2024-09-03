@@ -3,7 +3,6 @@ package com.rental.service;
 import com.rental.entity.Person;
 import com.rental.producer.PersonProducer;
 import com.rental.repository.PersonRepository;
-import com.rental.security.Role;
 import com.rental.service.exception.PersonExistingException;
 import com.rental.service.exception.PersonNotFoundException;
 import java.util.List;
