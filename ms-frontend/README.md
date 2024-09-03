@@ -1,1 +1,0 @@
-# Rental Microservice Frontend

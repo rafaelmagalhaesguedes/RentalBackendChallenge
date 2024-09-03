@@ -27,10 +27,10 @@ public class ReservationProducer {
   @Value(value = "${broker.queue.email.name}")
   private String routingKey;
 
-  public void publishMessageEmail(Person person, Reservation reservation) {
+  public void publishMessageEmail(Reservation reservation) {
     EmailDto emailDto = new EmailDto();
-    emailDto.setUserId(person.getId());
-    emailDto.setEmailTo(person.getEmail());
+    emailDto.setUserName(reservation.getFullName());
+    emailDto.setEmailTo(reservation.getEmail());
     emailDto.setSubject("Reserva Confirmada");
 
     String emailText = String.format(
@@ -42,11 +42,10 @@ public class ReservationProducer {
             "- Total: %s\n\n" +
             "- Pagamento: %s\n\n" +
             "Obrigado por escolher nossos serviços.",
-        person.getFullName(),
+        reservation.getFullName(),
         reservation.getPickupDateTime(),
         reservation.getReturnDateTime(),
-        reservation.getTotalAmount(),
-        reservation.getPaymentType()
+        reservation.getTotalAmount()
     );
 
     emailDto.setText(emailText);

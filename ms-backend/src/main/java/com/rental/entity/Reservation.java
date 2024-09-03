@@ -1,6 +1,5 @@
 package com.rental.entity;
 
-import com.rental.enums.PaymentType;
 import com.rental.enums.ReservationStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -26,9 +25,11 @@ public class Reservation {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "person_id", nullable = false)
-  private Person person;
+  private String fullName;
+
+  private String email;
+
+  private String document;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "group_id", nullable = false)
@@ -51,20 +52,17 @@ public class Reservation {
   private Integer totalDays;
 
   @Enumerated(EnumType.STRING)
-  private PaymentType paymentType;
-
-  @Enumerated(EnumType.STRING)
   private ReservationStatus reservationStatus;
 
   private LocalDateTime createdDate;
 
   public Reservation() { }
 
-  public Reservation(UUID id, Person person, Group group, List<Accessory> accessories,
-      LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, Integer totalDays,
-      ReservationStatus reservationStatus, PaymentType paymentType) {
+  public Reservation(UUID id, String fullName, String email, String document, Group group, List<Accessory> accessories, LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, Integer totalDays, ReservationStatus reservationStatus, LocalDateTime createdDate) {
     this.id = id;
-    this.person = person;
+    this.fullName = fullName;
+    this.email = email;
+    this.document = document;
     this.group = group;
     this.accessories = accessories;
     this.pickupDateTime = pickupDateTime;
@@ -72,13 +70,27 @@ public class Reservation {
     this.totalAmount = totalAmount;
     this.totalDays = totalDays;
     this.reservationStatus = reservationStatus;
-    this.paymentType = paymentType;
+    this.createdDate = createdDate;
   }
 
-  public Reservation(UUID id, Person person, Group group, List<Accessory> accessories,
-                     LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, Integer totalDays) {
-    this.id = id;
-    this.person = person;
+  public Reservation(String fullName, String email, String document, Group group, List<Accessory> accessories, LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, Integer totalDays, ReservationStatus reservationStatus, LocalDateTime createdDate) {
+    this.fullName = fullName;
+    this.email = email;
+    this.document = document;
+    this.group = group;
+    this.accessories = accessories;
+    this.pickupDateTime = pickupDateTime;
+    this.returnDateTime = returnDateTime;
+    this.totalAmount = totalAmount;
+    this.totalDays = totalDays;
+    this.reservationStatus = reservationStatus;
+    this.createdDate = createdDate;
+  }
+
+  public Reservation(String fullName, String email, String document, Group group, List<Accessory> accessories, LocalDateTime pickupDateTime, LocalDateTime returnDateTime, Double totalAmount, Integer totalDays) {
+    this.fullName = fullName;
+    this.email = email;
+    this.document = document;
     this.group = group;
     this.accessories = accessories;
     this.pickupDateTime = pickupDateTime;
@@ -87,14 +99,14 @@ public class Reservation {
     this.totalDays = totalDays;
   }
 
-  public Reservation(Person person, Group group, List<Accessory> accessories, LocalDateTime localDateTime, LocalDateTime pickupDateTime, double totalAmount, int totalDays, ReservationStatus reservationStatus,
-      String s, LocalDateTime now) {
-  }
-
-  public Reservation(Person mockPerson, Group mockGroup, LocalDateTime now, LocalDateTime localDateTime, PaymentType paymentType) {
-  }
-
-  public Reservation(Person mockPerson, Group mockGroup, LocalDateTime now, LocalDateTime localDateTime, double totalAmount, int totalDays) {
+  public Reservation(String fullName, String email, String document, Group group, List<Accessory> accessories, LocalDateTime pickupDateTime, LocalDateTime returnDateTime) {
+    this.fullName = fullName;
+    this.email = email;
+    this.document = document;
+    this.group = group;
+    this.accessories = accessories;
+    this.pickupDateTime = pickupDateTime;
+    this.returnDateTime = returnDateTime;
   }
 
   public UUID getId() {
@@ -105,12 +117,28 @@ public class Reservation {
     this.id = id;
   }
 
-  public Person getPerson() {
-    return person;
+  public String getFullName() {
+    return fullName;
   }
 
-  public void setPerson(Person person) {
-    this.person = person;
+  public void setFullName(String fullName) {
+    this.fullName = fullName;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getDocument() {
+    return document;
+  }
+
+  public void setDocument(String document) {
+    this.document = document;
   }
 
   public Group getGroup() {
@@ -177,11 +205,21 @@ public class Reservation {
     this.reservationStatus = reservationStatus;
   }
 
-  public PaymentType getPaymentType() {
-    return paymentType;
-  }
-
-  public void setPaymentType(PaymentType paymentType) {
-    this.paymentType = paymentType;
+  @Override
+  public String toString() {
+    return "Reservation{" +
+            "id=" + id +
+            ", fullName='" + fullName + '\'' +
+            ", email='" + email + '\'' +
+            ", document='" + document + '\'' +
+            ", group=" + group +
+            ", accessories=" + accessories +
+            ", pickupDateTime=" + pickupDateTime +
+            ", returnDateTime=" + returnDateTime +
+            ", totalAmount=" + totalAmount +
+            ", totalDays=" + totalDays +
+            ", reservationStatus=" + reservationStatus +
+            ", createdDate=" + createdDate +
+            '}';
   }
 }
