@@ -1,4 +1,4 @@
-# Rental BackEnd Challenge - v1
+# Rental BackEnd Challenge - Stripe Integration
 
 This project encompasses a robust API for managing clients, reservations, accessory rentals, and vehicle groups within a car rental service. It features integration with the Stripe payment gateway for secure online transactions. Additionally, the system includes a microservices architecture for efficient email communication, utilizing message queues for enhanced reliability and scalability.
 
