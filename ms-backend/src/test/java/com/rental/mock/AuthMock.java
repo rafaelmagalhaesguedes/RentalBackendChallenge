@@ -1,8 +1,8 @@
 package com.rental.mock;
 
-import com.rental.controller.dto.auth.AuthDto;
+import com.rental.controller.dto.auth.AuthRequest;
 import com.rental.entity.Person;
-import com.rental.security.Role;
+import com.rental.enums.Role;
 
 import java.util.UUID;
 
@@ -17,14 +17,14 @@ public class AuthMock {
 
     public static String ERROR_MESSAGE = "Invalid email or password.";
 
-    public static AuthDto LOGIN = new AuthDto(
+    public static AuthRequest LOGIN = new AuthRequest(
             "test@test.com",
             "secret_key"
     );
 
     public static Person PERSON = new Person(
             UUID.randomUUID(),
-            "Test User",
+            "Test Person",
             "test",
             "test@test.com",
             "password",

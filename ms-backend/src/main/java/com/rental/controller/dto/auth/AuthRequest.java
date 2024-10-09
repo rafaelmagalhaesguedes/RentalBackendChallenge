@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 /**
  * The type Auth dto.
  */
-public record AuthDto(
+public record AuthRequest(
     @NotBlank(message = "Email cannot be blank")
     @Email
     String email,
