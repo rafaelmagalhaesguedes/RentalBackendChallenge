@@ -113,14 +113,14 @@ public class GroupServiceTest {
   @Test
   public void testCreateGroupFail() {
     // Arrange
-    when(repository.save(GROUP_CREATION)).thenThrow(new RuntimeException("Unexpected error"));
+    when(repository.save(GROUP_CREATION)).thenThrow(new RuntimeException("Unexpected errors"));
 
     // Act & Assert
     RuntimeException exception = assertThrows(RuntimeException.class, () -> {
       service.createGroup(GROUP_CREATION);
     });
 
-    assertThat(exception.getMessage()).isEqualTo("Unexpected error");
+    assertThat(exception.getMessage()).isEqualTo("Unexpected errors");
   }
 
   @Test

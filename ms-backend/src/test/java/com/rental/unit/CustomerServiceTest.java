@@ -114,14 +114,14 @@ public class CustomerServiceTest {
     public void testCreateCustomerFail() {
         // Arrange
         when(customerRepository.save(CUSTOMER_CREATION))
-                .thenThrow(new RuntimeException("Unexpected error"));
+                .thenThrow(new RuntimeException("Unexpected errors"));
 
         // Act & Assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             customerService.create(CUSTOMER_CREATION);
         });
 
-        assertThat(exception.getMessage()).isEqualTo("Unexpected error");
+        assertThat(exception.getMessage()).isEqualTo("Unexpected errors");
     }
 
     @Test

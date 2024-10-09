@@ -29,8 +29,8 @@ public class ReservationProducer {
 
   public void publishMessageEmail(Reservation reservation) {
     EmailDto emailDto = new EmailDto();
-    emailDto.setUserName(reservation.getFullName());
-    emailDto.setEmailTo(reservation.getEmail());
+    emailDto.setUserName(reservation.getCustomer().getFullName());
+    emailDto.setEmailTo(reservation.getCustomer().getEmail());
     emailDto.setSubject("Reserva Confirmada");
 
     String emailText = String.format(
@@ -42,7 +42,7 @@ public class ReservationProducer {
             "- Total: %s\n\n" +
             "- Pagamento: %s\n\n" +
             "Obrigado por escolher nossos serviços.",
-        reservation.getFullName(),
+        reservation.getCustomer().getFullName(),
         reservation.getPickupDateTime(),
         reservation.getReturnDateTime(),
         reservation.getTotalAmount()

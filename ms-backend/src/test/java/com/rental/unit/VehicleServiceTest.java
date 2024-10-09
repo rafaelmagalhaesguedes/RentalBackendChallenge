@@ -141,14 +141,14 @@ public class VehicleServiceTest {
   @Test
   public void testCreateVehicleFail() {
     // Arrange
-    Mockito.when(repository.save(VEHICLE_01)).thenThrow(new RuntimeException("Unexpected error"));
+    Mockito.when(repository.save(VEHICLE_01)).thenThrow(new RuntimeException("Unexpected errors"));
 
     // Act & Assert
     RuntimeException exception = assertThrows(RuntimeException.class, () -> {
       service.createVehicle(VEHICLE_01);
     });
 
-    assertThat(exception.getMessage()).isEqualTo("Unexpected error");
+    assertThat(exception.getMessage()).isEqualTo("Unexpected errors");
   }
 
   @Test

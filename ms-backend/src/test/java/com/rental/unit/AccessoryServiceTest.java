@@ -113,14 +113,14 @@ public class AccessoryServiceTest {
   @Test
   public void testCreateAccessoryFail() {
     // Arrange
-    when(accessoryRepository.save(ACCESSORY_CREATION)).thenThrow(new RuntimeException("Unexpected error"));
+    when(accessoryRepository.save(ACCESSORY_CREATION)).thenThrow(new RuntimeException("Unexpected errors"));
 
     // Act & Assert
     RuntimeException exception = assertThrows(RuntimeException.class, () -> {
       accessoryService.createAccessory(ACCESSORY_CREATION);
     });
 
-    assertThat(exception.getMessage()).isEqualTo("Unexpected error");
+    assertThat(exception.getMessage()).isEqualTo("Unexpected errors");
   }
 
   @Test

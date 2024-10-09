@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import org.hibernate.validator.constraints.br.CPF;
 
 public record CustomerRequest(
         @NotBlank(message = "Name is mandatory")
@@ -16,7 +17,6 @@ public record CustomerRequest(
         String email,
 
         @NotBlank(message = "Password cannot be blank")
-        @Size(min = 8, max = 20, message = "Password must be between 8 and 20 characters")
         String password,
 
         @NotBlank(message = "Phone number is mandatory")
@@ -24,6 +24,7 @@ public record CustomerRequest(
         String phoneNumber,
 
         @NotBlank(message = "Document is mandatory")
+        @CPF
         String document,
 
         @Pattern(regexp = "\\d{8}", message = "CEP should be exactly 8 digits")

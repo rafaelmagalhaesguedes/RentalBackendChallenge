@@ -22,7 +22,7 @@ public class GlobalControllerAdvice {
    * Handle constraint violation exceptions.
    *
    * @param ex the ConstraintViolationException
-   * @return the response entity with error details
+   * @return the response entity with errors details
    */
   @ExceptionHandler(ConstraintViolationException.class)
   public ResponseEntity<Map<String, Object>> handleConstraintViolationExceptions(ConstraintViolationException ex) {
@@ -38,7 +38,7 @@ public class GlobalControllerAdvice {
    *
    * @param ex the MethodArgumentNotValidException
    * @param request the web request
-   * @return the response entity with error details
+   * @return the response entity with errors details
    */
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<Map<String, Object>> handleValidationExceptions(MethodArgumentNotValidException ex, WebRequest request) {
