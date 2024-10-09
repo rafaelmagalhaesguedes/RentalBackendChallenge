@@ -1,4 +1,4 @@
-package com.rental.security;
+package com.rental.enums;
 
 /**
  * Enum representing a Role.

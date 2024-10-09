@@ -5,12 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import com.rental.entity.Customer;
 import com.rental.repository.CustomerRepository;
-import com.rental.service.CustomerService;
+import com.rental.service.customer.ICustomerService;
 import com.rental.service.exception.CustomerNotFoundException;
 import java.util.Arrays;
 import java.util.List;
@@ -35,7 +34,7 @@ import org.springframework.data.domain.Pageable;
 public class CustomerServiceTest {
 
     @InjectMocks
-    CustomerService customerService;
+    ICustomerService customerService;
 
     @Mock
     CustomerRepository customerRepository;
@@ -47,7 +46,7 @@ public class CustomerServiceTest {
                 .thenReturn(Optional.of(CUSTOMER_01));
 
         // Act
-        Customer getCustomer = customerService.getCustomerById(CUSTOMER_01.getId());
+        Customer getCustomer = customerService.getById(CUSTOMER_01.getId());
 
         // Assert
         assertThat(getCustomer).isEqualTo(CUSTOMER_01);
@@ -61,7 +60,7 @@ public class CustomerServiceTest {
 
         // Act & Assert
         assertThrows(CustomerNotFoundException.class, () -> {
-            customerService.getCustomerById(id);
+            customerService.getById(id);
         });
     }
 
@@ -74,7 +73,7 @@ public class CustomerServiceTest {
 
         // Act
         when(customerRepository.findAll(pageable)).thenReturn(page);
-        List<Customer> getAllCustomers = customerService.getAllCustomers(0, 2);
+        List<Customer> getAllCustomers = customerService.getAll(0, 2);
         verify(customerRepository).findAll(pageable);
 
         // Assert
@@ -90,7 +89,7 @@ public class CustomerServiceTest {
 
         // Act
         when(customerRepository.findAll(pageable)).thenReturn(page);
-        List<Customer> getAllCustomers = customerService.getAllCustomers(0, 2);
+        List<Customer> getAllCustomers = customerService.getAll(0, 2);
         verify(customerRepository).findAll(pageable);
 
         // Assert
@@ -100,24 +99,26 @@ public class CustomerServiceTest {
     @Test
     public void testCreateCustomer() {
         // Arrange
-        when(customerRepository.save(CUSTOMER_CREATION)).thenReturn(CUSTOMER_CREATION);
+        when(customerRepository.save(CUSTOMER_CREATION))
+                .thenReturn(CUSTOMER_CREATION);
 
         // Act
-        Customer newCustomer = customerService.createCustomer(CUSTOMER_CREATION);
-        verify(customerRepository).save(CUSTOMER_CREATION);
+        customerService.create(CUSTOMER_CREATION);
 
         // Assert
-        assertThat(newCustomer).isEqualTo(CUSTOMER_CREATION);
+        verify(customerRepository, times(1))
+                .save(any(Customer.class));
     }
 
     @Test
     public void testCreateCustomerFail() {
         // Arrange
-        when(customerRepository.save(CUSTOMER_CREATION)).thenThrow(new RuntimeException("Unexpected error"));
+        when(customerRepository.save(CUSTOMER_CREATION))
+                .thenThrow(new RuntimeException("Unexpected error"));
 
         // Act & Assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            customerService.createCustomer(CUSTOMER_CREATION);
+            customerService.create(CUSTOMER_CREATION);
         });
 
         assertThat(exception.getMessage()).isEqualTo("Unexpected error");
@@ -126,38 +127,44 @@ public class CustomerServiceTest {
     @Test
     public void testUpdateCustomer() throws CustomerNotFoundException {
         // Arrange
-        when(customerRepository.findById(CUSTOMER_01.getId())).thenReturn(Optional.of(CUSTOMER_01));
-        when(customerRepository.save(CUSTOMER_01)).thenReturn(CUSTOMER_01);
+        when(customerRepository.findById(CUSTOMER_01.getId()))
+                .thenReturn(Optional.of(CUSTOMER_01));
+
+        when(customerRepository.save(CUSTOMER_01))
+                .thenReturn(CUSTOMER_01);
 
         // Act
-        Customer result = customerService.updateCustomer(CUSTOMER_UPDATED, CUSTOMER_01.getId());
+        customerService.update(CUSTOMER_UPDATED, CUSTOMER_01.getId());
 
         // Assert
-        assertThat(result).isEqualTo(CUSTOMER_01);
+        verify(customerRepository, times(1))
+                .save(any(Customer.class));
     }
 
     @Test
     public void testUpdateCustomerNotFoundException() {
         // Arrange
-        when(customerRepository.findById(CUSTOMER_01.getId())).thenReturn(Optional.empty());
+        when(customerRepository.findById(CUSTOMER_01.getId()))
+                .thenReturn(Optional.empty());
 
         // Act & Assert
         assertThrows(CustomerNotFoundException.class, () -> {
-            customerService.updateCustomer(CUSTOMER_UPDATED, CUSTOMER_01.getId());
+            customerService.update(CUSTOMER_UPDATED, CUSTOMER_01.getId());
         });
     }
 
     @Test
     public void testDeleteCustomer() throws CustomerNotFoundException {
         // Arrange
-        when(customerRepository.findById(CUSTOMER_01.getId())).thenReturn(Optional.of(CUSTOMER_01));
+        when(customerRepository.findById(CUSTOMER_01.getId()))
+                .thenReturn(Optional.of(CUSTOMER_01));
 
         // Act
-        Customer result = customerService.deleteCustomer(CUSTOMER_01.getId());
+        customerService.delete(CUSTOMER_01.getId());
 
         // Assert
-        assertEquals(CUSTOMER_01, result);
-        verify(customerRepository).delete(CUSTOMER_01);
+        verify(customerRepository, times(1))
+                .save(any(Customer.class));
     }
 
     @Test
@@ -165,11 +172,12 @@ public class CustomerServiceTest {
         // Arrange
         UUID id = UUID.randomUUID();
 
-        when(customerRepository.findById(id)).thenReturn(Optional.empty());
+        when(customerRepository.findById(id))
+                .thenReturn(Optional.empty());
 
         // Act & Assert
         assertThrows(CustomerNotFoundException.class, () -> {
-            customerService.deleteCustomer(id);
+            customerService.delete(id);
         });
     }
 }

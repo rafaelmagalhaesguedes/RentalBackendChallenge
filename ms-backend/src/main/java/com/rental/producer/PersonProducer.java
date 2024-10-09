@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
- * The type User producer.
+ * The type Person producer.
  */
 @Component
 public class PersonProducer {
@@ -15,7 +15,7 @@ public class PersonProducer {
   final RabbitTemplate rabbitTemplate;
 
   /**
-   * Instantiates a new User producer.
+   * Instantiates a new Person producer.
    *
    * @param rabbitTemplate the rabbit template
    */

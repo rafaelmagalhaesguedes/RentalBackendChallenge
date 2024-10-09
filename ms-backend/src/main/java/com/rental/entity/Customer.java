@@ -1,86 +1,53 @@
 package com.rental.entity;
 
+import com.rental.service.CryptoService;
+import com.rental.enums.Role;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import org.hibernate.validator.constraints.br.CPF;
+import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-/**
- * The type Customer.
- */
 @Entity
-@Table(name = "customers")
-public class Customer {
+@DiscriminatorValue("CUSTOMER")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Customer extends Person {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-
-    private String fullName;
-
-    @Column(unique = true)
-    private String email;
-
+    @Column(name = "phone_number")
     private String phoneNumber;
 
-    private String documentNumber;
+    @Column(name = "document")
+    private String encryptedDocument;
 
-    public Customer() {}
+    @Transient
+    private String rawDocument;
 
-    public Customer(UUID id, String fullName, String email, String phoneNumber, String documentNumber) {
-        this.id = id;
-        this.fullName = fullName;
-        this.email = email;
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Address address;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reservation> reservations = new ArrayList<>();
+
+    @Builder()
+    public Customer(UUID id, String name, String email, String password, Role role, String rawDocument, String phoneNumber, Address address) {
+        super(id, name, email, password, role);
         this.phoneNumber = phoneNumber;
-        this.documentNumber = documentNumber;
+        this.rawDocument = rawDocument;
+        this.address = address;
     }
 
-    public Customer(String fullName, String email, String phoneNumber, String documentNumber) {
-        this.fullName = fullName;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.documentNumber = documentNumber;
+    @PrePersist
+    @PreUpdate
+    public void encryptFields() {
+        this.encryptedDocument = CryptoService.encrypt(rawDocument);
     }
 
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getDocumentNumber() {
-        return documentNumber;
-    }
-
-    public void setDocumentNumber(String documentNumber) {
-        this.documentNumber = documentNumber;
+    @PostLoad
+    public void decryptFields() {
+        this.rawDocument = CryptoService.decrypt(encryptedDocument);
     }
 }

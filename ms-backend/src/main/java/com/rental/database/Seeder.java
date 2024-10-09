@@ -7,12 +7,12 @@ import com.rental.repository.PersonRepository;
 import com.rental.repository.GroupRepository;
 import com.rental.repository.AccessoryRepository;
 import com.rental.repository.ReservationRepository;
-import com.rental.security.Role;
+import com.rental.enums.Role;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -41,18 +41,18 @@ public class Seeder {
         if (accessoryRepository.count() == 0) {
             seedAccessories();
         }
-        if (personRepository.count() == 0) {
-            seedPerson();
-        }
+//        if (personRepository.count() == 0) {
+//            seedPerson();
+//        }
     }
 
-    private void seedPerson() {
-        List<Person> persons = Arrays.asList(
-                new Person(UUID.randomUUID(), "Admin", "Admin", "admin@email.com", "secret_admin", Role.ADMIN),
-                new Person(UUID.randomUUID(), "User", "User", "user@email.com", "secret_user", Role.USER)
-            );
-        personRepository.saveAll(persons);
-    }
+//    private void seedPerson() {
+//        List<Person> persons = Arrays.asList(
+//                new Person(UUID.randomUUID(), "Admin", "Admin", "admin@email.com", "secret_admin", Role.ADMIN),
+//                new Person(UUID.randomUUID(), "Person", "Person", "user@email.com", "secret_user", Role.USER)
+//            );
+//        personRepository.saveAll(persons);
+//    }
 
     private void seedGroups() {
         List<Group> groups = Arrays.asList(

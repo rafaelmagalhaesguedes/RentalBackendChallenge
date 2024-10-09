@@ -1,124 +1,71 @@
 package com.rental.entity;
 
-import com.rental.security.Role;
+import com.rental.enums.Role;
 import jakarta.persistence.*;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
+import lombok.*;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-/**
- * The type Person.
- */
+import java.time.LocalDateTime;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
+
 @Entity
-@Table(name = "persons")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "tb_persons")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "person_type", discriminatorType = DiscriminatorType.STRING)
 public class Person implements UserDetails {
 
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
+  @Column(name = "full_name")
   private String fullName;
-
-  private String username;
-
-  @Column(unique = true)
   private String email;
-
   private String password;
 
   @Enumerated(EnumType.STRING)
   private Role role;
 
-  public Person() { }
+  private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
 
-  public Person(UUID id, String fullName, String username, String email, String password, Role role) {
+  public Person(UUID id, String fullName, String email, String password, Role role) {
     this.id = id;
     this.fullName = fullName;
-    this.username = username;
     this.email = email;
     this.password = password;
     this.role = role;
   }
 
-  public Person(String fullName, String username, String email, String password, Role role) {
-    this.fullName = fullName;
-    this.username = username;
-    this.email = email;
-    this.password = password;
-    this.role = role;
+  @PrePersist
+  protected void onCreate() {
+    this.createdAt = LocalDateTime.now();
   }
 
-  public Person(String fullName, String username, String email, String password) {
-    this.fullName = fullName;
-    this.username = username;
-    this.email = email;
-    this.password = password;
-  }
-
-  public Person(String fullName, String username, String email) {
-    this.fullName = fullName;
-    this.username = username;
-    this.email = email;
-  }
-
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
-
-  public String getFullName() {
-    return fullName;
-  }
-
-  public void setFullName(String fullName) {
-    this.fullName = fullName;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  public Role getRole() {
-    return role;
-  }
-
-  public void setRole(Role role) {
-    this.role = role;
+  @PreUpdate
+  protected void onUpdate() {
+    this.updatedAt = LocalDateTime.now();
   }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return List.of(new SimpleGrantedAuthority(role.getName()));
+    return List.of(new SimpleGrantedAuthority(role.name()));
   }
 
   @Override
   public String getUsername() {
-    return this.username;
-  }
-
-  @Override
-  public String getPassword() {
-    return this.password;
+    return this.email;
   }
 
   @Override
@@ -139,10 +86,5 @@ public class Person implements UserDetails {
   @Override
   public boolean isEnabled() {
     return true;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    return EqualsBuilder.reflectionEquals(obj, this);
   }
 }

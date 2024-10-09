@@ -10,7 +10,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rental.utils.TestSecurityConfig;
-import com.rental.controller.PersonController;
 import com.rental.service.PersonService;
 import com.rental.service.TokenService;
 import org.junit.jupiter.api.Test;
